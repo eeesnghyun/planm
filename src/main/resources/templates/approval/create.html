@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="container-fluid">
+	<table class="table table-hover">
+    	<colgroup>
+    		<col width="100">
+    		<col width="160">
+    		<col width="100">
+    		<col width="160">
+    		<col width="100">
+    		<col width="">
+    	</colgroup>
+		<tr class="border-top">
+	    	<th>발생일수</th>
+	    	<td><input type="text" class="form-control w80" id="createday" disabled></td>
+	      	<th>사용일수</th>
+	      	<td><input type="text" class="form-control w80" id="useday" disabled></td>
+	      	<th>잔여일수</th>
+	    	<td><input type="text" class="form-control w80" id="remainday" disabled></td>
+	    </tr>
+		<tr>
+	    	<th>신청일</th>
+	    	<td>
+	    		<div class="input-group" data-ax5picker="basic">
+		            <input class="form-control" type="text" id="requestymd" data-ax5formatter="date">
+		            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+		        </div>
+	    	</td>
+	      	<th>구분</th>
+	      	<td>
+	      		<select class="form-control" id="leavetype">
+					<option value="">선택</option>
+					<option value="A">년차</option>
+					<option value="B">병가</option>
+					<option value="C">훈련</option>
+				</select>
+	      	</td>
+	      	<th>전일/반일</th>
+	    	<td>
+	    		<select class="form-control w100" id="daytype">
+					<option value="">선택</option>
+					<option value="0">전일</option>
+					<option value="1">오전반차</option>
+					<option value="2">오후반차</option>
+				</select>
+	    	</td>
+	    </tr>
+	    <tr>
+	    	<th>기간</th>
+	    	<td colspan="5">
+	    		<div class="form-inline">
+					<div class="input-group" data-ax5picker="basic">
+			            <input class="form-control" type="text" id="startday" onchange="getLeaveUseday()" data-ax5formatter="date" placeholder="시작일">
+			            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+			        </div>
+			        <div class="input-group" data-ax5picker="basic">
+			            <input class="form-control" type="text" id="endday" onchange="getLeaveUseday()" data-ax5formatter="date" placeholder="종료일">
+			            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+			        </div>
+			        (일수 :  <input class="form-control w80" type="text" name="vacday" id="vacday" disabled>)
+			    </div>
+	    	</td>
+	    </tr>
+	    <tr>
+	    	<th>휴가사유</th>
+	    	<td colspan="5"><textarea class="form-control" id="remark"></textarea></td>
+	    </tr>
+	    <tr class="border-top">
+			<th>결재선</th>
+			<td colspan="5">
+				<button type="button" class="btn btn-outline-secondary" onclick="getSignuserList()">설정</button>
+			</td>
+		</tr>
+	</table>
+
+	<ul class="list-group list-group-flush" id="signuserList"></ul>
+
+	<!-- 결재자 리스트 -->
+	<div class="card border-theme" id="approvalUser" style="display: none">
+		<div class="card-header">
+			<div class="float-left">
+				<h5><strong>결재자 지정</strong></h5>
+			</div>
+			<div class="float-right">
+				<button type="button" class="btn-img mt-2" onclick="commonCloseLayer('approvalUser')"><img src="/resources/images/close.png" class="w10-h10"></button>
+			</div>
+		</div>
+	    <div class="card-body text-secondary" style="overflow: auto">
+	        <div class="container-fluid mb-2">
+	        	<div class="row">
+	        		<button type="button" class="btn btn-outline-secondary" onclick="commonCloseLayer('approvalUser')">완료</button>
+	        	</div>
+	        </div>
+	        <div class="container-fluid">
+		        <div class="row mb-2 bg-theme3">
+					<div class="col-1"></div>
+					<div class="col"><h6><strong>사번</strong></h6></div>
+					<div class="col"><h6><strong>성명</strong></h6></div>
+				</div>
+	        </div>
+	        <div class="container-fluid" id="userList"></div>
+	    </div>
+	</div>
+</div>
+</body>
+</html>

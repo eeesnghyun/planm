@@ -1,19 +1,132 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{index}">
 <head>
-    <title>title</title>    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Bootstrap 4.4.1 -->
-    <link rel="stylesheet" type="text/css" href="/plugins/bootsrap/bootstrap.css">
-	<script src="/plugins/bootsrap/bootstrap.min.js" type="text/javascript" defer></script>	
-	<script src="/plugins/bootsrap/bootstrap.bundle.js" type="text/javascript" defer></script>
-
-	<!-- Fontawesome 5 -->
-	<link rel="stylesheet" type="text/css" href="/plugins/bootsrap/all.min.css">
-</head>
-<body>
-Hello world    
-</body>
+</head>      
+<th:block layout:fragment="content-area">
+	<div class="container-fluid">
+		<div class="row border-bottom">
+			<div class="col-12">
+				<div class="float-left">
+					<h4><strong>홍길동</strong>님의 전자결재</h4>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row">
+			<div class="col-12">
+				<table class="table table-borderless">
+				  	<colgroup>
+			   			<col width="100">
+			   			<col width="">
+			   		</colgroup>
+					<tr>
+						<th>기안</th>
+						<th>
+							<a href="/approval/doc">
+								<button type="button" class="btn btn-outline-secondary">문서작성</button>
+							</a>
+						</th>
+					</tr>
+					<tr>
+						<th>기간</th>
+						<td>
+							<div class="form-inline">
+								<div class="input-group" data-ax5picker="basic" style="width: 155px;">
+						            <input type="text" class="form-control" id="startday" data-format="date" placeholder="yyyy-mm-dd">										            
+						        </div>
+						        <div class="input-group" data-ax5picker="basic" style="width: 155px;">
+						            <input type="text" class="form-control" id="endday" data-format="date" placeholder="yyyy-mm-dd">										            
+						        </div>
+						    </div>
+						</td>
+					</tr>
+					<tr>
+						<th>결재상태</th>
+						<td>
+							<select class="form-control w100" id="docstatus">
+								<option value="ALL">전체</option>
+								<option value="0">결재완료</option>
+								<option value="1">결재대기</option>
+								<option value="2">반려</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>문서조회</th>
+						<td>
+							<ul class="list-group list-group-horizontal" id="docList">
+							  <li class="list-group-item"><a href="javascript:getDocList('MYDOC');" class="a-basic">내문서함</a></li>
+							  <li class="list-group-item"><a href="javascript:getDocList('SIGNDOC');" class="a-basic">결재문서</a></li>
+							  <li class="list-group-item"><a href="javascript:getDocList('ALL');" class="a-basic">문서현황</a></li>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div id="approvalSpace">
+		<div class="container-fluid">
+			<div class="row mb-2 bg-theme3">
+				<div class="col-2"><h6><strong>문서번호</strong></h6></div>
+				<div class="col-2"><h6><strong>유형</strong></h6></div>
+				<div class="col-2"><h6><strong>작성자</strong></h6></div>
+				<div class="col-2"><h6><strong>신청일</strong></h6></div>
+				<div class="col-2"><h6><strong>결재일</strong></h6></div>
+				<div class="col-2"><h6><strong>결재상태</strong></h6></div>
+			</div>
+		</div>
+	
+		<div class="container-fluid" id="docListSpace"></div>					
+	</div>
+	
+	<script>
+		const getDocList = function() {
+			/*
+			 * 문서 조회 구분 - MYDOC:내문서함, SIGNDOC:결재문서
+			 * 결재 상태 구분 - W:결재대기, S:결재완료, R:반려
+			 */
+			const docgubun  = "MY";
+			const docstatus = $("#docstatus option:selected").val();
+			/* const params = {
+					startday  : $("#startday").val(),
+					endday    : $("#endday").val(),
+					docgubun  : docgubun,
+					docstatus : docstatus
+			};
+		 */
+			//var data = commonCallAjax("/approval/getDocList.ajax", params);
+		
+			if (200 == 200) {
+				//var resultList = data.resultList;
+			   	var docHtml = "";
+				var resultList = [
+					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},	
+					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
+					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
+					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
+					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"}
+				];
+			   	for (let i = 0; i < resultList.length; i++) {
+			   		docHtml += "<div class='row mt-2 pb-1 border-bottom' onclick=\"getDocInfo('" + resultList[i].docno + "','" + docgubun + "')\">";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docno + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docname + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].username + " (" + resultList[i].usercd + ")</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].requestymd + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].signymd + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docstatus + "</div>";
+				   	docHtml += "</div>";
+			    }
+		
+			   	$("#docListSpace").empty();
+			   	$("#docListSpace").append(docHtml);
+			}
+		};
+	</script>
+</th:block>
 </html>

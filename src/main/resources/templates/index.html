@@ -1,259 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ko"
+	 xmlns:th="http://www.thymeleaf.org"
+	 xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>PLAN-M : 일정관리의 모든 것</title>    
+    <title>PLAN-M : 일정관리의 모든 것</title> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- jquery 3.6 -->
-	<script th:src="@{/plugins/jquery/jquery-3.6.0.min.js}"></script>
-	<!-- jquery UI -->
-	<script th:src="@{/plugins/jquery/jquery-ui/jquery-ui.js}"></script>
-	<link th:href="@{/plugins/jquery/jquery-ui/jquery-ui.css}" rel="stylesheet">
-
-    <!-- Bootstrap 4.4.1 -->
-    <link rel="stylesheet" type="text/css" th:href="@{/plugins/bootstrap/bootstrap.css}">
-	<script th:src="@{/plugins/bootstrap/bootstrap.min.js}" type="text/javascript"></script>	
-	<script th:src="@{/plugins/bootstrap/bootstrap.bundle.js}" type="text/javascript"></script>
-
-	<!-- Fontawesome 5 -->
-	<link rel="stylesheet" type="text/css" th:href="@{/plugins/bootstrap/all.min.css}">
-	
-	<!-- Common -->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">	
-	<script th:src="@{/js/common.js}" type="text/javascript" defer></script>
+        
+    <!-- header area -->
+	<th:block th:replace="include/common::common-area"></th:block>	
 </head>
 <body class="d-flex flex-column h-100" style="overflow: hidden">
-<form id="frm" action="/logout" method="POST">
-	<header>
-		<div id="header">						
-			<div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-white border-bottom" style="padding: 8px">
-				<h5 class="my-0 mr-md-auto font-weight-normal">
-					<a href="/main"><img class="thumb-logo" th:src="@{/images/logo.png}" /></a>｜<strong>회사명</strong>｜					
-					<span class="badge badge-primary text-wrap">홍길동</span> <font size="-1">님 반갑습니다.</font>
-				</h5>
-
-				<nav class="my-2 my-md-0 mr-md-3">
-					<a href="javascript:showUserInfo();"><img class="w32-h32" th:src="@{/images/usericon.png}" id="usericon"></a>
-					<a href="javascript:frm.submit();"><img class="w18-h18" th:src="@{/images/logout.png}"></a>
-				</nav>
-			</div>
-		</div>
-	</header>
-
-	<main role="main" class="flex-shrink-0">
+	<!-- header area -->
+	<header th:replace="include/header::header-area"></header>
+	
+	<section role="main" class="flex-shrink-0">
 		<div class="container-fluid">
-			<div class="row" id="content">
+			<div class="row m-auto" id="content">
 				<div class="col-2" id="left">
-					<div class="container-fluid">
-						<ul class="nav justify-content-left" style="min-width: 280px;">							
-							<!-- 메뉴 -->
-							<li class="nav-item">
-								<a href="#">
-									<button type="button" class="btn-img" style="width: 120px">
-										<img th:src="@{images/approval.png}" class="w64-h64">
-				
-										<div class="menu-div">
-											<h5><strong>전자결재</strong></h5>
-										</div>
-									</button>
-								</a>
-							</li>						
-						</ul>
-					</div>
+					<!-- menu area -->
+					<th:block th:replace="include/left::left-area"></th:block>	
 				</div>
 
 				<div class="col-10" id="body">
-					<div class="container-fluid">
-						<div class="row border-bottom">
-							<div class="col-12">
-								<div class="float-left">
-									<h4><strong>홍길동</strong>님의 전자결재</h4>
-								</div>
-							</div>
-						</div>
-					
-						<div class="row">
-							<div class="col-12">
-								<table class="table table-borderless">
-								  	<colgroup>
-							   			<col width="100">
-							   			<col width="">
-							   		</colgroup>
-									<tr>
-										<th>기안</th>
-										<th>
-											<a href="/approval/doc">
-												<button type="button" class="btn btn-outline-secondary">문서작성</button>
-											</a>
-										</th>
-									</tr>
-									<tr>
-										<th>기간</th>
-										<td>
-											<div class="form-inline">
-												<div class="input-group" data-ax5picker="basic" style="width: 155px;">
-										            <input type="text" class="form-control" id="startday" data-format="date" placeholder="yyyy-mm-dd">										            
-										        </div>
-										        <div class="input-group" data-ax5picker="basic" style="width: 155px;">
-										            <input type="text" class="form-control" id="endday" data-format="date" placeholder="yyyy-mm-dd">										            
-										        </div>
-										    </div>
-										</td>
-									</tr>
-									<tr>
-										<th>결재상태</th>
-										<td>
-											<select class="form-control w100" id="docstatus">
-												<option value="ALL">전체</option>
-												<option value="0">결재완료</option>
-												<option value="1">결재대기</option>
-												<option value="2">반려</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<th>문서조회</th>
-										<td>
-											<ul class="list-group list-group-horizontal" id="docList">
-											  <li class="list-group-item"><a href="javascript:getDocList('MYDOC');" class="a-basic">내문서함</a></li>
-											  <li class="list-group-item"><a href="javascript:getDocList('SIGNDOC');" class="a-basic">결재문서</a></li>
-											  <li class="list-group-item"><a href="javascript:getDocList('ALL');" class="a-basic">문서현황</a></li>
-											</ul>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					
-					<div id="approvalSpace">
-						<div class="container-fluid">
-							<div class="row mb-2 bg-theme3">
-								<div class="col-2"><h6><strong>문서번호</strong></h6></div>
-								<div class="col-2"><h6><strong>유형</strong></h6></div>
-								<div class="col-2"><h6><strong>작성자</strong></h6></div>
-								<div class="col-2"><h6><strong>신청일</strong></h6></div>
-								<div class="col-2"><h6><strong>결재일</strong></h6></div>
-								<div class="col-2"><h6><strong>결재상태</strong></h6></div>
-							</div>
-						</div>
-					
-						<div class="container-fluid" id="docListSpace"></div>					
-					</div>
-					
-					<!-- 레이어 팝업 : 결재 문서(공통) -->
-					<div class="layer-sign" id="signLayer">
-						<div class="card border-theme" style="width: 800px">
-							<div class="card-header">
-						    	<div class="float-left">
-						    		문서결재
-						    	</div>
-						    	<div class="float-right">
-						    		<button type="button" class="btn-img" onclick="commonCloseLayer('signLayer')"><img src="/resources/images/close.png" class="w10-h10"></button>
-						    	</div>
-						  	</div>
-						  	<div class="card-body" id="card-content" style="height: 500px; overflow: auto">
-								<!-- 결재 문서 영역 -->
-								<div class="mt-2" id="signSpace"></div>
-						  	</div>
-						</div>
-					</div>
+					<!-- content area -->
+					<th:block layout:fragment="content-area"></th:block>		
 				</div>
 			</div>
 		</div>
-	</main>
-
-	<footer class="footer mt-auto py-2 border-top text-center">
-		<div id="footer">
-			<div class="container">				
-				<p class="mb-1">ⓒplanm.corp</p>
-				<ul class="list-inline">
-			     	<li class="list-inline-item"><a href="#">CONTACT</a></li>
-			   </ul>
-			</div>
-	    </div>
-	</footer>
-</form>
-<script>
-const getWindowSize = function() {
-    let width = 0, height = 0;
-
-    if (typeof(window.innerWidth) == 'number') {
-    	width  = window.innerWidth;
-        height = window.innerHeight;
-    } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-        width  = document.documentElement.clientWidth;
-        height = document.documentElement.clientHeight;
-    } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
-        width  = document.body.clientWidth;
-        height = document.body.clientHeight;
-    }
-
-    return {width : width, height : height};
-};
-
-const getDocList = function() {
-	/*
-	 * 문서 조회 구분 - MYDOC:내문서함, SIGNDOC:결재문서
-	 * 결재 상태 구분 - W:결재대기, S:결재완료, R:반려
-	 */
-	const docgubun  = "MY";
-	const docstatus = $("#docstatus option:selected").val();
-	/* const params = {
-			startday  : $("#startday").val(),
-			endday    : $("#endday").val(),
-			docgubun  : docgubun,
-			docstatus : docstatus
-	};
- */
-	//var data = commonCallAjax("/approval/getDocList.ajax", params);
-
-	if (200 == 200) {
-		//var resultList = data.resultList;
-	   	var docHtml = "";
-		var resultList = [
-			{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},	
-			{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-			{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-			{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-			{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"}
-		];
-	   	for (let i = 0; i < resultList.length; i++) {
-	   		docHtml += "<div class='row mt-2 pb-1 border-bottom' onclick=\"getDocInfo('" + resultList[i].docno + "','" + docgubun + "')\">";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docno + "</div>";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docname + "</div>";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].username + " (" + resultList[i].usercd + ")</div>";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].requestymd + "</div>";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].signymd + "</div>";
-		   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docstatus + "</div>";
-		   	docHtml += "</div>";
-	    }
-
-	   	$("#docListSpace").empty();
-	   	$("#docListSpace").append(docHtml);
-	}
-};
-
-
-$(document).ready(function() {
-	var size = getWindowSize();	// 화면 사이즈 구하기
-	var tempHeight = $("header").outerHeight() + $("footer").height();
-	var contentHeight = size.height - tempHeight;
-
-	$("#content").height(contentHeight);
+	</section>	
 	
-	$(window).on({		
-		resize: function() {			// 화면의 크기가 변경될 때 content 높이를 조절한다.
-			size 	   = getWindowSize();
-			tempHeight = $("header").outerHeight() + $("footer").outerHeight();
-			contentHeight = size.height - tempHeight;
+	<!-- footer area -->
+	<footer th:replace="include/footer::footer-area"></footer>
+	
+	<script>
+		const getWindowSize = function() {
+		    let width = 0, height = 0;
+		
+		    if (typeof(window.innerWidth) == 'number') {
+		    	width  = window.innerWidth;
+		        height = window.innerHeight;
+		    } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+		        width  = document.documentElement.clientWidth;
+		        height = document.documentElement.clientHeight;
+		    } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+		        width  = document.body.clientWidth;
+		        height = document.body.clientHeight;
+		    }
+		
+		    return {width : width, height : height};
+		};			
+		
+		$(document).ready(function() {
+			var size = getWindowSize();	// 화면 사이즈 구하기
+			var tempHeight = $("header").outerHeight() + $("footer").height();
+			var contentHeight = size.height - tempHeight;
+		
 			$("#content").height(contentHeight);
-		}
-	});
-	
-	
-});
-</script>
+			
+			$(window).on({		
+				resize: function() {			// 화면의 크기가 변경될 때 content 높이를 조절한다.
+					size 	   = getWindowSize();
+					tempHeight = $("header").outerHeight() + $("footer").outerHeight();
+					contentHeight = size.height - tempHeight;
+					$("#content").height(contentHeight);
+				}
+			});
+		});
+	</script>	
 </body>
 </html>

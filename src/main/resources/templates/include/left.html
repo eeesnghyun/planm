@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="left-area">
+	<div class="container-fluid">
+		<ul class="nav justify-content-left" style="min-width: 280px;">							
+			<!-- 메뉴 -->
+			<li class="nav-item">	
+				<a href="/approval">							
+					<button type="button" class="btn-img" style="width: 120px">
+						<img th:src="@{images/approval.png}" class="w64-h64">
+		
+						<div class="menu-div">
+							<h5><strong>전자결재</strong></h5>
+						</div>
+					</button>								
+				</a>
+			</li>						
+		</ul>
+	</div>
+</th:block>
+</html>

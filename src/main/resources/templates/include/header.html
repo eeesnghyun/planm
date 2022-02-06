@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="UTF-8">
+</head>
+<th:block th:fragment="header-area">
+	<form id="frm" action="/logout" method="POST">
+		<header>
+			<div id="header">						
+				<div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-white border-bottom" style="padding: 8px">
+					<h5 class="my-0 mr-md-auto font-weight-normal">
+						<a href="/main"><img class="thumb-logo" th:src="@{/images/logo.png}" /></a>｜<strong>회사명</strong>｜					
+						<span class="badge badge-primary text-wrap">홍길동</span> <font size="-1">님 반갑습니다.</font>
+					</h5>
+	
+					<nav class="my-2 my-md-0 mr-md-3">
+						<a href="javascript:showUserInfo();"><img class="w32-h32" th:src="@{/images/usericon.png}" id="usericon"></a>
+						<a href="javascript:frm.submit();"><img class="w18-h18" th:src="@{/images/logout.png}"></a>
+					</nav>
+				</div>
+			</div>
+		</header>
+	</form>
+</th:block>
+</html>
