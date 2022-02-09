@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.app.planm.document.dao.DocumentDao">
+
+	<select id="getDocumentList" resultType="com.app.planm.document.vo.DocumentDTO">
+		SELECT *
+		  FROM PM_DOC
+		 WHERE CMPCD = 'P001' 
+	</select>
+</mapper>
