@@ -19,11 +19,10 @@ public class DocumentController {
 	private DocumentService documentService;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String home(Model model) throws Exception {
-		
+	public String document(Model model) throws Exception {		
 		List<DocumentVO> resultList = documentService.getDocumentList();		
 		
-		model.addAttribute("result", resultList);
+		model.addAttribute("resultList", resultList);
 		
 		return "document/index";
 	}

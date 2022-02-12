@@ -26,11 +26,9 @@ const commonCallAjax = function(url, params) {
 	    },
         success: function(data) {
         	returnData = data;
-        	returnData.status = 200;
         },
 		error : function(request, status, error) {
-			//alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
-			returnData.status = 400;
+			//alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);			
 		}
 	});
 
