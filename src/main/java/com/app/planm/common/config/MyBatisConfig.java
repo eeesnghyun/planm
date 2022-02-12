@@ -6,15 +6,15 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.app.planm")
+@MapperScan(basePackages = "com.app.planm.**.dao")
 public class MyBatisConfig {
 
 	@Value("${spring.datasource.driver-class-name}")
@@ -40,15 +40,14 @@ public class MyBatisConfig {
 		return dataSource;
 	}
 	
-	@Autowired
-    ApplicationContext applicationContext;
-
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+    	SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath*:mapper/**/*Mapper.xml"));
-        
+        Resource[] arrResource = new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mapper/**/*Mapper.xml");
+        sqlSessionFactoryBean.setMapperLocations(arrResource);
+        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
         return sqlSessionFactoryBean.getObject();
     }
     

@@ -2,9 +2,10 @@ package com.app.planm.document.service;
 
 import java.util.List;
 
-import com.app.planm.document.vo.DocumentDTO;
+import com.app.planm.document.vo.DocumentVO;
 
 public interface DocumentService {
 
-	public List<DocumentDTO> getDocumentList() throws Exception;
+	public List<DocumentVO> getDocumentList() throws Exception;
+	
 }

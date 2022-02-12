@@ -2,9 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.app.planm.document.dao.DocumentDao">
 
-	<select id="getDocumentList" resultType="com.app.planm.document.vo.DocumentDTO">
-		SELECT *
-		  FROM PM_DOC
-		 WHERE CMPCD = 'P001' 
+	<select id="getDocumentList" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT CMP_CODE
+			 , DOC_NO
+			 , USER_CODE
+			 , DOC_TYPE
+			 , DOC_STATUS
+			 , REQUEST_YMD
+			 , SIGN_YMD
+			 , RETURN_CAUSE
+		  FROM PM_DOCUMENT
 	</select>
 </mapper>
