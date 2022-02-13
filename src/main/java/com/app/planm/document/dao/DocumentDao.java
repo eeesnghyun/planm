@@ -8,5 +8,7 @@ import com.app.planm.document.vo.DocumentVO;
 public interface DocumentDao {
 
 	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception;
+	public List<DocumentVO> getDocumentSignList(DocumentDTO documentDTO) throws Exception;
+	public List<DocumentVO> getDocumentAllList(DocumentDTO documentDTO) throws Exception;
 	
 }

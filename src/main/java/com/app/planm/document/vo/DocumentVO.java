@@ -1,12 +1,15 @@
 package com.app.planm.document.vo;
 
+import com.app.planm.user.vo.UserVO;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class DocumentVO {
+@EqualsAndHashCode(callSuper=false)
+public class DocumentVO extends UserVO {
 
 	private String docNo;
-	private String userCode;
 	private String docType;
 	private String docStatus;
 	private String requestYmd;

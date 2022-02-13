@@ -9,6 +9,19 @@
     	.click {
     		background-color: #ff7062!important;
     	}
+    	.list-group-horizontal li:hover {
+    		cursor: pointer;
+    	}
+    	    	
+    	#docListSpace div {
+			cursor: pointer;
+			line-height: 2.2;
+		}		
+		#docListSpace div:hover {
+			background-color: #ebebfc;
+		    color: #32324e;
+		    font-weight: bold;
+		}						
     </style>
 </head>      
 <th:block layout:fragment="content-area">
@@ -37,9 +50,15 @@
 						</th>
 					</tr>
 					<tr>
-						<th>기간</th>
-						<td>
+						<th>조회기간</th>
+						<td>							
 							<div class="form-inline">
+								<select class="form-control w100 mr-2" id="viewType">
+									<option value="all">전체</option>
+									<option value="request">신청일</option>
+									<option value="sign">결재일</option>
+								</select>
+								
 								<div class="input-group" style="width: 100px;">
 						            <input type="text" class="form-control" id="startday" name="formDatePicker" placeholder="yyyy-mm-dd">										            
 						        </div>~
@@ -53,7 +72,7 @@
 						<th>결재상태</th>
 						<td>
 							<select class="form-control w100" id="docStatus">
-								<option value="ALL">전체</option>
+								<option value="all">전체</option>
 								<option value="0001">결재대기</option>
 								<option value="0002">결재완료</option>								
 								<option value="0003">반려</option>
@@ -64,9 +83,9 @@
 						<th>문서조회</th>
 						<td>
 							<ul class="list-group list-group-horizontal">
-							  <li class="list-group-item" data-type="my"><a href="javascript:getDocList();" class="a-basic">내문서함</a></li>
-							  <li class="list-group-item" data-type="sign"><a href="javascript:getDocList();" class="a-basic">결재문서</a></li>
-							  <li class="list-group-item" data-type="all"><a href="javascript:getDocList();" class="a-basic">문서현황</a></li>
+							  <li class="list-group-item a-basic" data-type="my">내문서함</li>
+							  <li class="list-group-item a-basic" data-type="sign">결재문서</li>
+							  <li class="list-group-item a-basic" data-type="all">문서현황</li>
 							</ul>
 						</td>
 					</tr>
@@ -76,7 +95,7 @@
 	</div>
 		
 	<div class="container-fluid">
-		<div class="row mb-2 bg-theme3">
+		<div class="row bg-theme3">
 			<div class="col-2"><h6><strong>문서번호</strong></h6></div>
 			<div class="col-2"><h6><strong>유형</strong></h6></div>
 			<div class="col-2"><h6><strong>작성자</strong></h6></div>
@@ -87,27 +106,28 @@
 	</div>
 
 	<div class="container-fluid" id="docListSpace" th:each="doc : ${resultList}">	   		
-   		<div class='row mt-2 pb-1 border-bottom' onclick="getDocInfo()">
-	   		<div class='col-2 text-center'><span th:text="${doc.docNo}"></span></div>	   	
-	   		<div class='col-2 text-center'><span th:text="${doc.docType}"></span></div>
-	   		<div class='col-2 text-center'><span th:text="${doc.userCode}"></span></div>
-	   		<div class='col-2 text-center'><span th:text="${doc.requestYmd}"></span></div>
-	   		<div class='col-2 text-center'><span th:text="${doc.signYmd}"></span></div>
-	   		<div class='col-2 text-center'><span th:text="${doc.docStatus}"></span></div>
+   		<div class="row border-bottom" onclick="getDocInfo()">
+	   		<div class="col-2 text-center"><span th:text="${doc.docNo}"></span></div>	   	
+	   		<div class="col-2 text-center"><span th:text="${doc.docType}"></span></div>
+	   		<div class="col-2 text-center"><span th:text="${doc.userCode}"></span></div>
+	   		<div class="col-2 text-center"><span th:text="${doc.requestYmd}"></span></div>
+	   		<div class="col-2 text-center"><span th:text="${doc.signYmd}"></span></div>
+	   		<div class="col-2 text-center"><span th:text="${doc.docStatus}"></span></div>
 	   	</div>
 	</div>
 	
 	<script>
 		const getDocList = function() {
-			const docStatus = $("#docstatus option:selected").val();
+			const docStatus = $("#docStatus option:selected").val();
 			let viewType = "";
 			$(".list-group-item").each(function(index, item){ 
 				if ($(this).hasClass("click")) { 					
-					viewType = this.data("type");
+					viewType = $(this).data("type");
 				} 
 			});
 			
 			const params = {
+				"viewType"	: $("#viewType").val(),
 				"startday"  : $("#startday").val(),
 				"endday"    : $("#endday").val(),
 				"docStatus" : docStatus,
@@ -116,18 +136,18 @@
 			
 			const data = commonCallAjax("/document/getDocList", params);
 		
-			if (200 == 200) {
-				var resultList = data.resultList;
-			   	var docHtml = "";
+			if (data.code == "ok") {
+				const resultList = data.resultList;
+			   	let docHtml = "";
 
 			   	for (let i = 0; i < resultList.length; i++) {
-			   		docHtml += "<div class='row mt-2 pb-1 border-bottom' onclick=\"getDocInfo('" + resultList[i].docno + "','" + docgubun + "')\">";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docno + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docname + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].username + " (" + resultList[i].usercd + ")</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].requestymd + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].signymd + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docstatus + "</div>";
+			   		docHtml += "<div class='row border-bottom'>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docNo + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docType + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].userName + " (" + resultList[i].userCode + ")</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].requestYmd + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].signYmd + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docStatus + "</div>";
 				   	docHtml += "</div>";
 			    }
 		
@@ -151,9 +171,9 @@
 				$(this).on("click", function(event){
 					$(".list-group-item").removeClass("click");
 					$(this).addClass("click");
+					getDocList();
 				});
-			});
-			
+			});			
 		});
 	</script>
 </th:block>

@@ -221,10 +221,6 @@ fieldset:disabled a.btn-img {
   pointer-events: none;
 }
 
-#docListSpace div {
-	cursor: pointer;
-}
-
 .fileUpload {
     line-height: 1.6;
     position: relative;

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.planm.document.service.DocumentService;
 import com.app.planm.document.vo.DocumentDTO;
@@ -28,6 +29,8 @@ public class DocumentController {
 	public String document(Model model) throws Exception {
 		DocumentDTO documentDTO = new DocumentDTO();
 		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("lsh");
+		documentDTO.setDocStatus("all");
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
 		
@@ -37,12 +40,16 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/getDocList", method = RequestMethod.POST)
-	public Map<String, Object> getDocList(HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
+	public @ResponseBody Map<String, Object> getDocList(HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("lsh");
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
+		
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
 		
 		return resultMap;
 	}

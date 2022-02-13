@@ -18,7 +18,15 @@ public class DocumentServiceImpl implements DocumentService {
 	
 	@Override
 	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception {		
-		return documentDao.getDocumentList(documentDTO);
+		String gubun = documentDTO.getGubun();
+		
+		if ("sign".equals(gubun)) {
+			return documentDao.getDocumentSignList(documentDTO);
+		} else if ("all".equals(gubun)) {
+			return documentDao.getDocumentAllList(documentDTO);
+		} else {
+			return documentDao.getDocumentList(documentDTO);
+		}		
 	}
 
 }

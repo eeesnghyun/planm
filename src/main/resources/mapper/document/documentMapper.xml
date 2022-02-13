@@ -6,14 +6,101 @@
 		SELECT CMP_CODE
 			 , DOC_NO
 			 , USER_CODE
+			 , 'lsh' USER_NAME
 			 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CODE_VALUE=DOC_TYPE) DOC_TYPE
 			 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CODE_VALUE=DOC_STATUS) DOC_STATUS			 
 			 , DATE_FORMAT(REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD
 			 , DATE_FORMAT(SIGN_YMD,'%Y-%m-%d') SIGN_YMD
-			 , RETURN_CAUSE
 		  FROM PM_DOCUMENT
-		 WHERE CMP_CODE = #{cmpCode}
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND USER_CODE = #{userCode}
+		<if test="docStatus != 'all'">
+			AND DOC_STATUS = #{docStatus}
+	   	</if>
+	   	<if test="viewType == 'request'">
+	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	<if test="viewType == 'sign'">
+	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	ORDER BY DOC_NO DESC
 	</select>
 	
+	<select id="getDocumentSignList" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT PS.CMP_CODE
+			 , PS.DOC_NO
+			 , PS.USER_CODE
+			 , 'lsh' USER_NAME
+			 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CODE_VALUE=PD.DOC_TYPE) DOC_TYPE
+			 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CODE_VALUE=PD.DOC_STATUS) DOC_STATUS			 			 
+			 , DATE_FORMAT(PD.REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD
+			 , DATE_FORMAT(PD.SIGN_YMD,'%Y-%m-%d') SIGN_YMD			 
+		  FROM PM_DOCUMENT_SIGN PS
+		  	   LEFT OUTER JOIN PM_DOCUMENT PD 
+		  	     ON PS.CMP_CODE = PD.CMP_CODE
+		  	    AND PS.DOC_NO   = PD.DOC_NO
+		 WHERE PS.CMP_CODE  = #{cmpCode}
+		   AND PS.SIGN_USER = #{userCode}
+		<if test="docStatus != 'all'">
+			AND PS.DOC_STATUS = #{docStatus}
+	   	</if>
+	   	<if test="viewType == 'request'">
+	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	<if test="viewType == 'sign'">
+	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	ORDER BY PS.DOC_NO DESC
+	</select>
+	
+	<select id="getDocumentAllList" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT X.CMP_CODE
+			 , X.DOC_NO
+			 , X.USER_CODE
+			 , X.USER_NAME
+			 , X.DOC_TYPE
+			 , X.DOC_STATUS			 
+			 , X.REQUEST_YMD
+			 , X.SIGN_YMD
+		  FROM (
+				SELECT CMP_CODE
+					 , DOC_NO
+					 , USER_CODE
+					 , 'lsh' USER_NAME
+					 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CODE_VALUE=DOC_TYPE) DOC_TYPE
+					 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CODE_VALUE=DOC_STATUS) DOC_STATUS			 
+					 , DATE_FORMAT(REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD
+					 , DATE_FORMAT(SIGN_YMD,'%Y-%m-%d') SIGN_YMD
+				  FROM PM_DOCUMENT       
+				 WHERE CMP_CODE  = #{cmpCode}
+				   AND USER_CODE = #{userCode}		
+				 UNION ALL
+				SELECT PS.CMP_CODE
+					 , PS.DOC_NO
+					 , PS.USER_CODE
+					 , 'test1' USER_NAME
+					 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CODE_VALUE=PD.DOC_TYPE) DOC_TYPE
+					 , (SELECT CODE_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CODE_VALUE=PD.DOC_STATUS) DOC_STATUS			 			 
+					 , DATE_FORMAT(PD.REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD			 
+					 , DATE_FORMAT(PS.SIGN_YMD,'%Y-%m-%d') SIGN_YMD			 
+				  FROM PM_DOCUMENT_SIGN PS
+					   LEFT OUTER JOIN PM_DOCUMENT PD 
+						 ON PS.CMP_CODE = PD.CMP_CODE
+						AND PS.DOC_NO   = PD.DOC_NO
+				 WHERE PS.CMP_CODE  = #{cmpCode}
+				   AND PS.SIGN_USER = #{userCode}
+				) X
+		WHERE 1=1	
+		<if test="docStatus != 'all'">
+			AND X.DOC_STATUS = #{docStatus}
+	   	</if>
+	   	<if test="viewType == 'request'">
+	   		AND DATE_FORMAT(X.REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	<if test="viewType == 'sign'">
+	   		AND DATE_FORMAT(X.SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   	</if>
+	   	ORDER BY X.DOC_NO DESC
+	</select>
 	
 </mapper>
