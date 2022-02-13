@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.planm.document.dao.DocumentDao;
 import com.app.planm.document.service.DocumentService;
+import com.app.planm.document.vo.DocumentDTO;
 import com.app.planm.document.vo.DocumentVO;
 
 @Service
@@ -16,8 +17,8 @@ public class DocumentServiceImpl implements DocumentService {
 	private DocumentDao documentDao;
 	
 	@Override
-	public List<DocumentVO> getDocumentList() throws Exception {		
-		return documentDao.getDocumentList();
+	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception {		
+		return documentDao.getDocumentList(documentDTO);
 	}
 
 }

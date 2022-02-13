@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class DocumentVO {
 
-	private String cmpCode;
 	private String docNo;
 	private String userCode;
 	private String docType;

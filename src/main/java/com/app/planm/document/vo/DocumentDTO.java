@@ -1,19 +1,18 @@
 package com.app.planm.document.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class DocumentDTO {
 
-	private int docno;
-	private String doctype;
-	private String usercd;
+	private String cmpCode;
+	private String docNo;
+	private String userCode;	
+	private String docType;
 	private String requestymd;
-	private String docstatus;
-	private String signymd;
-	private String returncause;
-	
+	private String docStatus;	
+	private String startday;
+	private String endday;
+	private String gubun;
 	
 }

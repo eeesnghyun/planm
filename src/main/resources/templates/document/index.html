@@ -5,6 +5,11 @@
       layout:decorate="~{index}">
 <head>
     <meta charset="UTF-8">
+    <style>
+    	.click {
+    		background-color: #ff7062!important;
+    	}
+    </style>
 </head>      
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
@@ -35,11 +40,11 @@
 						<th>기간</th>
 						<td>
 							<div class="form-inline">
-								<div class="input-group" style="width: 155px;">
-						            <input type="text" class="form-control" id="startday" placeholder="yyyy-mm-dd">										            
-						        </div>
-						        <div class="input-group" style="width: 155px;">
-						            <input type="text" class="form-control" id="endday" placeholder="yyyy-mm-dd">										            
+								<div class="input-group" style="width: 100px;">
+						            <input type="text" class="form-control" id="startday" name="formDatePicker" placeholder="yyyy-mm-dd">										            
+						        </div>~
+						        <div class="input-group" style="width: 100px;">
+						            <input type="text" class="form-control" id="endday" name="formDatePicker" placeholder="yyyy-mm-dd">										            
 						        </div>
 						    </div>
 						</td>
@@ -47,21 +52,21 @@
 					<tr>
 						<th>결재상태</th>
 						<td>
-							<select class="form-control w100" id="docstatus">
+							<select class="form-control w100" id="docStatus">
 								<option value="ALL">전체</option>
-								<option value="0">결재완료</option>
-								<option value="1">결재대기</option>
-								<option value="2">반려</option>
+								<option value="0001">결재대기</option>
+								<option value="0002">결재완료</option>								
+								<option value="0003">반려</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<th>문서조회</th>
 						<td>
-							<ul class="list-group list-group-horizontal" id="docList">
-							  <li class="list-group-item"><a href="javascript:getDocList('MYDOC');" class="a-basic">내문서함</a></li>
-							  <li class="list-group-item"><a href="javascript:getDocList('SIGNDOC');" class="a-basic">결재문서</a></li>
-							  <li class="list-group-item"><a href="javascript:getDocList('ALL');" class="a-basic">문서현황</a></li>
+							<ul class="list-group list-group-horizontal">
+							  <li class="list-group-item" data-type="my"><a href="javascript:getDocList();" class="a-basic">내문서함</a></li>
+							  <li class="list-group-item" data-type="sign"><a href="javascript:getDocList();" class="a-basic">결재문서</a></li>
+							  <li class="list-group-item" data-type="all"><a href="javascript:getDocList();" class="a-basic">문서현황</a></li>
 							</ul>
 						</td>
 					</tr>
@@ -69,58 +74,52 @@
 			</div>
 		</div>
 	</div>
-	
-	<div id="approvalSpace">
-		<div class="container-fluid">
-			<div class="row mb-2 bg-theme3">
-				<div class="col-2"><h6><strong>문서번호</strong></h6></div>
-				<div class="col-2"><h6><strong>유형</strong></h6></div>
-				<div class="col-2"><h6><strong>작성자</strong></h6></div>
-				<div class="col-2"><h6><strong>신청일</strong></h6></div>
-				<div class="col-2"><h6><strong>결재일</strong></h6></div>
-				<div class="col-2"><h6><strong>결재상태</strong></h6></div>
-			</div>
+		
+	<div class="container-fluid">
+		<div class="row mb-2 bg-theme3">
+			<div class="col-2"><h6><strong>문서번호</strong></h6></div>
+			<div class="col-2"><h6><strong>유형</strong></h6></div>
+			<div class="col-2"><h6><strong>작성자</strong></h6></div>
+			<div class="col-2"><h6><strong>신청일</strong></h6></div>
+			<div class="col-2"><h6><strong>결재일</strong></h6></div>
+			<div class="col-2"><h6><strong>결재상태</strong></h6></div>
 		</div>
-	
-		<div class="container-fluid" id="docListSpace" th:each="doc : ${resultList}">	   		
-	   		<div class='row mt-2 pb-1 border-bottom' onclick="getDocInfo()">
-		   		<div class='col-2 text-center'><span th:text="${doc.docNo}"></span></div>	   	
-		   		<div class='col-2 text-center'><span th:text="${doc.docType}"></span></div>
-		   		<div class='col-2 text-center'><span th:text="${doc.userCode}"></span></div>
-		   		<div class='col-2 text-center'><span th:text="${doc.requestYmd}"></span></div>
-		   		<div class='col-2 text-center'><span th:text="${doc.signYmd}"></span></div>
-		   		<div class='col-2 text-center'><span th:text="${doc.docStatus}"></span></div>
-		   	</div>
-		</div>					
+	</div>
+
+	<div class="container-fluid" id="docListSpace" th:each="doc : ${resultList}">	   		
+   		<div class='row mt-2 pb-1 border-bottom' onclick="getDocInfo()">
+	   		<div class='col-2 text-center'><span th:text="${doc.docNo}"></span></div>	   	
+	   		<div class='col-2 text-center'><span th:text="${doc.docType}"></span></div>
+	   		<div class='col-2 text-center'><span th:text="${doc.userCode}"></span></div>
+	   		<div class='col-2 text-center'><span th:text="${doc.requestYmd}"></span></div>
+	   		<div class='col-2 text-center'><span th:text="${doc.signYmd}"></span></div>
+	   		<div class='col-2 text-center'><span th:text="${doc.docStatus}"></span></div>
+	   	</div>
 	</div>
 	
 	<script>
 		const getDocList = function() {
-			/*
-			 * 문서 조회 구분 - MYDOC:내문서함, SIGNDOC:결재문서
-			 * 결재 상태 구분 - W:결재대기, S:결재완료, R:반려
-			 */
-			const docgubun  = "MY";
-			const docstatus = $("#docstatus option:selected").val();
-			/* const params = {
-					startday  : $("#startday").val(),
-					endday    : $("#endday").val(),
-					docgubun  : docgubun,
-					docstatus : docstatus
+			const docStatus = $("#docstatus option:selected").val();
+			let viewType = "";
+			$(".list-group-item").each(function(index, item){ 
+				if ($(this).hasClass("click")) { 					
+					viewType = this.data("type");
+				} 
+			});
+			
+			const params = {
+				"startday"  : $("#startday").val(),
+				"endday"    : $("#endday").val(),
+				"docStatus" : docStatus,
+				"gubun" 	: viewType
 			};
-		 */
-			//var data = commonCallAjax("/approval/getDocList.ajax", params);
+			
+			const data = commonCallAjax("/document/getDocList", params);
 		
 			if (200 == 200) {
-				//var resultList = data.resultList;
+				var resultList = data.resultList;
 			   	var docHtml = "";
-				var resultList = [
-					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},	
-					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"},
-					{"docno" : 1, "docname" : "홍길동", "username" : "로그인", "usercd" : "001", "requestymd" : "2022-02-03", "signymd" : "", "docstatus" : "Y"}
-				];
+
 			   	for (let i = 0; i < resultList.length; i++) {
 			   		docHtml += "<div class='row mt-2 pb-1 border-bottom' onclick=\"getDocInfo('" + resultList[i].docno + "','" + docgubun + "')\">";
 				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docno + "</div>";
@@ -137,36 +136,25 @@
 			}
 		};
 		
-		/* $('.input-daterange input').each(function() {
-		    $(this).datepicker('clearDates');
-		}); */
-		$(function() {	
-			$('#startday').datepicker({
-			    format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-			    startDate: '-10d',	//달력에서 선택 할 수 있는 가장 빠른 날짜. 이전으로는 선택 불가능 ( d : 일 m : 달 y : 년 w : 주)
-			    endDate: '+10d',	//달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-			    autoclose : true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-			    calendarWeeks : false, //캘린더 옆에 몇 주차인지 보여주는 옵션 기본값 false 보여주려면 true
-			    clearBtn : false, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-			    datesDisabled : ['2019-06-24','2019-06-26'],//선택 불가능한 일 설정 하는 배열 위에 있는 format 과 형식이 같아야함.
-			    daysOfWeekDisabled : [0,6],	//선택 불가능한 요일 설정 0 : 일요일 ~ 6 : 토요일
-			    daysOfWeekHighlighted : [3], //강조 되어야 하는 요일 설정
-			    disableTouchKeyboard : false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-			    immediateUpdates: false,	//사용자가 보는 화면으로 바로바로 날짜를 변경할지 여부 기본값 :false 
-			    multidate : false, //여러 날짜 선택할 수 있게 하는 옵션 기본값 :false 
-			    multidateSeparator :",", //여러 날짜를 선택했을 때 사이에 나타나는 글짜 2019-05-01,2019-06-01
-			    templates : {
-			        leftArrow: '&laquo;',
-			        rightArrow: '&raquo;'
-			    }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징 
-			    showWeekDays : true ,// 위에 요일 보여주는 옵션 기본값 : true
-			    todayHighlight : true ,	//오늘 날짜에 하이라이팅 기능 기본값 :false 
-			    toggleActive : true,	//이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-			    weekStart : 0 ,//달력 시작 요일 선택하는 것 기본값은 0인 일요일 
-			    language : "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-			    
-			});//datepicker end
-		});//ready end
+		$(function() {			
+			$("input[name=formDatePicker]").each(function(index, item){
+				$("#" + item.id).datepicker(commonDatePickerOpt);
+		    });
+			
+			//날짜 셋팅
+			const today = commonGetToday();
+			const beforeMonth = commonDateCalcurator(today, -1, "mm");
+			$("#startday").val(beforeMonth);
+			$("#endday").val(today);
+			
+			$(".list-group-item").each(function(index, item){
+				$(this).on("click", function(event){
+					$(".list-group-item").removeClass("click");
+					$(this).addClass("click");
+				});
+			});
+			
+		});
 	</script>
 </th:block>
 </html>
