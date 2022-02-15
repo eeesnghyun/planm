@@ -51,7 +51,7 @@ const commonDatePickerOpt = {
     templates : {
         leftArrow: '&laquo;',
         rightArrow: '&raquo;'
-    }, 								//다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징 
+    }, 								//다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징    
     showWeekDays : true,			//요일 표시 여부
     todayHighlight : true ,			//오늘 날짜 하이라이팅 여부 
     weekStart : 0 ,					//달력 시작 요일(0:일요일) 

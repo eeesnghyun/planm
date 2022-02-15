@@ -44,7 +44,7 @@
 					<tr>
 						<th>기안</th>
 						<th>
-							<a href="/approval/doc">
+							<a href="/document/create">
 								<button type="button" class="btn btn-outline-secondary">문서작성</button>
 							</a>
 						</th>
@@ -60,10 +60,10 @@
 								</select>
 								
 								<div class="input-group" style="width: 100px;">
-						            <input type="text" class="form-control" id="startday" name="formDatePicker" placeholder="yyyy-mm-dd">										            
+						            <input type="text" class="form-control" id="startDay" name="formDatePicker" placeholder="yyyy-mm-dd">										            
 						        </div>~
 						        <div class="input-group" style="width: 100px;">
-						            <input type="text" class="form-control" id="endday" name="formDatePicker" placeholder="yyyy-mm-dd">										            
+						            <input type="text" class="form-control" id="endDay" name="formDatePicker" placeholder="yyyy-mm-dd">										            
 						        </div>
 						    </div>
 						</td>
@@ -128,8 +128,8 @@
 			
 			const params = {
 				"viewType"	: $("#viewType").val(),
-				"startday"  : $("#startday").val(),
-				"endday"    : $("#endday").val(),
+				"startDay"  : $("#startDay").val(),
+				"endDay"    : $("#endDay").val(),
 				"docStatus" : docStatus,
 				"gubun" 	: viewType
 			};
@@ -164,8 +164,8 @@
 			//날짜 셋팅
 			const today = commonGetToday();
 			const beforeMonth = commonDateCalcurator(today, -1, "mm");
-			$("#startday").val(beforeMonth);
-			$("#endday").val(today);
+			$("#startDay").val(beforeMonth);
+			$("#endDay").val(today);
 			
 			$(".list-group-item").each(function(index, item){
 				$(this).on("click", function(event){

@@ -12,8 +12,8 @@ public class DocumentDTO {
 	private String docType;
 	private String requestymd;
 	private String docStatus;	
-	private String startday;
-	private String endday;
+	private String startDay;
+	private String endDay;
 	private String gubun;
 	
 }

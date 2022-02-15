@@ -54,4 +54,11 @@ public class DocumentController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public String createDocument(Model model) throws Exception {
+		
+		
+		return "document/create";
+	}
+	
 }

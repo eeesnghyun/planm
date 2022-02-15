@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko"
+	 xmlns:th="http://www.thymeleaf.org"
+	 xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+	<table class="table table-hover">
+    	<colgroup>
+    		<col width="100">
+    		<col width="160">
+    		<col width="100">
+    		<col width="160">
+    		<col width="100">
+    		<col width="">
+    	</colgroup>
+		<tr class="border-top">
+	    	<th>발생일수</th>
+	    	<td><input type="text" class="form-control w80" id="createday" disabled></td>
+	      	<th>사용일수</th>
+	      	<td><input type="text" class="form-control w80" id="useday" disabled></td>
+	      	<th>잔여일수</th>
+	    	<td><input type="text" class="form-control w80" id="remainday" disabled></td>
+	    </tr>
+		<tr>
+	    	<th>신청일</th>
+	    	<td>
+	    		<input class="form-control" type="text" id="requestYmd" name="formDatePicker">
+	    	</td>
+	      	<th>구분</th>
+	      	<td>
+	      		<select class="form-control" id="leaveType">
+					<option value="">선택</option>
+					<option value="A001">년차</option>
+					<option value="A002">병가</option>
+					<option value="A003">훈련</option>
+				</select>
+	      	</td>
+	      	<th>전일/반일</th>
+	    	<td>
+	    		<select class="form-control w100" id="dayType">
+					<option value="">선택</option>
+					<option value="D001">전일</option>
+					<option value="D002">오전반차</option>
+					<option value="D003">오후반차</option>
+				</select>
+	    	</td>
+	    </tr>
+	    <tr>
+	    	<th>기간</th>
+	    	<td colspan="5">
+	    		<div class="form-inline">
+					<div class="input-group">
+			            <input class="form-control" type="text" id="startDay" name="formDatePicker" onchange="getLeaveUseday()" placeholder="시작일">			            
+			        </div>~
+			        <div class="input-group">
+			            <input class="form-control" type="text" id="endDay" name="formDatePicker" onchange="getLeaveUseday()" placeholder="종료일">			            
+			        </div>
+			        (일수 :  <input class="form-control w80" type="text" id="leaveCnt" disabled>)
+			    </div>
+	    	</td>
+	    </tr>
+	    <tr>
+	    	<th>휴가사유</th>
+	    	<td colspan="5"><textarea class="form-control" id="remark" style="line-height: 3;"></textarea></td>
+	    </tr>
+	    <tr class="border-top">
+			<th>결재선</th>
+			<td colspan="5">
+				<button type="button" class="btn btn-outline-secondary" onclick="getSignuserList()">설정</button>
+			</td>
+		</tr>
+	</table>
+
+	<ul class="list-group list-group-flush" id="signuserList"></ul>
+
+	<!-- 결재자 리스트 -->
+	<div class="card border-theme" id="approvalUser" style="width: 250px;">
+		<div class="card-header">
+			<div class="float-left">
+				<h5><strong>결재자 지정</strong></h5>
+			</div>
+			<div class="float-right">
+				<button type="button" class="btn-img mt-2" onclick=""><img th:src="@{~/images/close.png}" class="w10-h10"></button>
+			</div>
+		</div>
+	    <div class="card-body text-secondary" style="overflow: auto">
+	        <div class="container-fluid mb-2">
+	        	<div class="row">
+	        		<button type="button" class="btn btn-outline-secondary" onclick="">완료</button>
+	        	</div>
+	        </div>
+	        <div class="container-fluid">
+		        <div class="row mb-2 bg-theme3">
+					<div class="col-1"></div>
+					<div class="col"><h6><strong>사번</strong></h6></div>
+					<div class="col"><h6><strong>성명</strong></h6></div>
+				</div>
+	        </div>
+	        <div class="container-fluid" id="userList"></div>
+	    </div>
+	</div>
+	<script>
+		const getSignUser = function() {
+			let userHtml = "";
+			
+			for(var i = 0; i < 5; i++){
+		   		userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
+		   		userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
+		   		userHtml += "	  <input type='checkbox' class='custom-control-input' id='test"+i+"' data-user='홍길동' onclick='setSignUser(this)'>";
+		   		userHtml += "	     <label class='custom-control-label' for='test"+i+"'></label>";
+		   		userHtml += "	</div></div>";
+		   		userHtml += "	<div class='col text-center'>사번</div>";
+		   		userHtml += "	<div class='col text-center'>이름</div>";
+		   		userHtml += "</div>";
+		    }
+
+			$("#userList").empty();
+		   	$("#userList").append(userHtml);
+		};
+		
+		//결재자 지정
+		const setSignUser = function(e) {
+			var userHtml = "";
+			var liId = "#li-" + e.id;
+			
+			if($("input:checkbox[id='" + e.id + "']").is(":checked")) {
+				const user = $("#" + e.id).data("user");
+				
+				userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
+				userHtml += "	<img th:src='@{~/images/down.png}' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
+				userHtml += "</li>";
+				$("#signuserList").append(userHtml);
+			} else {
+				$(liId).remove();
+			}
+		};
+		
+		$(function() {			
+			$("input[name=formDatePicker]").each(function(index, item){
+				$("#" + item.id).datepicker(commonDatePickerOpt);
+		    });
+			
+			const today = commonGetToday();
+			const after = commonDateCalcurator(today, +1, "dd");
+			$("#requestYmd").val(today);
+			$("#startDay").val(today);
+			$("#endDay").val(after);
+			
+			getSignUser();
+		});
+	</script>
+</body>
+</html>

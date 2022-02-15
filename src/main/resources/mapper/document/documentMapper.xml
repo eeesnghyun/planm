@@ -18,10 +18,10 @@
 			AND DOC_STATUS = #{docStatus}
 	   	</if>
 	   	<if test="viewType == 'request'">
-	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	<if test="viewType == 'sign'">
-	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	ORDER BY DOC_NO DESC
 	</select>
@@ -45,10 +45,10 @@
 			AND PS.DOC_STATUS = #{docStatus}
 	   	</if>
 	   	<if test="viewType == 'request'">
-	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	<if test="viewType == 'sign'">
-	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	ORDER BY PS.DOC_NO DESC
 	</select>
@@ -95,10 +95,10 @@
 			AND X.DOC_STATUS = #{docStatus}
 	   	</if>
 	   	<if test="viewType == 'request'">
-	   		AND DATE_FORMAT(X.REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(X.REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	<if test="viewType == 'sign'">
-	   		AND DATE_FORMAT(X.SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startday},'-','') AND REPLACE(#{endday},'-','')
+	   		AND DATE_FORMAT(X.SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
 	   	</if>
 	   	ORDER BY X.DOC_NO DESC
 	</select>

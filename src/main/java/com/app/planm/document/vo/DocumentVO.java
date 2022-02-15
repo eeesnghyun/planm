@@ -16,4 +16,10 @@ public class DocumentVO extends UserVO {
 	private String signYmd;
 	private String returnCause;
 	
+	private String leaveType;
+	private String dayType;
+	private String startDay;
+	private String endDay;
+	private String remark;
+	
 }
