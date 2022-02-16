@@ -103,4 +103,75 @@
 	   	ORDER BY X.DOC_NO DESC
 	</select>
 	
+	<select id="getMaxDocNo" resultType="String">
+		SELECT CONVERT(IFNULL(MAX(DOC_NO),0)+1, CHAR) AS DOC_NO 
+		  FROM PM_DOCUMENT
+		 WHERE SUBSTR(DOC_NO,1,6) = SUBSTR(DATE_FORMAT(NOW(),'%Y%m%d'),3)		 
+	</select>
+	
+	<insert id="saveDoc" parameterType="com.app.planm.document.vo.DocumentDTO">
+		INSERT INTO PM_DOCUMENT (
+			  CMP_CODE
+			, DOC_NO
+			, USER_CODE
+			, DOC_TYPE
+			, DOC_STATUS
+			, REQUEST_YMD
+			, SIGN_YMD
+			, RETURN_CAUSE
+		) VALUES (
+			  #{cmpCode}
+			, #{docNo}
+			, #{userCode}
+			, #{docType}
+			, '0001'
+			, NOW()
+			, NULL
+			, ''
+		)
+	</insert>
+	
+	<insert id="saveDocLeave" parameterType="com.app.planm.document.vo.DocumentDTO">
+		INSERT INTO PM_DOCUMENT_LEAVE (
+			  CMP_CODE
+			, DOC_NO
+			, LEAVE_TYPE
+			, DAY_TYPE
+			, START_DAY
+			, END_DAY
+			, LEAVE_CNT
+			, REMARK
+		) VALUES (
+			  #{cmpCode}
+			, #{docNo}
+			, #{leaveType}
+			, #{dayType}
+			, REPLACE(#{startDay},'-','')
+			, REPLACE(#{endDay},'-','')					
+			, #{leaveCnt}
+			, #{remark}
+		)
+	</insert>
+	
+	<insert id="saveDocSign" parameterType="com.app.planm.document.vo.DocumentDTO">
+		INSERT INTO PM_DOCUMENT_SIGN (
+			  CMP_CODE
+			, DOC_NO
+			, SIGN_SEQ
+			, SIGN_USER
+			, SIGN_YMD
+			, DOC_STATUS			
+		) VALUES (
+			  #{cmpCode}
+			, #{docNo}
+			, (SELECT IFNULL(MAX(SIGN_SEQ),0)+1
+			     FROM PM_DOCUMENT_SIGN A 
+			    WHERE CMP_CODE = #{cmpCode} 
+			      AND DOC_NO   = #{docNo})
+			, #{signUser}
+			, NULL
+			, '0001'			
+		)
+	</insert>
+	
 </mapper>

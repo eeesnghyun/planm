@@ -29,4 +29,31 @@ public class DocumentServiceImpl implements DocumentService {
 		}		
 	}
 
+	@Override
+	public void saveDoc(DocumentDTO documentDTO) throws Exception {
+		String docNo = documentDao.getMaxDocNo();
+		documentDTO.setDocNo(docNo);
+		
+		//문서 생성
+		documentDao.saveDoc(documentDTO);
+		
+		/**
+		 * 휴가신청서 등록시 결재신청서 자동 생성
+		 * 0001:제증명
+		 * 0002:휴가신청서
+		 */
+		String docType = documentDTO.getDocType();
+		String[] signUser = documentDTO.getSignUser().split(",");
+		
+		if ("0002".equals(docType)) {
+			documentDao.saveDocLeave(documentDTO);
+			
+			for (String userCode : signUser) {
+				documentDTO.setSignUser(userCode);
+				documentDao.saveDocSign(documentDTO);
+			}
+		}
+	}
+
+	
 }

@@ -55,10 +55,23 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createDocument(Model model) throws Exception {
-		
-		
+	public String createDoc(Model model) throws Exception {
+
 		return "document/create";
+	}
+	
+	@RequestMapping(value = "/saveDoc", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> saveDoc(Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("lsh");
+		
+		documentService.saveDoc(documentDTO);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
 	}
 	
 }

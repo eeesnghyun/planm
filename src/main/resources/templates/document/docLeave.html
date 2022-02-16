@@ -69,6 +69,7 @@
 			<th>결재선</th>
 			<td colspan="5">
 				<button type="button" class="btn btn-outline-secondary" onclick="getSignuserList()">설정</button>
+				<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">저장</button>
 			</td>
 		</tr>
 	</table>
@@ -120,7 +121,6 @@
 		   	$("#userList").append(userHtml);
 		};
 		
-		//결재자 지정
 		const setSignUser = function(e) {
 			var userHtml = "";
 			var liId = "#li-" + e.id;
@@ -134,6 +134,25 @@
 				$("#signuserList").append(userHtml);
 			} else {
 				$(liId).remove();
+			}
+		};
+		
+		const saveDoc = function() {
+			const params = {
+				"docType"   : "0002",
+				"leaveType" : "A001",
+				"dayType"   : "D001",
+				"startDay"  : "2022-02-17",
+				"endDay"    : "2022-02-17",
+				"leaveCnt"  : "1",
+				"remark"    : "테스트",
+				"signUser"  : "001,002"									
+			};
+			
+			const data = commonCallAjax("/document/saveDoc", params);
+			
+			if (data.code == "ok") {
+				console.log(data);	
 			}
 		};
 		

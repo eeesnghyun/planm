@@ -120,6 +120,7 @@
 		const getDocList = function() {
 			const docStatus = $("#docStatus option:selected").val();
 			let viewType = "";
+			
 			$(".list-group-item").each(function(index, item){ 
 				if ($(this).hasClass("click")) { 					
 					viewType = $(this).data("type");
