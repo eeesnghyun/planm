@@ -129,8 +129,9 @@
 				const user = $("#" + e.id).data("user");
 				
 				userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
-				userHtml += "	<img th:src='@{~/images/down.png}' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
+				userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
 				userHtml += "</li>";
+				
 				$("#signuserList").append(userHtml);
 			} else {
 				$(liId).remove();
