@@ -103,8 +103,28 @@
 	   	ORDER BY X.DOC_NO DESC
 	</select>
 	
+	<select id="getUserLeave" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT A.USER_CODE
+			 , A.USER_NAME
+		     , B.CREATE_DAY
+			 , B.USE_DAY
+		     , B.REMAIN_DAY
+		  FROM PM_USER A
+			   LEFT OUTER JOIN PM_USER_LEAVE B
+			     ON A.CMP_CODE  = B.CMP_CODE
+				AND A.USER_CODE = B.USER_CODE
+		 WHERE A.CMP_CODE  = #{cmpCode}
+		   AND A.USER_CODE = #{userCode}
+		   AND B.CREATE_YM = (SELECT MAX(CREATE_YM) 
+		   					    FROM PM_USER_LEAVE A 
+		   					   WHERE CMP_CODE  = #{cmpCode}
+		   					     AND USER_CODE = #{userCode})		      
+	</select>
+	
 	<select id="getMaxDocNo" resultType="String">
-		SELECT CONVERT(IFNULL(MAX(DOC_NO),0)+1, CHAR) AS DOC_NO 
+		SELECT CONCAT(SUBSTR(DATE_FORMAT(NOW(),'%Y%m%d'),3),
+					  LPAD(CONVERT(IFNULL(MAX(DOC_NO),0)+1, CHAR),'4','0')
+			   ) AS DOC_NO
 		  FROM PM_DOCUMENT
 		 WHERE SUBSTR(DOC_NO,1,6) = SUBSTR(DATE_FORMAT(NOW(),'%Y%m%d'),3)		 
 	</select>
@@ -124,7 +144,7 @@
 			, #{docNo}
 			, #{userCode}
 			, #{docType}
-			, '0001'
+			, #{docStatus}
 			, NOW()
 			, NULL
 			, ''
@@ -173,5 +193,7 @@
 			, '0001'			
 		)
 	</insert>
+	
+	
 	
 </mapper>

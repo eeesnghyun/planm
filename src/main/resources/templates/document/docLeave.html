@@ -17,11 +17,11 @@
     	</colgroup>
 		<tr class="border-top">
 	    	<th>발생일수</th>
-	    	<td><input type="text" class="form-control w80" id="createday" disabled></td>
+	    	<td><input type="text" class="form-control w80" id="createDay" disabled></td>
 	      	<th>사용일수</th>
-	      	<td><input type="text" class="form-control w80" id="useday" disabled></td>
+	      	<td><input type="text" class="form-control w80" id="useDay" disabled></td>
 	      	<th>잔여일수</th>
-	    	<td><input type="text" class="form-control w80" id="remainday" disabled></td>
+	    	<td><input type="text" class="form-control w80" id="remainDay" disabled></td>
 	    </tr>
 		<tr>
 	    	<th>신청일</th>
@@ -64,61 +64,69 @@
 	    <tr>
 	    	<th>휴가사유</th>
 	    	<td colspan="5"><textarea class="form-control" id="remark" style="line-height: 3;"></textarea></td>
-	    </tr>
-	    <tr class="border-top">
-			<th>결재선</th>
-			<td colspan="5">
-				<button type="button" class="btn btn-outline-secondary" onclick="getSignuserList()">설정</button>
-				<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">저장</button>
-			</td>
-		</tr>
+	    </tr>	    
 	</table>
-
-	<ul class="list-group list-group-flush" id="signuserList"></ul>
-
-	<!-- 결재자 리스트 -->
-	<div class="card border-theme" id="approvalUser" style="width: 250px;">
+	
+	<div class="card border-theme" style="width: 50%;">
 		<div class="card-header">
 			<div class="float-left">
 				<h5><strong>결재자 지정</strong></h5>
-			</div>
-			<div class="float-right">
-				<button type="button" class="btn-img mt-2" onclick=""><img th:src="@{~/images/close.png}" class="w10-h10"></button>
-			</div>
+			</div>					
 		</div>
-	    <div class="card-body text-secondary" style="overflow: auto">
-	        <div class="container-fluid mb-2">
-	        	<div class="row">
-	        		<button type="button" class="btn btn-outline-secondary" onclick="">완료</button>
-	        	</div>
-	        </div>
+			    
+	    <div class="card-body text-secondary" style="overflow: auto">	        
 	        <div class="container-fluid">
-		        <div class="row mb-2 bg-theme3">
-					<div class="col-1"></div>
-					<div class="col"><h6><strong>사번</strong></h6></div>
-					<div class="col"><h6><strong>성명</strong></h6></div>
-				</div>
+	        	<div class="row">
+	        		<div class="col-6">
+				        <div class="container-fluid">
+					        <div class="row mb-2 bg-theme3">
+								<div class="col-1"></div>
+								<div class="col"><h6><strong>사번</strong></h6></div>
+								<div class="col"><h6><strong>성명</strong></h6></div>
+							</div>
+				        </div>
+				        <div class="container-fluid" id="userList"></div>
+			        </div>
+			         
+				    <div class="col-6">
+				    	<ul class="list-group list-group-flush" id="signuserList"></ul>			    	
+				    </div>
+		        </div>
 	        </div>
-	        <div class="container-fluid" id="userList"></div>
 	    </div>
 	</div>
+	
+	<div class="mt-2 pt-2 border-top">
+		<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">임시저장</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="reqeustDoc()">결재신청</button>
+	</div>
+	
 	<script>
-		const getSignUser = function() {
-			let userHtml = "";
+		const initLeave = function() {
+			const data = commonCallAjax("/document/getUserLeave", "");
 			
-			for(var i = 0; i < 5; i++){
-		   		userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
-		   		userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
-		   		userHtml += "	  <input type='checkbox' class='custom-control-input' id='test"+i+"' data-user='홍길동' onclick='setSignUser(this)'>";
-		   		userHtml += "	     <label class='custom-control-label' for='test"+i+"'></label>";
-		   		userHtml += "	</div></div>";
-		   		userHtml += "	<div class='col text-center'>사번</div>";
-		   		userHtml += "	<div class='col text-center'>이름</div>";
-		   		userHtml += "</div>";
-		    }
+			if (data.code == "ok") {				
+				const result = data.result;
+								
+				$("#createDay").val(result.createDay);
+				$("#useDay").val(result.useDay);
+				$("#remainDay").val(result.remainDay);
+				
+				let userHtml = "";
+				
+				for(var i = 0; i < 5; i++){
+			   		userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
+			   		userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
+			   		userHtml += "	  <input type='checkbox' class='custom-control-input' id='test"+i+"' data-user='홍길동' onclick='setSignUser(this)'>";
+			   		userHtml += "	     <label class='custom-control-label' for='test"+i+"'></label>";
+			   		userHtml += "	</div></div>";
+			   		userHtml += "	<div class='col text-center'>사번</div>";
+			   		userHtml += "	<div class='col text-center'>이름</div>";
+			   		userHtml += "</div>";
+			    }
 
-			$("#userList").empty();
-		   	$("#userList").append(userHtml);
+			   	$("#userList").append(userHtml);
+			}
 		};
 		
 		const setSignUser = function(e) {
@@ -146,14 +154,32 @@
 				"startDay"  : "2022-02-17",
 				"endDay"    : "2022-02-17",
 				"leaveCnt"  : "1",
-				"remark"    : "테스트",
-				"signUser"  : "001,002"									
+				"remark"    : "테스트"								
 			};
 			
 			const data = commonCallAjax("/document/saveDoc", params);
 			
-			if (data.code == "ok") {
-				console.log(data);	
+			if (data.code == "ok") {				
+				alert("임시저장 되었습니다.");
+			}
+		};
+		
+		const requestDoc = function() {
+			const params = {
+				"docType"   : "0002",
+				"leaveType" : "A001",
+				"dayType"   : "D001",
+				"startDay"  : "2022-02-17",
+				"endDay"    : "2022-02-17",
+				"leaveCnt"  : "1",
+				"remark"    : "테스트",
+				"signUser"  : "001,002"									
+			};
+			
+			const data = commonCallAjax("/document/requestDoc", params);
+			
+			if (data.code == "ok") {				
+				alert("임시저장 되었습니다.");
 			}
 		};
 		
@@ -168,7 +194,7 @@
 			$("#startDay").val(today);
 			$("#endDay").val(after);
 			
-			getSignUser();
+			initLeave();
 		});
 	</script>
 </body>

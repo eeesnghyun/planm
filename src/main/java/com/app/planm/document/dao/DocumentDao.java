@@ -13,6 +13,8 @@ public interface DocumentDao {
 	
 	public List<DocumentVO> getDocumentAllList(DocumentDTO documentDTO) throws Exception;
 	
+	public DocumentVO getUserLeave(DocumentDTO documentDTO) throws Exception;
+	
 	public String getMaxDocNo() throws Exception;
 	
 	public void saveDoc(DocumentDTO documentDTO) throws Exception;

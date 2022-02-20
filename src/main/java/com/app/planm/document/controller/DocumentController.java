@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.app.planm.document.service.DocumentService;
 import com.app.planm.document.vo.DocumentDTO;
 import com.app.planm.document.vo.DocumentVO;
+import com.app.planm.user.service.UserService;
+import com.app.planm.user.vo.UserDTO;
+import com.app.planm.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/document")
@@ -24,6 +27,9 @@ public class DocumentController {
 
 	@Autowired
 	private DocumentService documentService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String document(Model model) throws Exception {
@@ -54,9 +60,31 @@ public class DocumentController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value = "/getUserLeave", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getUserLeave(HttpSession session) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		DocumentDTO documentDTO = new DocumentDTO();
+		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("lsh");
+		
+		DocumentVO documentVO = documentService.getUserLeave(documentDTO);		
+		
+		resultMap.put("code", "ok");
+		resultMap.put("result", documentVO);
+		
+		return resultMap;
+	}
+	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createDoc(Model model) throws Exception {
-
+		UserDTO userDTO = new UserDTO();
+		userDTO.setCmpCode("0000");
+		userDTO.setUserCode("lsh");
+		
+		UserVO userVO = userService.getUserInfo(userDTO);
+		model.addAttribute("userVO", userVO);
+		
 		return "document/create";
 	}
 	
@@ -68,6 +96,20 @@ public class DocumentController {
 		documentDTO.setUserCode("lsh");
 		
 		documentService.saveDoc(documentDTO);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/requestDoc", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> requestDoc(Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("lsh");
+		
+		//documentService.requestDoc(documentDTO);
 		
 		resultMap.put("code", "ok");		
 		

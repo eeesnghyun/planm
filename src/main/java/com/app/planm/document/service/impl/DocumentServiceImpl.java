@@ -30,9 +30,25 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
+	public DocumentVO getUserLeave(DocumentDTO documentDTO) throws Exception {
+		return documentDao.getUserLeave(documentDTO);
+	}
+	
+	@Override
 	public void saveDoc(DocumentDTO documentDTO) throws Exception {
 		String docNo = documentDao.getMaxDocNo();
 		documentDTO.setDocNo(docNo);
+		documentDTO.setDocStatus("0004");	//임시저장
+		
+		//문서 생성
+		documentDao.saveDoc(documentDTO);				
+	}
+	
+	@Override
+	public void requestDoc(DocumentDTO documentDTO) throws Exception {
+		String docNo = documentDao.getMaxDocNo();
+		documentDTO.setDocNo(docNo);
+		documentDTO.setDocStatus("0001");	//결재대기
 		
 		//문서 생성
 		documentDao.saveDoc(documentDTO);
@@ -54,6 +70,7 @@ public class DocumentServiceImpl implements DocumentService {
 			}
 		}
 	}
+
 
 	
 }

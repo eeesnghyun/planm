@@ -26,11 +26,12 @@
 		    		</colgroup>
 			    	<tr>
 			      		<th>성명/사번</th>
-			      		<td>홍길동 : 사번</td>
+			      		<td><span th:text="${userVO.userName}"></span>
+			      		/ <span th:text="${userVO.userCode}"></span></td>
 			    	</tr>
 			    	<tr>
 			    		<th>입사일</th>
-			    		<td>2022.02.15</td>
+			    		<td><span th:text="${userVO.enterYmd}"></span></td>
 			    	</tr>
 			    	<tr>
 			      		<th>문서구분</th>
@@ -53,13 +54,16 @@
 		const loadDocTemplate = function(page) {
 			let template = "";
 			
-			if (page == "0001") {
-				template = "/document/docLeave.load";
-			} else if (page == "0002") {
-				template = "/document/docProof.load";
-			}
-			
-			$("#docTemplate").load(template);
+			if (page == "") {				
+				$("#docTemplate").empty();
+			} else {
+				if (page == "0001") {
+					template = "/document/docLeave.load";
+				} else {
+					template = "/document/docProof.load";	
+				}								
+				$("#docTemplate").load(template);	
+			}						
 		};
 		
 		$(function() {

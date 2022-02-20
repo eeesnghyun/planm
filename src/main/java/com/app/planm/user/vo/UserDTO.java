@@ -3,9 +3,8 @@ package com.app.planm.user.vo;
 import lombok.Data;
 
 @Data
-public class UserVO {
+public class UserDTO {
 
+	private String cmpCode;
 	private String userCode;
-	private String userName;
-	private String enterYmd;
 }

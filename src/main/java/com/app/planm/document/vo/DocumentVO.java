@@ -22,4 +22,9 @@ public class DocumentVO extends UserVO {
 	private String endDay;
 	private String remark;
 	
+	private int createDay;
+	private int useDay;
+	private int RemainDay;
+	
+	
 }
