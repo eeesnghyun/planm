@@ -52,10 +52,10 @@
 	    	<td colspan="5">
 	    		<div class="form-inline">
 					<div class="input-group">
-			            <input class="form-control" type="text" id="startDay" name="formDatePicker" onchange="getLeaveUseday()" placeholder="시작일">			            
+			            <input class="form-control" type="text" id="startDay" name="formDatePicker" onchange="getLeaveUseday('s')" placeholder="시작일">			            
 			        </div>~
 			        <div class="input-group">
-			            <input class="form-control" type="text" id="endDay" name="formDatePicker" onchange="getLeaveUseday()" placeholder="종료일">			            
+			            <input class="form-control" type="text" id="endDay" name="formDatePicker" onchange="getLeaveUseday('e')" placeholder="종료일">			            
 			        </div>
 			        (일수 :  <input class="form-control w80" type="text" id="leaveCnt" disabled>)
 			    </div>
@@ -85,7 +85,7 @@
 								<div class="col"><h6><strong>성명</strong></h6></div>
 							</div>
 				        </div>
-				        <div class="container-fluid" id="userList"></div>
+				        <div class="container-fluid" id="userList" style="height: 200px;"></div>
 			        </div>
 			         
 				    <div class="col-6">
@@ -101,6 +101,7 @@
 		<button type="button" class="btn btn-outline-secondary" onclick="reqeustDoc()">결재신청</button>
 	</div>
 	
+	<script th:src="@{/plugins/moment/moment.min.js}" type="text/javascript" defer></script>
 	<script>
 		const initLeave = function() {
 			const data = commonCallAjax("/document/getUserLeave", "");
@@ -126,6 +127,39 @@
 			    }
 
 			   	$("#userList").append(userHtml);
+			}
+		};
+		
+		const getLeaveUseday = function(gubun) {
+			var startDay  = moment($("#startDay").val());
+			var endDay    = moment($("#endDay").val());
+			var vacDay    = endDay.diff(startDay, 'days') + 1;
+			var dayType   = $("#dayType option:selected").val();
+			var leaveType = $("#leaveType option:selected").val();
+
+			if (leaveType == "" || dayType == "") {
+				alert("구분, 전일/반일을 선택해주세요.");				
+				return;
+			}
+
+			if (!isNaN(startDay) && !isNaN(endDay)) {
+				if (endDay < startDay) {
+					alert("종료일이 시작일보다 작을 수 없습니다.");
+					$("#endDay").val("");
+					return;
+				} else {
+					if(dayType != "D002" || dayType == "D003") {		// 반차인 경우
+						if (gubun == "s") {
+							$("#endDay").val($("#startDay").val());	
+						} else {
+							$("#startDay").val($("#endDay").val());
+						}
+						
+						$("#leaveCnt").val(0.5);
+					} else {
+						$("#leaveCnt").val(vacDay);
+					}
+				}
 			}
 		};
 		
