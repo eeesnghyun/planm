@@ -32,7 +32,7 @@
 	      	<td>
 	      		<select class="form-control" id="leaveType">
 					<option value="">선택</option>
-					<option value="A001">년차</option>
+					<option value="A001" selected="selected">년차</option>
 					<option value="A002">병가</option>
 					<option value="A003">훈련</option>
 				</select>
@@ -41,7 +41,7 @@
 	    	<td>
 	    		<select class="form-control w100" id="dayType">
 					<option value="">선택</option>
-					<option value="D001">전일</option>
+					<option value="D001" selected="selected">전일</option>
 					<option value="D002">오전반차</option>
 					<option value="D003">오후반차</option>
 				</select>
@@ -77,7 +77,7 @@
 	    <div class="card-body text-secondary" style="overflow: auto">	        
 	        <div class="container-fluid">
 	        	<div class="row">
-	        		<div class="col-6">
+	        		<div class="col-6 border-right">
 				        <div class="container-fluid">
 					        <div class="row mb-2 bg-theme3">
 								<div class="col-1"></div>
@@ -100,8 +100,7 @@
 		<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">임시저장</button>
 		<button type="button" class="btn btn-outline-secondary" onclick="reqeustDoc()">결재신청</button>
 	</div>
-	
-	<script th:src="@{/plugins/moment/moment.min.js}" type="text/javascript" defer></script>
+		
 	<script>
 		const initLeave = function() {
 			const data = commonCallAjax("/document/getUserLeave", "");
@@ -127,15 +126,19 @@
 			    }
 
 			   	$("#userList").append(userHtml);
+			   	
+			   	getLeaveUseday("s");
 			}
 		};
 		
 		const getLeaveUseday = function(gubun) {
-			var startDay  = moment($("#startDay").val());
-			var endDay    = moment($("#endDay").val());
-			var vacDay    = endDay.diff(startDay, 'days') + 1;
-			var dayType   = $("#dayType option:selected").val();
-			var leaveType = $("#leaveType option:selected").val();
+			let count = 0;
+			const mStart = moment($("#startDay").val());
+			const mEnd   = moment($("#endDay").val());
+			const startDay = new Date(mStart.year(), mStart.month(), mStart.date());
+			const endDay   = new Date(mEnd.year(), mEnd.month(), mEnd.date());
+			const dayType   = $("#dayType option:selected").val();
+			const leaveType = $("#leaveType option:selected").val();
 
 			if (leaveType == "" || dayType == "") {
 				alert("구분, 전일/반일을 선택해주세요.");				
@@ -147,19 +150,46 @@
 					alert("종료일이 시작일보다 작을 수 없습니다.");
 					$("#endDay").val("");
 					return;
-				} else {
-					if(dayType != "D002" || dayType == "D003") {		// 반차인 경우
-						if (gubun == "s") {
-							$("#endDay").val($("#startDay").val());	
-						} else {
-							$("#startDay").val($("#endDay").val());
-						}
-						
-						$("#leaveCnt").val(0.5);
-					} else {
-						$("#leaveCnt").val(vacDay);
-					}
 				}
+			}			
+			
+			while (true) {
+				let temp = startDay;
+				
+				if (temp.getTime() > endDay.getTime()) {					
+					break;
+				} else {					
+					//주말 계산(0:일,6:토)
+					const day = temp.getDay();
+					if (day != 0 || day != 6) {
+						//공휴일 계산
+						const yyyymmdd = temp.toISOString().slice(0,10).replace(/-/g,"");
+						if (!isHoliday(yyyymmdd)) {
+							count++;
+						}
+					}
+					temp.setDate(startDay.getDate() + 1);
+				}				
+			}
+			
+			if (dayType == "D002" || dayType == "D003") {		//반차인 경우
+				if (gubun == "s") {
+					$("#endDay").val($("#startDay").val());	
+				} else {
+					$("#startDay").val($("#endDay").val());
+				}
+				
+				$("#leaveCnt").val(0.5);
+			} else {
+				$("#leaveCnt").val(count);
+			}
+		};		
+		
+		const isHoliday = function(yyyymmdd) {			
+		 	for (let i = 0; i < holidays.length; i++) {
+		  		if (holidays[i] == yyyymmdd) {
+		   			return true;
+		  		}
 			}
 		};
 		

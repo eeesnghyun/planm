@@ -71,6 +71,11 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 	}
 
+	@Override
+	public List<String> getHoliday() throws Exception {
+		return documentDao.getHoliday();
+	}
+
 
 	
 }

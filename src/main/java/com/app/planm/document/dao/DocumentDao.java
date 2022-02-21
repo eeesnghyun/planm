@@ -23,5 +23,6 @@ public interface DocumentDao {
 	
 	public void saveDocSign(DocumentDTO documentDTO) throws Exception;
 	
+	public List<String> getHoliday() throws Exception;
 	
 }

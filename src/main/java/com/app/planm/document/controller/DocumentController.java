@@ -83,7 +83,11 @@ public class DocumentController {
 		userDTO.setUserCode("lsh");
 		
 		UserVO userVO = userService.getUserInfo(userDTO);
+		
+		List<String> holiday = documentService.getHoliday();
+		
 		model.addAttribute("userVO", userVO);
+		model.addAttribute("holiday", holiday);
 		
 		return "document/create";
 	}

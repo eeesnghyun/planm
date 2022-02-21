@@ -194,6 +194,11 @@
 		)
 	</insert>
 	
+	<select id="getHoliday" resultType="String">
+		SELECT CONCAT(YYYY,MMDD) AS YYYYMMDD			 
+		 FROM shxdb.CALENDAR_HOLIDAY 
+		WHERE YYYY = DATE_FORMAT(CURDATE(),'%Y')
+	</select>
 	
 	
 </mapper>

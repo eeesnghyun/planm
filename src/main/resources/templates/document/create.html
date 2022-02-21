@@ -50,6 +50,15 @@
 		<div id="docTemplate"></div>
 	</div>
 	
+	<script th:inline="javascript">
+		let holidays = new Array();
+	
+		/*<![CDATA[*/
+		/*[# th:each="tmp : ${holiday}"]*/
+			holidays.push(/*[[${tmp}]]*/);
+		/*[/]*/
+		/*]]>*/		
+	</script>
 	<script>
 		const loadDocTemplate = function(page) {
 			let template = "";

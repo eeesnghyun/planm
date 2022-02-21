@@ -20,5 +20,5 @@ public class DocumentDTO {
 	private String signUser;
 	private String gubun;
 	private String remark;
-	
+	private String yyyymmdd;
 }

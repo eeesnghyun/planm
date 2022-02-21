@@ -14,5 +14,7 @@ public interface DocumentService {
 	public void saveDoc(DocumentDTO documentDTO) throws Exception;
 	
 	public void requestDoc(DocumentDTO documentDTO) throws Exception;
+
+	public List<String> getHoliday() throws Exception;
 	
 }
