@@ -105,8 +105,8 @@
 		</div>
 	</div>
 
-	<div class="container-fluid" id="docListSpace" th:each="doc : ${resultList}">	   		
-   		<div class="row border-bottom" onclick="getDocInfo()">
+	<div class="container-fluid" id="docListSpace">	   		
+   		<div class="row border-bottom" onclick="getDocInfo()" th:each="doc : ${resultList}">
 	   		<div class="col-2 text-center"><span th:text="${doc.docNo}"></span></div>	   	
 	   		<div class="col-2 text-center"><span th:text="${doc.docType}"></span></div>
 	   		<div class="col-2 text-center"><span th:text="${doc.userCode}"></span></div>

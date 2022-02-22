@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{index}">
+<head>
+    <meta charset="UTF-8">
+    <style>
+    	.form-group .row .form-control {    		 
+    		margin-top: 2px;    	
+    	}				
+    </style>
+</head>      
+<th:block layout:fragment="content-area">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<button type="button" class="btn btn-outline-secondary">엑셀 일괄등록</button>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-3">
+				<img src="">
+				<input type="file" class="form-control">
+			</div>
+			
+			<div class="col-9">
+				<div class="container-fluid">					
+					<div class="row">
+						<div class="col-12">
+							<div class="form-group row">
+								<label for="staticEmail" class="col-sm-1 col-form-label">이름</label>
+							    <div class="col-sm-2">
+							    	<input type="text" class="form-control" id="">
+							    </div>
+							    
+							    <label for="inputPassword" class="col-sm-1 col-form-label">생년월일</label>
+							    <div class="col-sm-2">
+							    	<input type="text" class="form-control" id="birthYmd" name="formDatePicker">
+							    </div>
+							    
+							    <label for="staticEmail" class="col-sm-1 col-form-label">성별</label>
+							    <div class="col-sm-2">
+							    	<input type="text" class="form-control" id="">
+							    </div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="inputPassword" class="col-sm-1 col-form-label">연락처</label>
+							    <div class="col-sm-3">
+							    	<div class="form-row">
+										<div class="col">
+									    	<input type="text" class="form-control">
+									    </div>
+									    <div class="col">
+									      	<input type="text" class="form-control">
+									    </div>
+									    <div class="col">
+									      	<input type="text" class="form-control">
+									    </div>
+									</div>
+							    </div>
+							    
+							    <label for="inputPassword" class="col-sm-1 col-form-label">이메일</label>
+							    <div class="col-sm-4">
+							    	<div class="form-row align-items-center">
+									    <div class="col">									    	
+									      	<input type="text" class="form-control" id="">
+									    </div>
+									    <div class="col">									    	
+									      	<div class="input-group">
+									        	<div class="input-group-prepend">
+									          		<div class="input-group-text">@</div>
+									        	</div>
+									        	<input type="text" class="form-control" id="">
+									      	</div>
+									    </div>									    
+									 </div>
+							    </div>							    
+							</div>
+							
+							<div class="form-group row">
+								<label for="inputPassword" class="col-sm-1 col-form-label">부서</label>
+							    <div class="col-sm-3">
+							    	<select class="form-control" id=""></select>
+							    </div>
+							    
+							    <label for="inputPassword" class="col-sm-1 col-form-label">직책</label>
+							    <div class="col-sm-4">
+							    	<select class="form-control" id=""></select>
+							    </div>				    				    
+							</div>
+							
+							<div class="form-group row">
+								<label for="inputPassword" class="col-sm-1 col-form-label">입사일</label>
+							    <div class="col-sm-3">
+							    	<input type="text" class="form-control" id="enterYmd" name="formDatePicker">
+							    </div>
+							    
+							    <label for="inputPassword" class="col-sm-1 col-form-label">퇴사일</label>
+							    <div class="col-sm-4">
+							    	<input type="text" class="form-control" id="retireYmd" name="formDatePicker">
+							    </div>				    				    
+							</div>
+						</div>
+					</div>	<!-- End row -->
+				</div>		<!-- End container -->
+			</div>
+		</div>	<!-- End row -->
+		
+		<div class="row">
+			<div class="col-12 border-bottom pb-3">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-secondary">신규</button>
+					<button type="button" class="btn btn-outline-secondary">저장</button>
+					<button type="button" class="btn btn-outline-secondary">수정</button>
+				</div>
+			</div>			
+		</div>	<!-- End row -->
+	</div>		<!-- End container -->
+	
+	<script>		
+		$(function() {			
+			$("input[name=formDatePicker]").each(function(index, item){
+				$("#" + item.id).datepicker(commonDatePickerOpt);
+		    });
+		});
+	</script>
+</th:block>
+</html>

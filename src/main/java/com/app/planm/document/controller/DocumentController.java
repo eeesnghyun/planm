@@ -113,7 +113,7 @@ public class DocumentController {
 		documentDTO.setCmpCode("0000");
 		documentDTO.setUserCode("lsh");
 		
-		//documentService.requestDoc(documentDTO);
+		documentService.requestDoc(documentDTO);
 		
 		resultMap.put("code", "ok");		
 		

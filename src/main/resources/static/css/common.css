@@ -28,7 +28,6 @@ body, button, div, input, select, table, textarea {
 #left {
 	width: 100%;
 	height: 100%;
-	padding-top: 10px;
 	overflow: auto;
 	-webkit-box-shadow: 15px -10px 40px -25px rgba(50,50,50,0.19);
 	-moz-box-shadow: 15px -10px 40px -25px rgba(50,50,50,0.19);
