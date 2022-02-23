@@ -1,8 +1,8 @@
 /************************************************************
-  File    : common.js
-  Content : 공통으로 사용하는 스크립트 선언
-  Author  : LSH
-  Create  : 2020.05.06
+ * File    : common.js
+ * Content : 공통으로 사용하는 스크립트 선언
+ * Author  : LSH
+ * Create  : 2020.05.06
  ************************************************************/
 
 /**
@@ -84,4 +84,55 @@ const commonDateCalcurator = function(date, num, type) {
     dd = d.getDate(); dd = (dd < 10) ? '0' + dd : dd;
     
     return '' + yy + '-' +  mm  + '-' + dd;
-}; 
+};
+
+const commonResetForm = function(id) {
+ 	var divId = "#" + id;
+
+ 	//input, select, textarea Element 초기화
+ 	$(divId).find("input, select, textarea").each(function() {
+ 		$t = jQuery(this);
+
+        if (($t.is("input") == true && $t.attr("type") == "text") ||
+            ($t.is("input") == true && $t.attr("type") == "hidden") || $t.is("textarea") == true) {
+         	$t.val("");
+        } else if ($t.is("select") == true) {
+         	$("#" + $t.attr("id") + " option:eq(0)").prop("selected", true);         	
+ 		}
+    });
+
+ 	//Checkbox 초기화
+ 	$(divId + " input[type=checkbox]").prop("checked", false);
+
+ 	//Radio button 초기화
+ 	var radioArr = [];
+    var radio = $(divId + " input[type=radio]");
+
+    $.each(radio, function(key, value) { 			 //input radio의 name값
+     	radioArr.push($(value).attr("name"));
+    });
+
+    radioArr = $.unique(radioArr.sort()).sort();	 //중복요소 이름을 제거
+
+    for(var i = 0; i < radioArr.length; i++) {
+    	$('input[name="' + radioArr[i] + '"]').removeAttr('checked');
+     	$('input[name="' + radioArr[i] + '"]')[0].checked = true;
+    }
+
+    //File 초기화
+    var fileArr = [];
+    var file = $(divId + " input[type=file]");
+
+    $.each(file, function(key, value) { 			 //input file의 id값
+     	fileArr.push($(value).attr("id"));
+    });
+
+    fileArr = $.unique(fileArr.sort()).sort(); 		 //중복요소 이름을 제거
+	if (fileArr.length > 1) {
+		for (var i = 0; i < fileArr.length; i++) {
+	    	$("#" + fileArr[i]).MultiFile("reset");
+	    }
+	}
+};
+
+

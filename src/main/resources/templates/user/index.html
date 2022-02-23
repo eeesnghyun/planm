@@ -13,16 +13,19 @@
 </head>      
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row pb-2 border-bottom">
 			<div class="col-12">
 				<button type="button" class="btn btn-outline-secondary">엑셀 일괄등록</button>
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="row mt-2" id="divUser">
 			<div class="col-3">
 				<img src="">
-				<input type="file" class="form-control">
+				<div class="custom-file">
+					<input type="file" class="custom-file-input" id="customFileLangHTML">
+				  	<label class="custom-file-label" for="customFileLangHTML" data-browse="Bestand kiezen">select</label>
+				</div>
 			</div>
 			
 			<div class="col-9">
@@ -32,7 +35,7 @@
 							<div class="form-group row">
 								<label for="staticEmail" class="col-sm-1 col-form-label">이름</label>
 							    <div class="col-sm-2">
-							    	<input type="text" class="form-control" id="">
+							    	<input type="text" class="form-control" id="userName">
 							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">생년월일</label>
@@ -42,7 +45,16 @@
 							    
 							    <label for="staticEmail" class="col-sm-1 col-form-label">성별</label>
 							    <div class="col-sm-2">
-							    	<input type="text" class="form-control" id="">
+							    	<div class="pt-2">
+								    	<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="gender" id="mail" value="male" checked="checked">
+										  	<label class="form-check-label" for="mail">남</label>
+										</div>
+										<div class="form-check form-check-inline">
+										  	<input class="form-check-input" type="radio" name="gender" id="femail" value="female">
+										  	<label class="form-check-label" for="femail">녀</label>
+										</div>
+									</div>
 							    </div>
 							</div>
 							
@@ -51,13 +63,13 @@
 							    <div class="col-sm-3">
 							    	<div class="form-row">
 										<div class="col">
-									    	<input type="text" class="form-control">
+									    	<input type="text" class="form-control" id="m1">
 									    </div>
 									    <div class="col">
-									      	<input type="text" class="form-control">
+									      	<input type="text" class="form-control" id="m2">
 									    </div>
 									    <div class="col">
-									      	<input type="text" class="form-control">
+									      	<input type="text" class="form-control" id="m3">
 									    </div>
 									</div>
 							    </div>
@@ -66,14 +78,22 @@
 							    <div class="col-sm-4">
 							    	<div class="form-row align-items-center">
 									    <div class="col">									    	
-									      	<input type="text" class="form-control" id="">
+									      	<input type="text" class="form-control" id="email">
 									    </div>
 									    <div class="col">									    	
 									      	<div class="input-group">
 									        	<div class="input-group-prepend">
 									          		<div class="input-group-text">@</div>
 									        	</div>
-									        	<input type="text" class="form-control" id="">
+									        	<select class="form-control" id="emailServer">
+									        		<option value="">선택</option>
+									        		<option value="gmail.com">gmail.com</option>
+									        		<option value="naver.com">naver.com</option>
+									        		<option value="hanmail.net">hanmail.net</option>
+									        		<option value="daum.net">daum.net</option>
+									        		<option value="nate.com">nate.com</option>
+									        		<option value="hotmail.com">hotmail.com</option>
+									        	</select>
 									      	</div>
 									    </div>									    
 									 </div>
@@ -83,12 +103,12 @@
 							<div class="form-group row">
 								<label for="inputPassword" class="col-sm-1 col-form-label">부서</label>
 							    <div class="col-sm-3">
-							    	<select class="form-control" id=""></select>
+							    	<select class="form-control" id="dept"></select>
 							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">직책</label>
 							    <div class="col-sm-4">
-							    	<select class="form-control" id=""></select>
+							    	<select class="form-control" id="jobPos"></select>
 							    </div>				    				    
 							</div>
 							
@@ -113,14 +133,38 @@
 			<div class="col-12 border-bottom pb-3">
 				<div class="float-right">
 					<button type="button" class="btn btn-outline-secondary">신규</button>
-					<button type="button" class="btn btn-outline-secondary">저장</button>
+					<button type="button" class="btn btn-outline-secondary" onclick="saveUser()">저장</button>
 					<button type="button" class="btn btn-outline-secondary">수정</button>
 				</div>
 			</div>			
 		</div>	<!-- End row -->
 	</div>		<!-- End container -->
 	
-	<script>		
+	<script>
+		const saveUser = function() {
+			const mobile = $("#m1").val() + $("#m2").val() + $("#m3").val(); 
+			const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
+			
+			const params = {
+				"userName"  : $("#userName").val(),
+				"birthYmd"  : $("#birthYmd").val(),
+				"gender"    : $("input[name=gender]:checked").val(),
+				"mobile"    : mobile,
+				"email"     : email,
+				"dept" 	    : $("#dept").val(),
+				"jobPos"    : $("#jobPos").val(),
+				"enterYmd"  : $("#enterYmd").val(),
+				"retireYmd" : $("#retireYmd").val()
+			};
+			const data = commonCallAjax("/user/save", params);
+			
+			if (data.code == "ok") {				
+				alert("등록되었습니다.");
+				
+				commonResetForm("divUser");
+			}
+		};
+		
 		$(function() {			
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);

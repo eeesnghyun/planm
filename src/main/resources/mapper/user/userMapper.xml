@@ -11,4 +11,46 @@
 		   AND USER_CODE = #{userCode}
 	</select>
 	
+	<insert id="saveUser" parameterType="com.app.planm.user.vo.UserDTO">
+		INSERT INTO PM_USER (
+			  CMP_CODE
+			, USER_CODE
+			, PASSWORD
+			, USER_NAME
+			, USER_AUTH
+			, BIRTH_YMD
+			, GENDER
+			, EMAIL
+			, DEPT
+			, JOB_POS
+			, ENTER_YMD
+			, RETIRE_YMD
+		) VALUES (
+			  #{cmpCode}
+			, (
+ 			  SELECT RN.USER_CODE
+				FROM (
+				  	  SELECT CMP_CODE
+							 , LPAD(FLOOR(RAND() * USER_CODE_RULE), LENGTH(USER_CODE_RULE), '0') USER_CODE
+						  FROM PM_COMPANY 
+						 WHERE CMP_CODE = #{cmpCode}
+					   ) RN LEFT OUTER JOIN PM_USER PU	   
+						 ON RN.CMP_CODE  = PU.CMP_CODE
+						AND RN.USER_CODE = PU.USER_CODE
+				 WHERE PU.USER_CODE IS NULL
+			  )
+			, #{password}
+			, #{userName}
+			, #{userAuth}
+			, REPLACE(#{birthYmd},'-','')
+			, #{gender}
+			, #{mobileNo}
+			, #{email}
+			, #{dept}
+			, #{jobPos}
+			, REPLACE(#{enterYmd},'-','')
+			, REPLACE(#{retireYmd},'-','')
+		)
+	</insert>
+	
 </mapper>

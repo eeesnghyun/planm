@@ -7,4 +7,6 @@ public interface UserDao {
 
 	public UserVO getUserInfo(UserDTO userDTO) throws Exception;
 	
+	public void saveUser(UserDTO userDTO) throws Exception;
+	
 }
