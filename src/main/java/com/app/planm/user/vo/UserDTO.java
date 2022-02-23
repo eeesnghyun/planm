@@ -16,6 +16,7 @@ public class UserDTO {
 	private String email;
 	private String dept;
 	private String jobPos;
+	private String userImg;
 	private String enterYmd;
 	private String retireYmd;
 	
