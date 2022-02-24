@@ -129,9 +129,9 @@
 		<div class="row">
 			<div class="col-12 border-bottom pb-3">
 				<div class="float-right">
-					<button type="button" class="btn btn-outline-secondary">신규</button>
-					<button type="button" class="btn btn-outline-secondary" onclick="saveUser()">저장</button>
-					<button type="button" class="btn btn-outline-secondary">수정</button>
+					<button type="button" class="btn btn-outline-secondary" id="newBtn">신규</button>
+					<button type="button" class="btn btn-outline-secondary" id="saveBtn" onclick="saveUser()">저장</button>
+					<button type="button" class="btn btn-outline-secondary" id="updateBtn" style="display: none;">수정</button>
 				</div>
 			</div>			
 		</div>	<!-- End row -->
@@ -215,19 +215,28 @@
 					        $("#dept").val(rowData.dept);
 					        $("#jobPos").val(rowData.jobPos);
 					        $("#enterYmd").val(rowData.enterYmd);
-					        $("#retireYmd").val(rowData.retireYmd);					        					       
+					        $("#retireYmd").val(rowData.retireYmd);
+					        
+					        $("#saveBtn").hide();
+					        $("#updateBtn").show();
 					    });
 					});					
 		        }	
 			}					    	        
 		};
 		
-		$(function() {			
+		$(function() {
+			$("#newBtn").on("click", function(){
+				$("#updateBtn").hide();
+				$("#saveBtn").show();
+				
+				commonResetForm("divUser");
+			});
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);
 		    });
 			
-			initGrid();
+			initGrid();						
 		});
 	</script>
 </th:block>
