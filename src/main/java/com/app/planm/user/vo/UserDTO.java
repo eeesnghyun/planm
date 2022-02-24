@@ -19,5 +19,6 @@ public class UserDTO {
 	private String userImg;
 	private String enterYmd;
 	private String retireYmd;
+	private String salt;
 	
 }

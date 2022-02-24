@@ -20,11 +20,13 @@
 			, USER_AUTH
 			, BIRTH_YMD
 			, GENDER
+			, MOBILE
 			, EMAIL
 			, DEPT
 			, JOB_POS
 			, ENTER_YMD
 			, RETIRE_YMD
+			, SALT
 		) VALUES (
 			  #{cmpCode}
 			, (
@@ -44,12 +46,13 @@
 			, #{userAuth}
 			, REPLACE(#{birthYmd},'-','')
 			, #{gender}
-			, #{mobileNo}
+			, #{mobile}
 			, #{email}
 			, #{dept}
 			, #{jobPos}
 			, REPLACE(#{enterYmd},'-','')
 			, REPLACE(#{retireYmd},'-','')
+			, #{salt}
 		)
 	</insert>
 	

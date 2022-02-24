@@ -2,6 +2,7 @@ package com.app.planm.user.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.app.planm.common.util.SecureAlgorithm;
 import com.app.planm.user.dao.UserDao;
 import com.app.planm.user.service.UserService;
 import com.app.planm.user.vo.UserDTO;
@@ -23,8 +24,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveUser(UserDTO userDTO) throws Exception {
-		//패스워드 암호화 로직 추가
-		userDTO.setPassword(userDTO.getBirthYmd());
+		//유저생성시 생년월일로 임시 패스워드(SHA256) 생성
+		String tempPass = userDTO.getBirthYmd().replaceAll("-", "");
+		String salt = SecureAlgorithm.getSalt();
+		String encryptPass = SecureAlgorithm.encryptSha256(tempPass, salt);
+		
+		userDTO.setPassword(encryptPass);
+		userDTO.setSalt(salt);
 		
 		userDao.saveUser(userDTO);
 	}
