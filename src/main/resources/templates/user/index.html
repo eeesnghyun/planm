@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     
-	<link rel="stylesheet" href="/resources/plugins/grid/tabulator/tabulator_semanticui.min.css" type="text/css"/>    
+	<link rel="stylesheet" href="/plugins/grid/tabulator/tabulator_semanticui.min.css" type="text/css"/>    
 </head>      
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
@@ -44,11 +44,11 @@
 							    <div class="col-sm-2">
 							    	<div class="pt-2">
 								    	<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="gender" id="mail" value="male" checked="checked">
+											<input class="form-check-input" type="radio" name="gender" id="male" value="male" checked="checked">
 										  	<label class="form-check-label" for="mail">남</label>
 										</div>
 										<div class="form-check form-check-inline">
-										  	<input class="form-check-input" type="radio" name="gender" id="femail" value="female">
+										  	<input class="form-check-input" type="radio" name="gender" id="female" value="female">
 										  	<label class="form-check-label" for="femail">녀</label>
 										</div>
 									</div>
@@ -58,17 +58,7 @@
 							<div class="form-group row">
 								<label for="inputPassword" class="col-sm-1 col-form-label">연락처</label>
 							    <div class="col-sm-3">
-							    	<div class="form-row">
-										<div class="col">
-									    	<input type="text" class="form-control" id="m1">
-									    </div>
-									    <div class="col">
-									      	<input type="text" class="form-control" id="m2">
-									    </div>
-									    <div class="col">
-									      	<input type="text" class="form-control" id="m3">
-									    </div>
-									</div>
+							    	<input type="text" class="form-control" id="mobile" placeholder="휴대폰 번호 '-'표 없이 입력해주세요.">
 							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">이메일</label>
@@ -153,19 +143,19 @@
 		</div>	<!-- End row -->
 	</div>		<!-- End container -->
 	
-	<script src="/resources/plugins/grid/tabulator/tabulator.min.js"></script>	
-	<script src="/resources/plugins/grid/tabulator/xlsx.full.min.js"></script>
+	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>	
+	<script src="/plugins/grid/tabulator/xlsx.full.min.js"></script>
 	<script>
 		var grid = null;
-		const saveUser = function() {
-			const mobile = $("#m1").val() + $("#m2").val() + $("#m3").val(); 
+		
+		const saveUser = function() {			
 			const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
 			
 			const params = {
 				"userName"  : $("#userName").val(),
 				"birthYmd"  : $("#birthYmd").val(),
 				"gender"    : $("input[name=gender]:checked").val(),
-				"mobile"    : mobile,
+				"mobile"    : $("#mobile").val(),
 				"email"     : email,
 				"dept" 	    : $("#dept").val(),
 				"jobPos"    : $("#jobPos").val(),
@@ -209,6 +199,24 @@
 					//Data set
 					grid.on("tableBuilt", function(){				
 						grid.setData(result);
+						grid.on("rowClick", function(e, row) {			    				    				    				    	
+					    	//e - click object
+					        //row - row component
+					        const rowData = row._row.data;
+					    	const gender = rowData.gender == "남" ? "male" : "female";				    	
+					    	const email = rowData.email.split("@");
+					    						    	
+					    	$("#userName").val(rowData.userName);
+					        $("#birthYmd").val(rowData.birthYmd);
+					        $("input:radio[id='"+ gender +"']").prop("checked", true);
+					        $("#mobile").val(rowData.mobile);
+					        $("#email").val(email[0]);
+					        $("#emailServer").val(email[1]);
+					        $("#dept").val(rowData.dept);
+					        $("#jobPos").val(rowData.jobPos);
+					        $("#enterYmd").val(rowData.enterYmd);
+					        $("#retireYmd").val(rowData.retireYmd);					        					       
+					    });
 					});					
 		        }	
 			}					    	        
