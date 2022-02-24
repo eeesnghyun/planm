@@ -5,11 +5,8 @@
       layout:decorate="~{index}">
 <head>
     <meta charset="UTF-8">
-    <style>
-    	.form-group .row .form-control {    		 
-    		margin-top: 2px;    	
-    	}				
-    </style>
+    
+	<link rel="stylesheet" href="/resources/plugins/grid/tabulator/tabulator_semanticui.min.css" type="text/css"/>    
 </head>      
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
@@ -148,9 +145,18 @@
 				</div>
 			</div>			
 		</div>	<!-- End row -->
+				
+		<div class="row">
+			<div class="col-12">
+				<div id="gridUser"></div>
+			</div>
+		</div>	<!-- End row -->
 	</div>		<!-- End container -->
 	
+	<script src="/resources/plugins/grid/tabulator/tabulator.min.js"></script>	
+	<script src="/resources/plugins/grid/tabulator/xlsx.full.min.js"></script>
 	<script>
+		var grid = null;
 		const saveUser = function() {
 			const mobile = $("#m1").val() + $("#m2").val() + $("#m3").val(); 
 			const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
@@ -175,10 +181,45 @@
 			}
 		};
 		
+		const initGrid = function() {
+			const data = commonCallAjax("/user/getUserList", "");
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+				
+				if (result.length > 0) {
+		        	//Grid draw
+					grid = new Tabulator("#gridUser", {
+						layout: "fitDataTable",
+						height: "450px",	    
+					    columns: [
+					    	{title: "사번"     , field: "userCode"  , width: 100},
+					    	{title: "이름"	   , field: "userName"  , width: 100},
+						    {title: "생년월일" , field: "birthYmd"  , width: 120, hozAlign: "center"},
+						    {title: "성별"	   , field: "gender"    , width: 100, hozAlign: "center"},
+						    {title: "연락처"   , field: "mobile"    , width: 150},
+						    {title: "이메일"   , field: "email"     , width: 250},
+						    {title: "부서"	   , field: "dept"      , width: 150},
+						    {title: "직급"	   , field: "jobPos"    , width: 150},
+						    {title: "입사일"   , field: "enterYmd"  , width: 120, hozAlign: "center"},
+						    {title: "퇴사일"   , field: "retireYmd" , width: 120, hozAlign: "center"}						    
+					    ]			  
+					});		        	
+
+					//Data set
+					grid.on("tableBuilt", function(){				
+						grid.setData(result);
+					});					
+		        }	
+			}					    	        
+		};
+		
 		$(function() {			
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);
 		    });
+			
+			initGrid();
 		});
 	</script>
 </th:block>

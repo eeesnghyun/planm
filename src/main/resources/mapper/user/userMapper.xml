@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.app.planm.user.dao.UserDao">
 
+	<select id="getUserList" parameterType="String" resultType="com.app.planm.user.vo.UserVO">
+		SELECT USER_CODE
+			 , USER_NAME
+			 , DATE_FORMAT(BIRTH_YMD,'%Y-%m-%d') BIRTH_YMD			 
+			 , IF(GENDER='male','남','여') GENDER
+			 , MOBILE
+			 , EMAIL
+			 , DEPT
+			 , JOB_POS
+			 , DATE_FORMAT(ENTER_YMD,'%Y-%m-%d') ENTER_YMD
+			 , DATE_FORMAT(RETIRE_YMD,'%Y-%m-%d') RETIRE_YMD
+		  FROM PM_USER
+		 WHERE CMP_CODE = #{cmpCode}
+	</select>
+
 	<select id="getUserInfo" parameterType="com.app.planm.user.vo.UserDTO" resultType="com.app.planm.user.vo.UserVO">
 		SELECT USER_CODE
 			 , USER_NAME

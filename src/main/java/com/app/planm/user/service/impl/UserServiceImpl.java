@@ -1,5 +1,7 @@
 package com.app.planm.user.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.app.planm.common.util.SecureAlgorithm;
@@ -16,7 +18,12 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl(UserDao userDao) {
 		this.userDao = userDao;
 	}
-		
+
+	@Override
+	public List<UserVO> getUserList(String cmpCode) throws Exception {
+		return userDao.getUserList(cmpCode);
+	}
+	
 	@Override
 	public UserVO getUserInfo(UserDTO userDTO) throws Exception {
 		return userDao.getUserInfo(userDTO);

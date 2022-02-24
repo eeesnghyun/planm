@@ -1,6 +1,7 @@
 package com.app.planm.user.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.planm.user.service.UserService;
 import com.app.planm.user.vo.UserDTO;
+import com.app.planm.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/user")
@@ -29,9 +31,23 @@ public class UserController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String user(Model model) throws Exception {
-		
+			
 		return "user/index";
 	}
+	
+	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getUserList(HttpSession session) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String cmpCode = "0000";
+		
+		List<UserVO> resultList = userService.getUserList(cmpCode);
+		
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
+		
+		return resultMap;
+	}	
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> saveUser(
