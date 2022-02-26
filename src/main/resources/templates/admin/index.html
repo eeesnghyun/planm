@@ -89,7 +89,6 @@
 		        	//Grid draw
 					gridDept = new Tabulator("#gridDept", {
 						layout: "fitDataTable",
-						selectable: "highlight",
 						height: "700px",	    
 					    columns: [
 					    	{title: "부서코드" , field: "deptCode"    , width: 100},
@@ -102,7 +101,9 @@
 					//Data set
 					gridDept.on("tableBuilt", function(){				
 						gridDept.setData(result);
-						gridDept.on("rowClick", function(e, row) {			    				    				    				    	
+						gridDept.on("rowClick", function(e, row) {		
+							gridDept.deselectRow();
+							row.toggleSelect();
 					    	//e - click object
 					        //row - row component
 					        const rowData = row._row.data;
@@ -120,10 +121,17 @@
 			if (data.code == "ok") {
 				const result = data.resultList;
 				
+				let nullMsg = "";				
+				if (commonIsNull(deptCode)) {
+					nullMsg = "부서를 선택해주세요.";
+				} else {
+					nullMsg = "데이터가 존재하지 않습니다.";
+				}
+				
 	        	//Grid draw
 				gridPart = new Tabulator("#gridPart", {
 					layout: "fitDataTable",
-					placeholder: "데이터가 존재하지 않습니다.",
+					placeholder: nullMsg,
 					height: "700px",	    
 				    columns: [
 				    	{title: "파트코드" , field: "partCode"    , width: 100},
@@ -168,6 +176,7 @@
 		$(function() {
 
 			initGridDept();
+			initGridPart();
 			initGridPos();
 		});		
 	</script>
