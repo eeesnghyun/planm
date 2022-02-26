@@ -24,12 +24,17 @@ import com.app.planm.user.vo.UserVO;
 @Controller
 @RequestMapping("/document")
 public class DocumentController {
-
-	@Autowired
-	private DocumentService documentService;
+	
+	private final DocumentService documentService;		
+	private final UserService userService;
 	
 	@Autowired
-	private UserService userService;
+	public DocumentController(
+			DocumentService documentService,
+			UserService userService) {
+		this.documentService = documentService;
+		this.userService = userService;
+	}
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String document(Model model) throws Exception {
