@@ -27,12 +27,5 @@ public class AdminServiceImpl implements AdminService {
 	public List<HashMap<String, Object>> getPartList(AdminDTO adminDTO) throws Exception {
 		return adminDao.getPartList(adminDTO);
 	}
-
-	@Override
-	public List<HashMap<String, Object>> getPosList(AdminDTO adminDTO) throws Exception {
-		return adminDao.getPosList(adminDTO);
-	}
-	
-	
 	
 }

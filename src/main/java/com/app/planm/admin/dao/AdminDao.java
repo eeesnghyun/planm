@@ -11,6 +11,5 @@ public interface AdminDao {
 	
 	public List<HashMap<String,Object>> getPartList(AdminDTO adminDTO) throws Exception;
 	
-	public List<HashMap<String,Object>> getPosList(AdminDTO adminDTO) throws Exception;
 	
 }

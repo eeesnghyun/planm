@@ -22,7 +22,7 @@ import com.app.planm.admin.vo.AdminDTO;
 public class AdminController {
 
 	private final AdminService adminService;
-	
+
 	@Autowired
 	public AdminController(AdminService adminService) {
 		this.adminService = adminService;
@@ -62,15 +62,4 @@ public class AdminController {
 		return resultMap;
 	}	
 	
-	@RequestMapping(value = "/getPosList", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getPosList(@RequestBody AdminDTO adminDTO) throws Exception {		
-		Map<String, Object> resultMap = new HashMap<String, Object>();						
-		
-		List<HashMap<String,Object>> resultList = adminService.getPosList(adminDTO);
-		
-		resultMap.put("code", "ok");
-		resultMap.put("resultList", resultList);
-		
-		return resultMap;
-	}	
 }

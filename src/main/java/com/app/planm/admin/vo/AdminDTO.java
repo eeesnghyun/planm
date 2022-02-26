@@ -7,6 +7,5 @@ public class AdminDTO {
 
 	private String cmpCode;
 	private String deptCode;
-	private String parentCode;
 	
 }

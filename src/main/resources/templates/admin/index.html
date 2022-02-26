@@ -149,7 +149,7 @@
 		};
 		
 		const initGridPos = function() {
-			const data = commonCallAjax("/admin/getPosList", {"parentCode" : "POS001"});
+			const data = commonCallAjax("/cmn/getCodeList", {"parentCode" : "POS001"});
 			
 			if (data.code == "ok") {
 				const result = data.resultList;

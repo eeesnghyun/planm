@@ -72,7 +72,7 @@
 							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">이메일</label>
-							    <div class="col-sm-4">
+							    <div class="col-sm-7">
 							    	<div class="form-row align-items-center">
 									    <div class="col">									    	
 									      	<input type="text" class="form-control" id="email">
@@ -107,9 +107,14 @@
 							    		<option value="3">부서3</option>
 							    	</select>
 							    </div>
+
+							    <label for="inputPassword" class="col-sm-1 col-form-label">파트</label>
+							    <div class="col-sm-3">
+							    	<select class="form-control" id="part"></select>
+							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">직책</label>
-							    <div class="col-sm-4">
+							    <div class="col-sm-3">
 							    	<select class="form-control" id="jobPos">
 							    		<option value="">선택</option>
 							    		<option value="1">직책1</option>
@@ -156,7 +161,7 @@
 	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>	
 	<script src="/plugins/grid/tabulator/xlsx.full.min.js"></script>
 	<script>
-		var grid = null;
+		var grid = null;				
 		
 		const readUserImg = function(input) {			
 			$("#fileName").val(input.files[0].name);
@@ -349,6 +354,12 @@
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);
 		    });
+			
+			const comboObj = {
+				"divId" : "dept",
+				"code" : "P0001"
+			};
+			//commonInitObj(comboObj);
 			
 			initGrid();						
 		});

@@ -24,15 +24,5 @@
 		 ORDER BY PART_NAME
 	</select>
 	
-	<select id="getPosList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
-		SELECT CODE_VALUE	
-		     , CODE_NAME
-		  FROM CODE_PARENT CP
-		       LEFT OUTER JOIN CODE_CHILD CC
-		         ON CP.PARENT_CODE = CC.PARENT_CODE
-		 WHERE CP.PARENT_CODE = #{parentCode}
-		 ORDER BY SORT_ORDER
-	</select>
-	
 	
 </mapper>
