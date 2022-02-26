@@ -1,8 +1,8 @@
 package com.app.planm.admin.vo;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class AdminVO {
 
 }

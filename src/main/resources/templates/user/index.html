@@ -37,7 +37,7 @@
 					<div class="row">
 						<div class="col-12">
 							<div class="form-group row">								
-								<label for="staticEmail" class="col-sm-1 col-form-label">이름/사번</label>
+								<label class="col-sm-1 col-form-label">이름/사번</label>
 							    <div class="col-sm-3">
 							    	<div class="form-inline">
 								    	<input type="text" class="form-control" id="userName" style="width: 100px;"> / 
@@ -45,12 +45,12 @@
 							    	</div>
 							    </div>
 							    
-							    <label for="inputPassword" class="col-sm-1 col-form-label">생년월일</label>
+							    <label class="col-sm-1 col-form-label">생년월일</label>
 							    <div class="col-sm-2">
 							    	<input type="text" class="form-control" id="birthYmd" name="formDatePicker">
 							    </div>
 							    
-							    <label for="staticEmail" class="col-sm-1 col-form-label">성별</label>
+							    <label class="col-sm-1 col-form-label">성별</label>
 							    <div class="col-sm-2">
 							    	<div class="pt-2">
 								    	<div class="form-check form-check-inline">
@@ -71,7 +71,7 @@
 							    	<input type="text" class="form-control" id="mobile" placeholder="휴대폰 번호 '-'표 없이 입력해주세요.">
 							    </div>
 							    
-							    <label for="inputPassword" class="col-sm-1 col-form-label">이메일</label>
+							    <label class="col-sm-1 col-form-label">이메일</label>
 							    <div class="col-sm-7">
 							    	<div class="form-row align-items-center">
 									    <div class="col">									    	
@@ -98,39 +98,29 @@
 							</div>
 							
 							<div class="form-group row">
-								<label for="inputPassword" class="col-sm-1 col-form-label">부서</label>
+								<label class="col-sm-1 col-form-label">부서</label>
 							    <div class="col-sm-3">
-							    	<select class="form-control" id="dept">
-							    		<option value="">선택</option>
-							    		<option value="1">부서1</option>
-							    		<option value="2">부서2</option>
-							    		<option value="3">부서3</option>
-							    	</select>
+							    	<select class="form-control" id="deptCode" onchange="getPartList(this.value)"></select>
 							    </div>
 
-							    <label for="inputPassword" class="col-sm-1 col-form-label">파트</label>
+							    <label class="col-sm-1 col-form-label">파트</label>
 							    <div class="col-sm-3">
-							    	<select class="form-control" id="part"></select>
+							    	<select class="form-control" id="partCode"></select>
 							    </div>
 							    
-							    <label for="inputPassword" class="col-sm-1 col-form-label">직책</label>
+							    <label class="col-sm-1 col-form-label">직책</label>
 							    <div class="col-sm-3">
-							    	<select class="form-control" id="jobPos">
-							    		<option value="">선택</option>
-							    		<option value="1">직책1</option>
-							    		<option value="2">직책2</option>
-							    		<option value="3">직책3</option>
-							    	</select>
+							    	<select class="form-control" id="jobPos"></select>
 							    </div>				    				    
 							</div>
 							
 							<div class="form-group row">
-								<label for="inputPassword" class="col-sm-1 col-form-label">입사일</label>
+								<label class="col-sm-1 col-form-label">입사일</label>
 							    <div class="col-sm-3">
 							    	<input type="text" class="form-control" id="enterYmd" name="formDatePicker">
 							    </div>
 							    
-							    <label for="inputPassword" class="col-sm-1 col-form-label">퇴사일</label>
+							    <label class="col-sm-1 col-form-label">퇴사일</label>
 							    <div class="col-sm-4">
 							    	<input type="text" class="form-control" id="retireYmd" name="formDatePicker">
 							    </div>				    				    
@@ -197,23 +187,27 @@
 				return false;
 			}
 			
-			if (commonIsNull($("#email").val())) {
-				$("#email").addClass("is-invalid");
+			if (commonIsNull($("#email").val()) || commonIsNull($("#emailServer").val())) {
+				if (commonIsNull($("#email").val())) $("#email").addClass("is-invalid");
+				if (commonIsNull($("#emailServer").val())) $("#emailServer").addClass("is-invalid");
+					
 				alert("이메일을 입력해주세요.");
 				return false;
 			} 
-			
-			if (commonIsNull($("#emailServer").val())) {								
-				$("#emailServer").addClass("is-invalid");
-				alert("이메일을 입력해주세요.");
+						
+			if (commonIsNull($("#deptCode").val()) || commonIsNull($("#partCode").val())) {
+				if (commonIsNull($("#deptCode").val())) $("#deptCode").addClass("is-invalid");
+				if (commonIsNull($("#partCode").val())) $("#partCode").addClass("is-invalid");
+				
+				alert("부서/파트를 선택해주세요.");
 				return false;
 			}
-			
+
 			if (commonIsNull($("#enterYmd").val())) {
 				$("#enterYmd").addClass("is-invalid");
 				alert("입사일을 입력해주세요.")
 				return false;
-			} 
+			}
 			
 			return true;
 		}
@@ -228,7 +222,8 @@
 					"gender"    : $("input[name=gender]:checked").val(),
 					"mobile"    : $("#mobile").val(),
 					"email"     : email,
-					"dept" 	    : $("#dept").val(),
+					"deptCode"  : $("#deptCode").val(),
+					"partCode"  : $("#partCode").val(),
 					"jobPos"    : $("#jobPos").val(),
 					"userImg"   : $("#imgSource").val(),
 					"enterYmd"  : $("#enterYmd").val(),
@@ -256,7 +251,8 @@
 					"gender"    : $("input[name=gender]:checked").val(),
 					"mobile"    : $("#mobile").val(),
 					"email"     : email,
-					"dept" 	    : $("#dept").val(),
+					"deptCode"  : $("#deptCode").val(),
+					"partCode"  : $("#partCode").val(),
 					"jobPos"    : $("#jobPos").val(),
 					"userImg"   : $("#imgSource").val(),
 					"enterYmd"  : $("#enterYmd").val(),
@@ -290,8 +286,12 @@
 						    {title: "성별"	   , field: "gender"    , width: 100, hozAlign: "center"},
 						    {title: "연락처"   , field: "mobile"    , width: 150},
 						    {title: "이메일"   , field: "email"     , width: 250},
-						    {title: "부서"	   , field: "dept"      , width: 150},
-						    {title: "직급"	   , field: "jobPos"    , width: 150},
+						    {title: "부서코드" , field: "deptCode"  , visible: false},
+						    {title: "부서"	   , field: "deptName"  , width: 130},
+						    {title: "파트코드" , field: "partCode"  , visible: false},
+						    {title: "파트"     , field: "partName"  , width: 130},
+						    {title: "직급코드" , field: "jobPos"    , visible: false},
+						    {title: "직급"	   , field: "jobName"    , width: 130},
 						    {title: "입사일"   , field: "enterYmd"  , width: 120, hozAlign: "center"},
 						    {title: "퇴사일"   , field: "retireYmd" , width: 120, hozAlign: "center"},
 						    {title: "이미지"   , field: "userImg"   , visible: false}
@@ -301,7 +301,9 @@
 					//Data set
 					grid.on("tableBuilt", function(){				
 						grid.setData(result);
-						grid.on("rowClick", function(e, row) {			    				    				    				    	
+						grid.on("rowClick", function(e, row) {
+							grid.deselectRow();
+							row.toggleSelect();
 					    	//e - click object
 					        //row - row component
 					        const rowData = row._row.data;
@@ -316,7 +318,11 @@
 					        $("#mobile").val(rowData.mobile);
 					        $("#email").val(email[0]);
 					        $("#emailServer").val(email[1]);
-					        $("#dept").val(rowData.dept);
+					        $("#deptCode").val(rowData.deptCode);
+					        
+					        getPartList(rowData.deptCode);
+					        
+					        $("#partCode").val(rowData.partCode);
 					        $("#jobPos").val(rowData.jobPos);
 					        $("#enterYmd").val(rowData.enterYmd);
 					        $("#retireYmd").val(rowData.retireYmd);
@@ -342,6 +348,45 @@
 			}					    	        
 		};
 		
+		const initObj = function() {
+			const data = commonCallAjax("/admin/getDeptList", "");
+			const result = data.resultList;
+			let dataList = new Array();
+			
+			for (idx in result) {				
+	            let data = new Object();
+	             
+	            data.codeValue = result[idx].deptCode;
+	            data.codeName = result[idx].deptName;
+
+				dataList.push(data);
+			}
+						
+			const comboObj  = {"objId" : "deptCode", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};			
+			const comboObj2 = {"objId" : "jobPos", "params" : {"parentCode" : "POS001"}, "defaultSelected" : "blank"};			
+			
+			commonInitObj(comboObj);
+			commonInitObj(comboObj2);
+		};
+		
+		const getPartList = function(deptCode) {
+			const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode})
+			const result = data.resultList;
+			let dataList = new Array();
+			
+			for (idx in result) {				
+	            let data = new Object();
+	             
+	            data.codeValue = result[idx].partCode;
+	            data.codeName  = result[idx].partName;
+
+				dataList.push(data);
+			}
+			
+			const comboObj = {"objId" : "partCode", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};
+			commonInitObj(comboObj);
+		};
+		
 		$(function() {
 			$("#newBtn").on("click", function(){
 				$("#updateBtn").hide();
@@ -353,15 +398,10 @@
 			});
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);
-		    });
+		    });						
 			
-			const comboObj = {
-				"divId" : "dept",
-				"code" : "P0001"
-			};
-			//commonInitObj(comboObj);
-			
-			initGrid();						
+			initGrid();
+			initObj();
 		});
 	</script>
 </th:block>

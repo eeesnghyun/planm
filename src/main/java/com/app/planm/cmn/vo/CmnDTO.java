@@ -6,6 +6,8 @@ import lombok.Data;
 public class CmnDTO {
 
 	private String parentCode;
-	private String codeValue;	
+	private String codeValue;
+	private String useYn;
+	private String show;
 	
 }

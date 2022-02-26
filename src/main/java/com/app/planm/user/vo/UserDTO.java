@@ -14,7 +14,8 @@ public class UserDTO {
 	private String gender;
 	private String mobile;
 	private String email;
-	private String dept;
+	private String deptCode;
+	private String partCode;
 	private String jobPos;
 	private String userImg;
 	private String enterYmd;

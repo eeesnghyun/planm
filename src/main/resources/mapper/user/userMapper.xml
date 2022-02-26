@@ -3,19 +3,36 @@
 <mapper namespace="com.app.planm.user.dao.UserDao">
 
 	<select id="getUserList" parameterType="String" resultType="com.app.planm.user.vo.UserVO">
-		SELECT USER_CODE
-			 , USER_NAME
-			 , DATE_FORMAT(BIRTH_YMD,'%Y-%m-%d') BIRTH_YMD			 
-			 , IF(GENDER='male','남','여') GENDER
-			 , MOBILE
-			 , EMAIL
-			 , DEPT
-			 , JOB_POS
-			 , DATE_FORMAT(ENTER_YMD,'%Y-%m-%d') ENTER_YMD
-			 , DATE_FORMAT(RETIRE_YMD,'%Y-%m-%d') RETIRE_YMD
-			 , USER_IMG
-		  FROM PM_USER
-		 WHERE CMP_CODE = #{cmpCode}
+		SELECT PU.USER_CODE
+			 , PU.USER_NAME
+			 , DATE_FORMAT(PU.BIRTH_YMD,'%Y-%m-%d') BIRTH_YMD			 
+			 , IF(PU.GENDER='male','남','여') GENDER
+			 , PU.MOBILE
+			 , PU.EMAIL
+			 , PU.DEPT_CODE
+             , DT.DEPT_NAME
+			 , PU.PART_CODE
+             , DT.PART_NAME
+			 , PU.JOB_POS
+             , (SELECT CODE_NAME FROM CODE_CHILD WHERE PARENT_CODE='POS001' AND CODE_VALUE=PU.JOB_POS) JOB_NAME
+			 , DATE_FORMAT(PU.ENTER_YMD,'%Y-%m-%d') ENTER_YMD
+			 , DATE_FORMAT(PU.RETIRE_YMD,'%Y-%m-%d') RETIRE_YMD
+			 , PU.USER_IMG
+		  FROM PM_USER PU
+               LEFT OUTER JOIN (SELECT PD.CMP_CODE
+									 , PD.DEPT_CODE
+									 , PD.DEPT_NAME
+									 , PDP.PART_CODE
+									 , PDP.PART_NAME
+								 FROM PM_DEPT PD
+									  LEFT OUTER JOIN PM_DEPT_PART PDP
+										ON PD.CMP_CODE  = PDP.CMP_CODE
+									   AND PD.DEPT_CODE = PDP.DEPT_CODE
+								WHERE PD.CMP_CODE = #{cmpCode}) DT
+                 ON PU.CMP_CODE  = DT.CMP_CODE
+				AND PU.DEPT_CODE = DT.DEPT_CODE
+                AND PU.PART_CODE = DT.PART_CODE
+		 WHERE PU.CMP_CODE = #{cmpCode}
 	</select>
 
 	<select id="getUserInfo" parameterType="com.app.planm.user.vo.UserDTO" resultType="com.app.planm.user.vo.UserVO">
@@ -38,7 +55,8 @@
 			, GENDER
 			, MOBILE
 			, EMAIL
-			, DEPT
+			, DEPT_CODE
+			, PART_CODE
 			, JOB_POS
 			, USER_IMG
 			, ENTER_YMD
@@ -65,7 +83,8 @@
 			, #{gender}
 			, #{mobile}
 			, #{email}
-			, #{dept}
+			, #{deptCode}
+			, #{partCode}
 			, #{jobPos}
 			, #{userImg}
 			, REPLACE(#{enterYmd},'-','')
@@ -81,7 +100,8 @@
 		   	 , GENDER     = #{gender}
 		   	 , MOBILE 	  = #{mobile}
 		   	 , EMAIL 	  = #{email}
-		   	 , DEPT 	  = #{dept}
+		   	 , DEPT_CODE  = #{deptCode}
+		   	 , PART_CODE  = #{partCode}
 		   	 , JOB_POS    = #{jobPos}
 		   	 , USER_IMG   = #{userImg}
 		   	 , ENTER_YMD  = REPLACE(#{enterYmd},'-','')

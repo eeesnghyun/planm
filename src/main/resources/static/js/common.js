@@ -143,4 +143,39 @@ const commonResetForm = function(id) {
 	}
 };
 
+const commonInitObj = function(comboObj) {
+	let result = "";
+	const obj = $("#" + comboObj.objId);
+	const params = comboObj.params;
+	
+	obj.empty();
+	
+	/**
+	 * blank : 선택
+	 * all : 전체
+	 */
+	if (comboObj.defaultSelected == "blank") {
+		obj.append("<option value=''>선택</option>");
+	} else if (comboObj.defaultSelected == "all") {
+		obj.append("<option value='all'>전체</option>");
+	}
+	
+	if (commonIsNull(comboObj.data)) {	
+		const data = commonCallAjax("/cmn/getCodeList", {"parentCode" : params.parentCode});
+			
+		if (data.code == "ok") {
+			result = data.resultList;
+			
+			for (idx in result) {
+				obj.append("<option value='" + result[idx].codeValue + "'>" + result[idx].codeName + "</option>");					
+			}
+		}	
+	} else {
+		result = comboObj.data;
+		
+		for (idx in result) {			
+			obj.append("<option value='" + result[idx].codeValue + "'>" + result[idx].codeName + "</option>");					
+		}
+	}	
+};
 

@@ -1,8 +1,8 @@
 package com.app.planm.user.vo;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class UserVO {
 
 	private String userCode;
@@ -11,8 +11,12 @@ public class UserVO {
 	private String gender;
 	private String mobile;
 	private String email;
-	private String dept;
+	private String deptCode;
+	private String partCode;
 	private String jobPos;
+	private String deptName;
+	private String partName;
+	private String jobName;
 	private String enterYmd;
 	private String retireYmd;
 	private String userImg;

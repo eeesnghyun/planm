@@ -3,13 +3,17 @@
 <mapper namespace="com.app.planm.cmn.dao.CmnDao">
 	
 	<select id="getCodeList" parameterType="com.app.planm.cmn.vo.CmnDTO" resultType="camelHashMap">
-		SELECT CODE_VALUE	
-		     , CODE_NAME
+		SELECT CC.CODE_VALUE	
+		     , CC.CODE_NAME
+		     , CC.USE_YN
 		  FROM CODE_PARENT CP
-		       LEFT OUTER JOIN CODE_CHILD CC
-		         ON CP.PARENT_CODE = CC.PARENT_CODE
+		       INNER JOIN CODE_CHILD CC
+		          ON CP.PARENT_CODE = CC.PARENT_CODE
 		 WHERE CP.PARENT_CODE = #{parentCode}
-		 ORDER BY SORT_ORDER 		 
+		<if test='show != "all"'>
+		   AND CC.USE_YN = 'Y'
+		</if>		
+		 ORDER BY CC.SORT_ORDER 		 
 	</select>
 	
 </mapper>

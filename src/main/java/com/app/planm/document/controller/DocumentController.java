@@ -85,7 +85,7 @@ public class DocumentController {
 	public String createDoc(Model model) throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setCmpCode("0000");
-		userDTO.setUserCode("lsh");
+		userDTO.setUserCode("test1");
 		
 		UserVO userVO = userService.getUserInfo(userDTO);
 		

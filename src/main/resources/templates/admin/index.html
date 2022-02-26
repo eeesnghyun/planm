@@ -11,10 +11,85 @@
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-12">
-			
+			<div class="col-12 border-bottom">
+				<div class="float-left">
+					<h4><strong>회사정보</strong></h4>
+				</div>
 			</div>
 		</div>
+		
+		<div class="row mt-2">
+			<div class="col-3 text-center">
+				<p>
+					<img class="img-thumbnail" src="/images/logo.png" id="userImg" style="width: 100px; height: 100px;">
+					<input type="hidden" id="imgSource" value="">
+				</p>
+				
+				<div class="ipt-file">
+			    	<input type="text" readonly="readonly" id="fileName">
+			        <label>
+			            업로드
+			            <input type="file" onchange="readUserImg(this)">
+			        </label>
+			    </div>
+			</div>
+			
+			<div class="col-9">
+				<div class="form-group row">								
+					<label class="col-sm-1 col-form-label">회사이름</label>
+				    <div class="col-sm-3">				    	
+					    <input type="text" class="form-control" id="">					    					    	
+				    </div>
+				    
+				    <label class="col-sm-1 col-form-label">대표자명</label>
+				    <div class="col-sm-3">
+				    	<input type="text" class="form-control" id="">
+				    </div>				    
+				</div>
+				
+				<div class="form-group row">								
+					<label class="col-sm-1 col-form-label">주소</label>
+				    <div class="col-sm-2">
+				    	<input type="text" class="form-control mr-1" id="" disabled="disabled">
+				    </div>
+				    <div class="col-sm-9">					    	
+						<input type="text" class="form-control" id="">					    
+				    </div>				    		   
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-1 col-form-label">대표번호</label>
+				    <div class="col-sm-3">
+				    	<input type="text" class="form-control" id="">
+				    </div>	
+				    								
+					<label class="col-sm-1 col-form-label">대표메일</label>
+				    <div class="col-sm-7">
+				    	<div class="form-row align-items-center">
+						    <div class="col">									    	
+						      	<input type="text" class="form-control" id="email">
+						    </div>
+						    <div class="col">									    	
+						      	<div class="input-group">
+						        	<div class="input-group-prepend">
+						          		<div class="input-group-text">@</div>
+						        	</div>
+						        	<input type="text" class="form-control" id="emailServer">
+						      	</div>
+						    </div>									    
+						 </div>
+				    </div>				    				    			  
+				</div>
+			</div>						
+		</div>
+		
+		<div class="row">
+			<div class="col-12 border-bottom pb-3">
+				<div class="float-right">
+					<button type="button" class="btn btn-outline-secondary" onclick="save()">저장</button>					
+				</div>
+			</div>			
+		</div>	<!-- End row -->
 		
 		<div class="row">
 			<div class="col-4">
@@ -65,7 +140,7 @@
 					
 					<div class="row">
 						<div class="col-12">
-							<div id="gridPos" style="width: 220px;"></div>
+							<div id="gridPos" style="width: 330px;"></div>
 						</div>
 					</div>	<!-- End row -->
 				</div>		<!-- End container -->
@@ -89,7 +164,7 @@
 		        	//Grid draw
 					gridDept = new Tabulator("#gridDept", {
 						layout: "fitDataTable",
-						height: "700px",	    
+						height: "450px",	    
 					    columns: [
 					    	{title: "부서코드" , field: "deptCode"    , width: 100},
 					    	{title: "부서명"   , field: "deptName"    , width: 100},
@@ -132,7 +207,7 @@
 				gridPart = new Tabulator("#gridPart", {
 					layout: "fitDataTable",
 					placeholder: nullMsg,
-					height: "700px",	    
+					height: "450px",	    
 				    columns: [
 				    	{title: "파트코드" , field: "partCode"    , width: 100},
 				    	{title: "파트명"   , field: "partName"    , width: 100},
@@ -149,7 +224,11 @@
 		};
 		
 		const initGridPos = function() {
-			const data = commonCallAjax("/cmn/getCodeList", {"parentCode" : "POS001"});
+			const params = {
+				"parentCode" : "POS001",
+				"show" : "all" 
+			};
+			const data = commonCallAjax("/cmn/getCodeList", params);
 			
 			if (data.code == "ok") {
 				const result = data.resultList;
@@ -158,10 +237,11 @@
 		        	//Grid draw
 					gridPos = new Tabulator("#gridPos", {
 						layout: "fitDataTable",
-						height: "700px",	    
+						height: "450px",	    
 					    columns: [
 					    	{title: "직책코드" , field: "codeValue", width: 100},
-					    	{title: "직책명"   , field: "codeName" , width: 100}					    						    						    						  
+					    	{title: "직책명"   , field: "codeName" , width: 120},					    						    						    						  
+					    	{title: "보이기"   , field: "useYn"    , width: 100, hozAlign: "center"}
 					    ]			  
 					});		        	
 
