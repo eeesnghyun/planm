@@ -6,15 +6,170 @@
 <head>
     <meta charset="UTF-8">
     	 
+	<link rel="stylesheet" href="/plugins/grid/tabulator/tabulator_semanticui.min.css" type="text/css"/>
 </head>  
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-12">
-			부서/직책 관리
-			결재선 관리
+			
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-4">
+				<div class="container-fluid">
+					<div class="row">	
+						<div class="col-12 border-bottom">
+							<div class="float-left">
+								<h4><strong>부서</strong></h4>
+							</div>
+						</div>
+					</div>	<!-- End row -->
+					
+					<div class="row">
+						<div class="col-12">
+							<div id="gridDept"></div>
+						</div>
+					</div>	<!-- End row -->
+				</div>		<!-- End container -->
+			</div>
+			
+			<div class="col-4">
+				<div class="container-fluid">
+					<div class="row">	
+						<div class="col-12 border-bottom">
+							<div class="float-left">
+								<h4><strong>파트</strong></h4>
+							</div>
+						</div>
+					</div>	<!-- End row -->
+					
+					<div class="row">
+						<div class="col-12">
+							<div id="gridPart"></div>
+						</div>
+					</div>	<!-- End row -->
+				</div>		<!-- End container -->
+			</div>
+			
+			<div class="col-4">
+				<div class="container-fluid">
+					<div class="row">	
+						<div class="col-12 border-bottom">
+							<div class="float-left">
+								<h4><strong>직급</strong></h4>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-12">
+							<div id="gridPos" style="width: 220px;"></div>
+						</div>
+					</div>	<!-- End row -->
+				</div>		<!-- End container -->
 			</div>
 		</div>
 	</div>
+	
+	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>
+	<script>
+		var gridDept = null;
+		var gridPart = null;
+		var gridPos  = null;
+		
+		const initGridDept = function() {
+			const data = commonCallAjax("/admin/getDeptList", "");
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+
+				if (result.length > 0) {
+		        	//Grid draw
+					gridDept = new Tabulator("#gridDept", {
+						layout: "fitDataTable",
+						selectable: "highlight",
+						height: "700px",	    
+					    columns: [
+					    	{title: "부서코드" , field: "deptCode"    , width: 100},
+					    	{title: "부서명"   , field: "deptName"    , width: 100},
+					    	{title: "부서장"   , field: "deptManager" , width: 100},
+						    {title: "생성일"   , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
+					    ]			  
+					});		        	
+
+					//Data set
+					gridDept.on("tableBuilt", function(){				
+						gridDept.setData(result);
+						gridDept.on("rowClick", function(e, row) {			    				    				    				    	
+					    	//e - click object
+					        //row - row component
+					        const rowData = row._row.data;
+					    	
+					    	initGridPart(rowData.deptCode);
+						});
+					});					
+		        }	
+			}					    	        
+		};
+		
+		const initGridPart = function(deptCode) {
+			const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode});
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+				
+	        	//Grid draw
+				gridPart = new Tabulator("#gridPart", {
+					layout: "fitDataTable",
+					placeholder: "데이터가 존재하지 않습니다.",
+					height: "700px",	    
+				    columns: [
+				    	{title: "파트코드" , field: "partCode"    , width: 100},
+				    	{title: "파트명"   , field: "partName"    , width: 100},
+				    	{title: "파트장"   , field: "partManager" , width: 100},
+					    {title: "생성일"   , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
+				    ]			  
+				});		        	
+
+				//Data set
+				gridPart.on("tableBuilt", function(){				
+					gridPart.setData(result);
+				});				
+			}	
+		};
+		
+		const initGridPos = function() {
+			const data = commonCallAjax("/admin/getPosList", {"parentCode" : "POS001"});
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+				
+				if (result.length > 0) {
+		        	//Grid draw
+					gridPos = new Tabulator("#gridPos", {
+						layout: "fitDataTable",
+						height: "700px",	    
+					    columns: [
+					    	{title: "직책코드" , field: "codeValue", width: 100},
+					    	{title: "직책명"   , field: "codeName" , width: 100}					    						    						    						  
+					    ]			  
+					});		        	
+
+					//Data set
+					gridPos.on("tableBuilt", function(){				
+						gridPos.setData(result);						
+					});					
+		        }	
+			}					    	        
+		};
+		
+		$(function() {
+
+			initGridDept();
+			initGridPos();
+		});		
+	</script>
 </th:block>
 </html>

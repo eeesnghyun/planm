@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.app.planm.admin.dao.AdminDao">
-
+	
+	<select id="getDeptList" parameterType="String" resultType="camelHashMap">
+		SELECT DEPT_CODE	
+		     , DEPT_NAME
+		     , DEPT_MANAGER
+		     , DATE_FORMAT(CREATE_DATE, '%Y-%m-%d') CREATE_DATE
+		  FROM PM_DEPT
+		 WHERE CMP_CODE = #{cmpCode}
+		 ORDER BY DEPT_NAME
+	</select>
+	
+	<select id="getPartList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
+		SELECT DEPT_CODE			     
+		     , PART_CODE
+		     , PART_NAME
+		     , PART_MANAGER
+		     , DATE_FORMAT(CREATE_DATE, '%Y-%m-%d') CREATE_DATE
+		  FROM PM_DEPT_PART
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DEPT_CODE = #{deptCode}
+		 ORDER BY PART_NAME
+	</select>
+	
+	<select id="getPosList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
+		SELECT CODE_VALUE	
+		     , CODE_NAME
+		  FROM CODE_PARENT CP
+		       LEFT OUTER JOIN CODE_CHILD CC
+		         ON CP.PARENT_CODE = CC.PARENT_CODE
+		 WHERE CP.PARENT_CODE = #{parentCode}
+		 ORDER BY SORT_ORDER
+	</select>
+	
+	
 </mapper>

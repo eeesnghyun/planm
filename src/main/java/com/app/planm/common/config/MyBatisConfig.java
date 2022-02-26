@@ -42,12 +42,18 @@ public class MyBatisConfig {
 	
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+    	Resource myBatisConfig = new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml");
+		
     	SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         Resource[] arrResource = new PathMatchingResourcePatternResolver()
                 .getResources("classpath:mapper/**/*Mapper.xml");
+        
         sqlSessionFactoryBean.setMapperLocations(arrResource);
-        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        sqlSessionFactoryBean.setConfigLocation(myBatisConfig);
+        
+        //sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        
         return sqlSessionFactoryBean.getObject();
     }
     

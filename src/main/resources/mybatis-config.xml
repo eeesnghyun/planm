@@ -5,4 +5,11 @@
         <setting name="mapUnderscoreToCamelCase" value="true" />
         <setting name="callSettersOnNulls" value="true"/>
     </settings>
+    
+    <typeAliases>		
+    	<!-- <typeAlias alias="hashMap" type="java.util.HashMap" /> -->
+		
+		<!-- resultType으로 사용 -->
+		<typeAlias alias="camelHashMap" type="com.app.planm.common.util.LowerHashMap" />
+	</typeAliases>	
 </configuration>
