@@ -19,8 +19,8 @@
 		<div class="row mt-2" id="divUser">
 			<div class="col-3 text-center">
 				<p>
-					<img class="img-thumbnail" src="" id="userImg" style="width: 150px; height: 150px;">
-					<input type="hidden" id="source" value="">
+					<img class="img-thumbnail" src="/images/userImg.png" id="userImg" style="width: 150px; height: 150px;">
+					<input type="hidden" id="imgSource" value="">
 				</p>
 				
 				<div class="ipt-file">
@@ -36,10 +36,13 @@
 				<div class="container-fluid">					
 					<div class="row">
 						<div class="col-12">
-							<div class="form-group row">
-								<label for="staticEmail" class="col-sm-1 col-form-label">이름</label>
-							    <div class="col-sm-2">
-							    	<input type="text" class="form-control" id="userName">
+							<div class="form-group row">								
+								<label for="staticEmail" class="col-sm-1 col-form-label">이름/사번</label>
+							    <div class="col-sm-3">
+							    	<div class="form-inline">
+								    	<input type="text" class="form-control" id="userName" style="width: 100px;"> / 
+								    	<input type="text" class="form-control" id="userCode" style="width: 100px;" disabled="disabled">
+							    	</div>
 							    </div>
 							    
 							    <label for="inputPassword" class="col-sm-1 col-form-label">생년월일</label>
@@ -138,7 +141,7 @@
 				<div class="float-right">
 					<button type="button" class="btn btn-outline-secondary" id="newBtn">신규</button>
 					<button type="button" class="btn btn-outline-secondary" id="saveBtn" onclick="saveUser()">저장</button>
-					<button type="button" class="btn btn-outline-secondary" id="updateBtn" style="display: none;">수정</button>
+					<button type="button" class="btn btn-outline-secondary" id="updateBtn" onclick="updateUser()" style="display: none;">수정</button>
 				</div>
 			</div>			
 		</div>	<!-- End row -->
@@ -170,35 +173,99 @@
 				
 				fileReader.onload = function(e) {
 					$("#userImg").attr("src", e.target.result);
-					$("#source").val(e.target.result);
+					$("#imgSource").val(e.target.result);
 				};       
 				fileReader.readAsDataURL(file);
 			}
 		};
 		
-		const saveUser = function() {			
-			const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
-			
-			const params = {
-				"userName"  : $("#userName").val(),
-				"birthYmd"  : $("#birthYmd").val(),
-				"gender"    : $("input[name=gender]:checked").val(),
-				"mobile"    : $("#mobile").val(),
-				"email"     : email,
-				"dept" 	    : $("#dept").val(),
-				"jobPos"    : $("#jobPos").val(),
-				"userImg"   : $("#source").val(),
-				"enterYmd"  : $("#enterYmd").val(),
-				"retireYmd" : $("#retireYmd").val()
-			};
-			const data = commonCallAjax("/user/save", params);
-			
-			if (data.code == "ok") {				
-				alert("등록되었습니다.");
-				
-				commonResetForm("divUser");
+		const isValid = function() {
+			if (commonIsNull($("#userName").val())) {
+				$("#userName").addClass("is-invalid");
+				alert("이름을 입력해주세요.")
+				return false;
 			}
+			
+			if (commonIsNull($("#birthYmd").val())) {
+				$("#birthYmd").addClass("is-invalid");
+				alert("생년월일을 입력해주세요.")
+				return false;
+			}
+			
+			if (commonIsNull($("#email").val())) {
+				$("#email").addClass("is-invalid");
+				alert("이메일을 입력해주세요.");
+				return false;
+			} 
+			
+			if (commonIsNull($("#emailServer").val())) {								
+				$("#emailServer").addClass("is-invalid");
+				alert("이메일을 입력해주세요.");
+				return false;
+			}
+			
+			if (commonIsNull($("#enterYmd").val())) {
+				$("#enterYmd").addClass("is-invalid");
+				alert("입사일을 입력해주세요.")
+				return false;
+			} 
+			
+			return true;
+		}
+		
+		const saveUser = function() {
+			if (isValid()) {
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
+				
+				const params = {
+					"userName"  : $("#userName").val(),
+					"birthYmd"  : $("#birthYmd").val(),
+					"gender"    : $("input[name=gender]:checked").val(),
+					"mobile"    : $("#mobile").val(),
+					"email"     : email,
+					"dept" 	    : $("#dept").val(),
+					"jobPos"    : $("#jobPos").val(),
+					"userImg"   : $("#imgSource").val(),
+					"enterYmd"  : $("#enterYmd").val(),
+					"retireYmd" : $("#retireYmd").val()
+				};
+				const data = commonCallAjax("/user/save", params);
+				
+				if (data.code == "ok") {				
+					alert("등록되었습니다.");
+					
+					commonResetForm("divUser");
+					initGrid();
+				}	
+			}						
 		};
+		
+		const updateUser = function() {
+			if (isValid()) {
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
+				
+				const params = {
+					"userCode" : $("#userCode").val(),
+					"userName"  : $("#userName").val(),
+					"birthYmd"  : $("#birthYmd").val(),
+					"gender"    : $("input[name=gender]:checked").val(),
+					"mobile"    : $("#mobile").val(),
+					"email"     : email,
+					"dept" 	    : $("#dept").val(),
+					"jobPos"    : $("#jobPos").val(),
+					"userImg"   : $("#imgSource").val(),
+					"enterYmd"  : $("#enterYmd").val(),
+					"retireYmd" : $("#retireYmd").val()
+				};			
+				const data = commonCallAjax("/user/update", params);
+				
+				if (data.code == "ok") {
+					alert("수정되었습니다.");
+									
+					initGrid();
+				}
+			}						
+		};				
 		
 		const initGrid = function() {
 			const data = commonCallAjax("/user/getUserList", "");
@@ -235,7 +302,9 @@
 					        const rowData = row._row.data;
 					    	const gender = rowData.gender == "남" ? "male" : "female";				    	
 					    	const email = rowData.email.split("@");
-					    	
+					    	const userImg = rowData.userImg;
+					    						    	
+					    	$("#userCode").val(rowData.userCode);
 					    	$("#userName").val(rowData.userName);
 					        $("#birthYmd").val(rowData.birthYmd);
 					        $("input:radio[id='"+ gender +"']").prop("checked", true);
@@ -246,12 +315,24 @@
 					        $("#jobPos").val(rowData.jobPos);
 					        $("#enterYmd").val(rowData.enterYmd);
 					        $("#retireYmd").val(rowData.retireYmd);
-					        $("#userImg").attr("src", rowData.userImg);
+					        
+					        if (commonIsNull(userImg)) {
+					        	$("#userImg").attr("src", "/images/userImg.png");
+						        $("#imgSource").val("");						        
+					        } else {
+					        	$("#userImg").attr("src", rowData.userImg);
+						        $("#imgSource").val(rowData.userImg);
+					        }
 					        
 					        $("#saveBtn").hide();
 					        $("#updateBtn").show();
 					    });
-					});					
+					});
+					
+					$("#divUser").find("input, select").each(function() {
+				 		$t = jQuery(this);
+				 		$t.removeClass("is-invalid");
+				    });
 		        }	
 			}					    	        
 		};
@@ -262,6 +343,8 @@
 				$("#saveBtn").show();
 				
 				commonResetForm("divUser");
+				
+				$("#userImg").attr("src", "/images/userImg.png");
 			});
 			$("input[name=formDatePicker]").each(function(index, item){
 				$("#" + item.id).datepicker(commonDatePickerOpt);

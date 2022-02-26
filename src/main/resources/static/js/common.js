@@ -35,6 +35,14 @@ const commonCallAjax = function(url, params) {
 	return returnData;
 };
 
+const commonIsNull = function(obj) {
+	if (obj == "" || obj == null || obj == undefined || obj == "undefined" || (obj != null && typeof obj == "object" && !Object.keys(obj).length)) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 /**
  * Bootstrap-Datepicker 옵션 지정
  * 참고 : https://github.com/uxsolutions/bootstrap-datepicker
@@ -92,14 +100,14 @@ const commonResetForm = function(id) {
  	//input, select, textarea Element 초기화
  	$(divId).find("input, select, textarea").each(function() {
  		$t = jQuery(this);
-
+ 		
         if (($t.is("input") == true && $t.attr("type") == "text") ||
             ($t.is("input") == true && $t.attr("type") == "hidden") || $t.is("textarea") == true) {
-         	$t.val("");
+         	$t.val("");         	
         } else if ($t.is("select") == true) {
          	$("#" + $t.attr("id") + " option:eq(0)").prop("selected", true);         	
  		}
-    });
+    }); 	
 
  	//Checkbox 초기화
  	$(divId + " input[type=checkbox]").prop("checked", false);

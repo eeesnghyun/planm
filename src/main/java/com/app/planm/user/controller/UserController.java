@@ -63,4 +63,18 @@ public class UserController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> updateUser(
+			HttpSession session, @RequestBody UserDTO userDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		userDTO.setCmpCode("0000");
+	
+		userService.updateUser(userDTO);
+		
+		resultMap.put("code", "ok");
+		
+		return resultMap;
+	}
+	
 }

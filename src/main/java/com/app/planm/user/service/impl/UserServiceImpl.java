@@ -41,5 +41,10 @@ public class UserServiceImpl implements UserService {
 		
 		userDao.saveUser(userDTO);
 	}
+
+	@Override
+	public void updateUser(UserDTO userDTO) throws Exception {
+		userDao.updateUser(userDTO);
+	}
 	
 }

@@ -74,4 +74,20 @@
 		)
 	</insert>
 	
+	<update id="updateUser" parameterType="com.app.planm.user.vo.UserDTO">
+		UPDATE PM_USER 
+		   SET USER_NAME  = #{userName}		   	 
+		   	 , BIRTH_YMD  = REPLACE(#{birthYmd},'-','')
+		   	 , GENDER     = #{gender}
+		   	 , MOBILE 	  = #{mobile}
+		   	 , EMAIL 	  = #{email}
+		   	 , DEPT 	  = #{dept}
+		   	 , JOB_POS    = #{jobPos}
+		   	 , USER_IMG   = #{userImg}
+		   	 , ENTER_YMD  = REPLACE(#{enterYmd},'-','')
+		   	 , RETIRE_YMD = REPLACE(#{retireYmd},'-','')
+		 WHERE CMP_CODE   = #{cmpCode}
+		   AND USER_CODE  = #{userCode}		
+	</update>
+	
 </mapper>

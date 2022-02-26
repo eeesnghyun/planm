@@ -13,4 +13,6 @@ public interface UserDao {
 	
 	public void saveUser(UserDTO userDTO) throws Exception;
 	
+	public void updateUser(UserDTO userDTO) throws Exception;
+	
 }
