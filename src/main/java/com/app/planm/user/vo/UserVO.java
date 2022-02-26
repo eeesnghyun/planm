@@ -15,5 +15,6 @@ public class UserVO {
 	private String jobPos;
 	private String enterYmd;
 	private String retireYmd;
+	private String userImg;
 	
 }

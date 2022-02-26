@@ -55,7 +55,7 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		userDTO.setCmpCode("0000");
-		
+	
 		userService.saveUser(userDTO);
 		
 		resultMap.put("code", "ok");

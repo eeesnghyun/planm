@@ -17,12 +17,19 @@
 		</div>
 		
 		<div class="row mt-2" id="divUser">
-			<div class="col-3">
-				<img src="">
-				<div class="custom-file">
-					<input type="file" class="custom-file-input" id="userImg">
-				  	<label class="custom-file-label" for="userImg" data-browse="이미지">첨부하기</label>
-				</div>
+			<div class="col-3 text-center">
+				<p>
+					<img class="img-thumbnail" src="" id="userImg" style="width: 150px; height: 150px;">
+					<input type="hidden" id="source" value="">
+				</p>
+				
+				<div class="ipt-file">
+			    	<input type="text" readonly="readonly" id="fileName">
+			        <label>
+			            업로드
+			            <input type="file" onchange="readUserImg(this)">
+			        </label>
+			    </div>
 			</div>
 			
 			<div class="col-9">
@@ -148,6 +155,27 @@
 	<script>
 		var grid = null;
 		
+		const readUserImg = function(input) {			
+			$("#fileName").val(input.files[0].name);
+			
+			if (input.files && input.files[0]) {
+				const file = input.files[0];
+				
+				if (file.size > 300000) {
+		            alert("파일 사이즈가 너무 큽니다.")
+		            return;
+		        }
+				
+				var fileReader = new FileReader();
+				
+				fileReader.onload = function(e) {
+					$("#userImg").attr("src", e.target.result);
+					$("#source").val(e.target.result);
+				};       
+				fileReader.readAsDataURL(file);
+			}
+		};
+		
 		const saveUser = function() {			
 			const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
 			
@@ -159,6 +187,7 @@
 				"email"     : email,
 				"dept" 	    : $("#dept").val(),
 				"jobPos"    : $("#jobPos").val(),
+				"userImg"   : $("#source").val(),
 				"enterYmd"  : $("#enterYmd").val(),
 				"retireYmd" : $("#retireYmd").val()
 			};
@@ -192,7 +221,8 @@
 						    {title: "부서"	   , field: "dept"      , width: 150},
 						    {title: "직급"	   , field: "jobPos"    , width: 150},
 						    {title: "입사일"   , field: "enterYmd"  , width: 120, hozAlign: "center"},
-						    {title: "퇴사일"   , field: "retireYmd" , width: 120, hozAlign: "center"}						    
+						    {title: "퇴사일"   , field: "retireYmd" , width: 120, hozAlign: "center"},
+						    {title: "이미지"   , field: "userImg"   , visible: false}
 					    ]			  
 					});		        	
 
@@ -205,7 +235,7 @@
 					        const rowData = row._row.data;
 					    	const gender = rowData.gender == "남" ? "male" : "female";				    	
 					    	const email = rowData.email.split("@");
-					    						    	
+					    	
 					    	$("#userName").val(rowData.userName);
 					        $("#birthYmd").val(rowData.birthYmd);
 					        $("input:radio[id='"+ gender +"']").prop("checked", true);
@@ -216,6 +246,7 @@
 					        $("#jobPos").val(rowData.jobPos);
 					        $("#enterYmd").val(rowData.enterYmd);
 					        $("#retireYmd").val(rowData.retireYmd);
+					        $("#userImg").attr("src", rowData.userImg);
 					        
 					        $("#saveBtn").hide();
 					        $("#updateBtn").show();

@@ -13,6 +13,7 @@
 			 , JOB_POS
 			 , DATE_FORMAT(ENTER_YMD,'%Y-%m-%d') ENTER_YMD
 			 , DATE_FORMAT(RETIRE_YMD,'%Y-%m-%d') RETIRE_YMD
+			 , USER_IMG
 		  FROM PM_USER
 		 WHERE CMP_CODE = #{cmpCode}
 	</select>
@@ -39,6 +40,7 @@
 			, EMAIL
 			, DEPT
 			, JOB_POS
+			, USER_IMG
 			, ENTER_YMD
 			, RETIRE_YMD
 			, SALT
@@ -65,6 +67,7 @@
 			, #{email}
 			, #{dept}
 			, #{jobPos}
+			, #{userImg}
 			, REPLACE(#{enterYmd},'-','')
 			, REPLACE(#{retireYmd},'-','')
 			, #{salt}
