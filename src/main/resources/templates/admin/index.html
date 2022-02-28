@@ -21,7 +21,7 @@
 		<div class="row mt-2">
 			<div class="col-3 text-center">
 				<p>
-					<img class="img-thumbnail" src="/images/logo.png" id="userImg" style="width: 100px; height: 100px;">
+					<img class="img-thumbnail" src="/images/logo.png" id="cmpLogo" style="width: 100px; height: 100px;">
 					<input type="hidden" id="imgSource" value="">
 				</p>
 				
@@ -29,7 +29,7 @@
 			    	<input type="text" readonly="readonly" id="fileName">
 			        <label>
 			            업로드
-			            <input type="file" onchange="readUserImg(this)">
+			            <input type="file" onchange="readCmpLogo(this)">
 			        </label>
 			    </div>
 			</div>
@@ -361,6 +361,27 @@
 					});					
 		        }	
 			}					    	        
+		};
+		
+		const readCmpLogo = function(input) {			
+			$("#fileName").val(input.files[0].name);
+			
+			if (input.files && input.files[0]) {
+				const file = input.files[0];
+				
+				if (file.size > 300000) {
+		            alert("파일 사이즈가 너무 큽니다.")
+		            return;
+		        }
+				
+				var fileReader = new FileReader();
+				
+				fileReader.onload = function(e) {
+					$("#cmpLogo").attr("src", e.target.result);
+					$("#imgSource").val(e.target.result);
+				};       
+				fileReader.readAsDataURL(file);
+			}
 		};
 		
 		const newDept = function() {
