@@ -3,8 +3,8 @@
 <mapper namespace="com.app.planm.cmn.dao.CmnDao">
 	
 	<select id="getCodeList" parameterType="com.app.planm.cmn.vo.CmnDTO" resultType="camelHashMap">
-		SELECT CC.CODE_VALUE	
-		     , CC.CODE_NAME
+		SELECT CC.CHILD_CODE CODE	
+		     , CC.CHILD_NAME NAME
 		     , CC.USE_YN
 		  FROM CODE_PARENT CP
 		       INNER JOIN CODE_CHILD CC

@@ -167,14 +167,14 @@ const commonInitObj = function(comboObj) {
 			result = data.resultList;
 			
 			for (idx in result) {
-				obj.append("<option value='" + result[idx].codeValue + "'>" + result[idx].codeName + "</option>");					
+				obj.append("<option value='" + result[idx].code + "'>" + result[idx].name + "</option>");					
 			}
 		}	
 	} else {
 		result = comboObj.data;
 		
 		for (idx in result) {			
-			obj.append("<option value='" + result[idx].codeValue + "'>" + result[idx].codeName + "</option>");					
+			obj.append("<option value='" + result[idx].code + "'>" + result[idx].name + "</option>");					
 		}
 	}	
 };
