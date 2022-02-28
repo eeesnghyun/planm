@@ -38,29 +38,29 @@
 				<div class="form-group row">								
 					<label class="col-sm-1 col-form-label">회사이름</label>
 				    <div class="col-sm-3">				    	
-					    <input type="text" class="form-control" id="">					    					    	
+					    <input type="text" class="form-control" id="" th:value="${data.cmpName}">					    					    	
 				    </div>
 				    
 				    <label class="col-sm-1 col-form-label">대표자명</label>
 				    <div class="col-sm-3">
-				    	<input type="text" class="form-control" id="">
+				    	<input type="text" class="form-control" id="" th:value="${data.cmpOwner}">
 				    </div>				    
 				</div>
 				
 				<div class="form-group row">								
 					<label class="col-sm-1 col-form-label">주소</label>
 				    <div class="col-sm-2">
-				    	<input type="text" class="form-control mr-1" id="" disabled="disabled">
+				    	<input type="text" class="form-control mr-1" id="" th:value="${data.zipcode}" disabled="disabled">
 				    </div>
 				    <div class="col-sm-9">					    	
-						<input type="text" class="form-control" id="">					    
+						<input type="text" class="form-control" id="" th:value="${data.address}">					    
 				    </div>				    		   
 				</div>
 				
 				<div class="form-group row">
 					<label class="col-sm-1 col-form-label">대표번호</label>
 				    <div class="col-sm-3">
-				    	<input type="text" class="form-control" id="">
+				    	<input type="text" class="form-control" id="" th:value="${data.primenum}">
 				    </div>	
 				    								
 					<label class="col-sm-1 col-form-label">대표메일</label>

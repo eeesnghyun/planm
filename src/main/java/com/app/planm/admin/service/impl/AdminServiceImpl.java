@@ -19,6 +19,11 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public HashMap<String, Object> getCmpInfo(String cmpCode) throws Exception {
+		return adminDao.getCmpInfo(cmpCode);
+	}
+	
+	@Override
 	public List<HashMap<String, Object>> getDeptList(String cmpCode) throws Exception {		
 		return adminDao.getDeptList(cmpCode);
 	}
@@ -27,5 +32,6 @@ public class AdminServiceImpl implements AdminService {
 	public List<HashMap<String, Object>> getPartList(AdminDTO adminDTO) throws Exception {
 		return adminDao.getPartList(adminDTO);
 	}
+
 	
 }

@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.app.planm.admin.dao.AdminDao">
 	
+	<select id="getCmpInfo" parameterType="String" resultType="camelHashMap">
+		SELECT CMP_NAME	
+		     , CMP_OWNER
+		     , ADDRESS
+		     , ZIPCODE
+		     , PRIMENUM
+		     , EMAIL
+		     , USER_CODE_RULE
+		     , POS_CATEGORY
+		     , CMP_LOGO
+		  FROM PM_COMPANY
+		 WHERE CMP_CODE = #{cmpCode}
+	</select>
+	
 	<select id="getDeptList" parameterType="String" resultType="camelHashMap">
 		SELECT DEPT_CODE	
 		     , DEPT_NAME

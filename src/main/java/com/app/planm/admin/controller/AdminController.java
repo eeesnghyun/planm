@@ -30,7 +30,12 @@ public class AdminController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String admin(Model model) throws Exception {
-			
+		String cmpCode = "0000";
+		
+		HashMap<String, Object> resultMap = adminService.getCmpInfo(cmpCode);
+		
+		model.addAttribute("data", resultMap);
+		
 		return "admin/index";
 	}
 	
