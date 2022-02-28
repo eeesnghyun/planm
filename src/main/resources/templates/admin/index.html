@@ -67,14 +67,14 @@
 				    <div class="col-sm-7">
 				    	<div class="form-row align-items-center">
 						    <div class="col">									    	
-						      	<input type="text" class="form-control" id="email">
+						      	<input type="text" class="form-control" id="email" th:value="${data.email}">
 						    </div>
 						    <div class="col">									    	
 						      	<div class="input-group">
 						        	<div class="input-group-prepend">
 						          		<div class="input-group-text">@</div>
 						        	</div>
-						        	<input type="text" class="form-control" id="emailServer">
+						        	<select class="form-control" id="emailServer"></select>
 						      	</div>
 						    </div>									    
 						 </div>
@@ -396,14 +396,20 @@
 			
 		};
 		
+		const initObj = function() {								
+			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
+			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
+			
+			commonInitObj(comboObj);
+			commonInitObj(comboObj2);			
+		};
+		
 		$(function() {
 
+			initObj();
 			initGridDept();
 			initGridPart();
-			initGridPos();
-			
-			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};
-			commonInitObj(comboObj);
+			initGridPos();			
 		});		
 	</script>
 </th:block>

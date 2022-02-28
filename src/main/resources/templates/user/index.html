@@ -82,15 +82,7 @@
 									        	<div class="input-group-prepend">
 									          		<div class="input-group-text">@</div>
 									        	</div>
-									        	<select class="form-control" id="emailServer">
-									        		<option value="">선택</option>
-									        		<option value="gmail.com">gmail.com</option>
-									        		<option value="naver.com">naver.com</option>
-									        		<option value="hanmail.net">hanmail.net</option>
-									        		<option value="daum.net">daum.net</option>
-									        		<option value="nate.com">nate.com</option>
-									        		<option value="hotmail.com">hotmail.com</option>
-									        	</select>
+									        	<select class="form-control" id="emailServer"></select>
 									      	</div>
 									    </div>									    
 									 </div>
@@ -214,7 +206,7 @@
 		
 		const saveUser = function() {
 			if (isValid()) {
-				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer option:checked").text();
 				
 				const params = {
 					"userName"  : $("#userName").val(),
@@ -364,9 +356,11 @@
 						
 			const comboObj  = {"objId" : "deptCode", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};			
 			const comboObj2 = {"objId" : "jobPos", "params" : {"parentCode" : "POS001"}, "defaultSelected" : "blank"};			
+			const comboObj3 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
 			
 			commonInitObj(comboObj);
 			commonInitObj(comboObj2);
+			commonInitObj(comboObj3);
 		};
 		
 		const getPartList = function(deptCode) {

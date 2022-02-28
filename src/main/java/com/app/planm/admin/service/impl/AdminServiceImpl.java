@@ -20,7 +20,20 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public HashMap<String, Object> getCmpInfo(String cmpCode) throws Exception {
-		return adminDao.getCmpInfo(cmpCode);
+		HashMap<String, Object> map = adminDao.getCmpInfo(cmpCode);
+		
+		String email = (String) map.get("email");
+		
+		if ("".equals(email)) {
+			map.put("email", "");
+			map.put("emailServer", "");			
+		} else {
+			String[] fullEmail = email.split("@");
+			map.put("email", fullEmail[0]);
+			map.put("emailServer", fullEmail[1]);
+		}
+		
+		return map;
 	}
 	
 	@Override
