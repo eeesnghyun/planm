@@ -116,7 +116,8 @@ public class AdminController {
 		adminDTO.setCmpCode("0000");
 		adminService.updatePart(adminDTO);
 		
-		resultMap.put("code", "ok");		
+		resultMap.put("code", "ok");
+		resultMap.put("deptCode", adminDTO.getDeptCode());
 		
 		return resultMap;
 	}

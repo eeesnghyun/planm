@@ -143,7 +143,7 @@
 								<div class="layer-pop">
 									<div class="card border-theme text-center" >
 										<div class="card-header">
-									    	<h5><strong>부서장 선택</strong></h5>
+									    	<h5><strong id="layerTitle"></strong></h5>
 									    	<div class="float-right">
 									    		<i class="far fa-window-close" onclick="closeLayer()"></i>
 									    	</div>
@@ -152,7 +152,7 @@
 									    	<div id="gridUser"></div>								    									    
 									  	</div>
 									  	<div class="card-footer">
-									    	<button type="button" class="btn btn-primary" onclick="setDeptUser()">선택</button>
+									    	<button type="button" class="btn btn-primary" id="layerBtn">선택</button>
 									    </div>
 									</div>
 								</div>			
@@ -189,7 +189,7 @@
 														<div class="form-inline">
 															<input type="text" class="form-control mr-2" id="deptManager" disabled="disabled">
 															<input type="text" class="form-control mr-2" id="deptManagerCode" disabled="disabled">
-															<button type="button" class="btn-img" style="height: 27px;" onclick="showUser()"><img src="/images/search.png" class="w18-h18"></button>
+															<button type="button" class="btn-img" style="height: 27px;" onclick="showUser('dept')"><img src="/images/search.png" class="w18-h18"></button>
 														</div>
 													</td>													
 												</tr>
@@ -238,7 +238,7 @@
 														<div class="form-inline">
 															<input type="text" class="form-control mr-2" id="partManager" disabled="disabled">
 															<input type="text" class="form-control mr-2" id="partManagerCode" disabled="disabled">
-															<button type="button" class="btn-img" style="height: 27px;"><img src="/images/search.png" class="w18-h18"></button>
+															<button type="button" class="btn-img" style="height: 27px;" onclick="showUser('part')"><img src="/images/search.png" class="w18-h18"></button>
 														</div>
 													</td>													
 												</tr>
@@ -247,9 +247,9 @@
 										
 										<div class="col-12 mb-2">
 											<div class="float-right">
-												<button type="button" class="btn btn-outline-secondary" id="newBtn">신규</button>
-												<button type="button" class="btn btn-outline-secondary" id="saveBtn" onclick="save()">저장</button>
-												<button type="button" class="btn btn-outline-secondary" id="updateBtn" onclick="update()" style="display: none;">수정</button>
+												<button type="button" class="btn btn-outline-secondary" id="newBtnPart" onclick="newPart()">신규</button>
+												<button type="button" class="btn btn-outline-secondary" id="saveBtnPart" onclick="savePart()">저장</button>
+												<button type="button" class="btn btn-outline-secondary" id="updateBtnPart" onclick="updatePart()" style="display: none;">수정</button>
 											</div>
 										</div>
 									</div>											
@@ -462,7 +462,9 @@
 				        $("#partCode").val(rowData.partCode);
 						$("#partName").val(rowData.partName);
 						$("#partManager").val(rowData.managerName);
-						$("#partManagerCode").val(rowData.partManager);			
+						$("#partManagerCode").val(rowData.partManager);
+						$("#saveBtnPart").hide();
+						$("#updateBtnPart").show();
 					});
 				});				
 			}	
@@ -498,15 +500,41 @@
 			}					    	        
 		};
 		
-		const showUser = function() {
+		const showUser = function(task) {
 			const dept = $("#deptCode").val();
+			let data = null;
 			
-			if (commonIsNull(dept)) {
-				alert("부서를 선택해주세요.");
-				return;
-			}
-									
-			const data = commonCallAjax("/user/getDeptUser", {"deptCode" : $("#deptCode").val()});
+			if (task == "dept") {				
+				if (commonIsNull(dept)) {
+					alert("부서를 선택해주세요.");
+					return;
+				}	
+				
+				$("#layerTitle").text("부서장 선택");
+				$("#layerBtn").on("click", function(){
+					setDeptUser();
+				});
+				
+				data = commonCallAjax("/user/getDeptUser", {"deptCode" : $("#deptCode").val()});
+			} else {				
+				const part = $("#partCode").val();
+				
+				if (commonIsNull(part)) {
+					alert("파트를 선택해주세요.");
+					return;
+				}
+				
+				$("#layerTitle").text("파트장 선택");
+				$("#layerBtn").on("click", function(){
+					setPartUser();
+				});
+				
+				const params = {
+					"deptCode" : dept,
+					"partCode" : part
+				};
+				data = commonCallAjax("/user/getPartUser", params);
+			}												
 			
 			if (data.code == "ok") {
 				const result = data.resultList;
@@ -621,6 +649,7 @@
 			if (data.code == "ok") {
 				alert("저장되었습니다.");
 				
+				initGridPart(data.deptCode);
 			}
 		};
 		
