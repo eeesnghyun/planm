@@ -9,6 +9,8 @@ public interface AdminService {
 
 	public HashMap<String, Object> getCmpInfo(String cmpCode) throws Exception;
 	
+	public void saveCmp(AdminDTO adminDTO) throws Exception;
+	
 	public List<HashMap<String,Object>> getDeptList(String cmpCode) throws Exception;
 	
 	public List<HashMap<String,Object>> getPartList(AdminDTO adminDTO) throws Exception;

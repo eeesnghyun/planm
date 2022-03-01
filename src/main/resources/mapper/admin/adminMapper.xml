@@ -16,6 +16,20 @@
 		 WHERE CMP_CODE = #{cmpCode}
 	</select>
 	
+	<update id="saveCmp" parameterType="com.app.planm.admin.vo.AdminDTO">
+		UPDATE PM_COMPANY
+		   SET CMP_NAME   	  = #{cmpName}
+		     , CMP_OWNER  	  = #{cmpOwner}
+		     , ADDRESS    	  = #{address}
+		     , ZIPCODE    	  = #{zipcode}
+		     , PRIMENUM   	  = #{primenum}
+		     , EMAIL 	  	  = #{email}
+		     , USER_CODE_RULE = #{userCodeRule}
+		     , POS_CATEGORY   = #{posCategory}
+		     , CMP_LOGO 	  = #{cmpLogo}
+		 WHERE CMP_CODE = #{cmpCode}
+	</update>
+	
 	<select id="getDeptList" parameterType="String" resultType="camelHashMap">
 		SELECT DEPT_CODE	
 		     , DEPT_NAME

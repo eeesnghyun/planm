@@ -39,6 +39,19 @@ public class AdminController {
 		return "admin/index";
 	}
 	
+	@RequestMapping(value = "/saveCmp", method = RequestMethod.POST)
+	public String saveCmp(
+			HttpSession session, Model model, AdminDTO adminDTO) throws Exception {		
+		adminDTO.setCmpCode("0000");
+		
+		adminService.saveCmp(adminDTO);
+			
+		model.addAttribute("msg", "저장되었습니다.");
+		model.addAttribute("url", "/admin");
+		
+		return "common/msg";
+	}
+	
 	@RequestMapping(value = "/getDeptList", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> getDeptList(HttpSession session) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
