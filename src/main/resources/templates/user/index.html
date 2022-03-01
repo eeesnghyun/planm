@@ -371,8 +371,8 @@
 			for (idx in result) {				
 	            let data = new Object();
 	             
-	            data.codeValue = result[idx].partCode;
-	            data.codeName  = result[idx].partName;
+	            data.code = result[idx].partCode;
+	            data.name = result[idx].partName;
 
 				dataList.push(data);
 			}
@@ -388,6 +388,7 @@
 				
 				commonResetForm("divUser");
 				
+				$("#enterYmd").val(commonGetToday());
 				$("#userImg").attr("src", "/images/userImg.png");
 			});
 			$("input[name=formDatePicker]").each(function(index, item){
