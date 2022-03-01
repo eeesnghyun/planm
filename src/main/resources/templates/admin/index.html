@@ -255,7 +255,7 @@
 									  	</div>
 									  	<select class="form-control" id="posCategory"></select>
 									  	<div class="input-group-append">
-									  		<button type="button" class="btn btn-outline-secondary" onclick="">변경</button>
+									  		<button type="button" class="btn btn-outline-secondary" onclick="updatePos()">변경</button>
 									  	</div>									  	
 									</div>								
 								</div>										
@@ -273,6 +273,12 @@
 		var gridDept = null;
 		var gridPart = null;
 		var gridPos  = null;
+		
+		/*<![CDATA[*/
+		const fullEmail = /*[[${data.email}]]*/;
+		const logo = /*[[${data.cmpLogo}]]*/;		
+		let posCategory = /*[[${data.posCategory}]]*/;
+		/*]]>*/
 		
 		const findAddr = function() {
 			new daum.Postcode({
@@ -299,7 +305,7 @@
 		const saveCmp = function() {
 			if (isValid()) {
 				const frm = $("form");				
-				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer option:checked").text();
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
 				
 				const input = $("<input>")
 					.attr("type", "hidden") 
@@ -406,7 +412,7 @@
 		//직급 그리드 생성
 		const initGridPos = function() {
 			const params = {
-				"parentCode" : "POS001",
+				"parentCode" : posCategory,
 				"show" : "all" 
 			};
 			const data = commonCallAjax("/cmn/getCodeList", params);
@@ -414,23 +420,22 @@
 			if (data.code == "ok") {
 				const result = data.resultList;
 				
-				if (result.length > 0) {
-		        	//Grid draw
-					gridPos = new Tabulator("#gridPos", {
-						layout: "fitDataTable",
-						height: "250px",	    
-					    columns: [
-					    	{title: "직급코드" , field: "code"  , width: 100},
-					    	{title: "직급명"   , field: "name"  , width: 120},					    						    						    						  
-					    	{title: "보이기"   , field: "useYn" , width: 100, hozAlign: "center"}
-					    ]			  
-					});		        	
+	        	//Grid draw
+				gridPos = new Tabulator("#gridPos", {
+					layout: "fitDataTable",
+					placeholder: "데이터가 존재하지 않습니다.",
+					height: "250px",	    
+				    columns: [
+				    	{title: "직급코드" , field: "code"  , width: 100},
+				    	{title: "직급명"   , field: "name"  , width: 120},					    						    						    						  
+				    	{title: "보이기"   , field: "useYn" , width: 100, hozAlign: "center"}
+				    ]			  
+				});		        	
 
-					//Data set
-					gridPos.on("tableBuilt", function(){				
-						gridPos.setData(result);						
-					});					
-		        }	
+				//Data set
+				gridPos.on("tableBuilt", function(){				
+					gridPos.setData(result);						
+				});
 			}					    	        
 		};
 		
@@ -467,6 +472,17 @@
 			
 		};
 		
+		const updatePos = function() {
+			const data = commonCallAjax("/admin/updatePos", {"posCategory" : $("#posCategory").val()});
+			
+			if (data.code == "ok") {
+				alert("저장되었습니다.");
+				
+				posCategory = data.posCategory;
+				initGridPos();
+			}
+		};
+		
 		const initObj = function() {								
 			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
 			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
@@ -474,25 +490,23 @@
 			commonInitObj(comboObj);
 			commonInitObj(comboObj2);
 			
-			/*<![CDATA[*/
-			const fullEmail = /*[[${data.email}]]*/;
 			if (!commonIsNull(fullEmail)) {
 				const email = fullEmail.split("@")[0];
 				const emailServer = fullEmail.split("@")[1];
 				
 				$("#email").val(email);
-				$("#emailServer option:contains('"+ emailServer +"')").prop("selected", "selected");				
+				$("#emailServer").val(emailServer);				
 			}
 			
-			const logo = /*[[${data.cmpLogo}]]*/;
 			if (commonIsNull(logo)) {
 				$("#cmpLogo").attr("src", "/images/logo.png");
 				$("#imgSource").val("");
 			} else {				
 				$("#cmpLogo").attr("src", logo);
 				$("#imgSource").val(logo);	
-			}			
-			/*]]>*/
+			}		
+			
+			$("#posCategory").val(posCategory);
 		};
 		
 		$(function() {

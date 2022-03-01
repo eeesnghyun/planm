@@ -53,6 +53,20 @@ public class AdminController {
 		return "common/msg";
 	}
 	
+	@RequestMapping(value = "/updatePos", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> updatePos(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		adminDTO.setCmpCode("0000");
+		adminService.updatePos(adminDTO);
+		
+		resultMap.put("code", "ok");		
+		resultMap.put("posCategory", adminDTO.getPosCategory());
+		
+		return resultMap;
+	}
+	
 	@RequestMapping(value = "/getDeptList", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> getDeptList(HttpSession session) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();

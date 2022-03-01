@@ -28,6 +28,11 @@ public class AdminServiceImpl implements AdminService {
 	public void saveCmp(AdminDTO adminDTO) throws Exception {
 		adminDao.saveCmp(adminDTO);
 	}
+
+	@Override
+	public void updatePos(AdminDTO adminDTO) throws Exception {
+		adminDao.updatePos(adminDTO);
+	}
 	
 	@Override
 	public List<HashMap<String, Object>> getDeptList(String cmpCode) throws Exception {		
@@ -38,6 +43,7 @@ public class AdminServiceImpl implements AdminService {
 	public List<HashMap<String, Object>> getPartList(AdminDTO adminDTO) throws Exception {
 		return adminDao.getPartList(adminDTO);
 	}
+
 
 	
 }

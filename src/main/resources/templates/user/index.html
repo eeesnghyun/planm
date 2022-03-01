@@ -206,7 +206,7 @@
 		
 		const saveUser = function() {
 			if (isValid()) {
-				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer option:checked").text();
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer").val();
 				
 				const params = {
 					"userName"  : $("#userName").val(),

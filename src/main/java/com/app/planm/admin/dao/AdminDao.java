@@ -12,6 +12,8 @@ public interface AdminDao {
 	
 	public void saveCmp(AdminDTO adminDTO) throws Exception;
 	
+	public void updatePos(AdminDTO adminDTO) throws Exception;
+	
 	public List<HashMap<String,Object>> getDeptList(String cmpCode) throws Exception;
 	
 	public List<HashMap<String,Object>> getPartList(AdminDTO adminDTO) throws Exception;

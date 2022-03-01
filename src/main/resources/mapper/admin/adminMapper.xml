@@ -31,6 +31,12 @@
 		 WHERE CMP_CODE = #{cmpCode}
 	</update>
 	
+	<update id="updatePos" parameterType="com.app.planm.admin.vo.AdminDTO">
+		UPDATE PM_COMPANY
+		   SET POS_CATEGORY = #{posCategory}
+		 WHERE CMP_CODE = #{cmpCode}	
+	</update>
+	
 	<select id="getDeptList" parameterType="String" resultType="camelHashMap">
 		SELECT DEPT_CODE	
 		     , DEPT_NAME
