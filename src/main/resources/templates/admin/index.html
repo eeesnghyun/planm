@@ -75,7 +75,7 @@
 							        	<div class="input-group-prepend">
 							          		<div class="input-group-text">@</div>
 							        	</div>
-							        	<select class="form-control" id="emailServer"></select>
+							        	<select class="form-control" id="emailserver"></select>
 							      	</div>
 							    </div>									    
 							 </div>
@@ -85,12 +85,12 @@
 					<div class="form-group row">								
 						<label class="col-sm-1 col-form-label">사번규칙</label>
 					    <div class="col-sm-2">
-					    	<select class="form-control mr-1" id="userCodeRule" name="userCodeRule" th:value="${data.userCodeRule}">
+					    	<select class="form-control mr-1" id="userCodeRule" name="userCodeRule">
 					    		<option value="">선택</option>
-					    		<option value="100">100자</option>
-					    		<option value="1000">1000자</option>
-					    		<option value="10000">10000자</option>
-					    		<option value="100000">100000자</option>
+					    		<option th:selected="${data.userCodeRule}=='100'" value="100">100자</option>
+					    		<option th:selected="${data.userCodeRule}=='1000'" value="1000">1000자</option>
+					    		<option th:selected="${data.userCodeRule}=='10000'" value="10000">10000자</option>
+					    		<option th:selected="${data.userCodeRule}=='100000'" value="100000">100000자</option>
 					    	</select>					    	
 					    </div>
 					</div>
@@ -257,7 +257,7 @@
 	</div>		<!-- End container -->			
 	
 	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>
-	<script>
+	<script th:inline="javascript">
 		var gridDept = null;
 		var gridPart = null;
 		var gridPos  = null;
@@ -269,8 +269,15 @@
 		
 		const saveCmp = function() {
 			if (isValid()) {
-				const frm = $("form");
+				const frm = $("form");				
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailserver option:checked").text();
 				
+				const input = $("<input>")
+					.attr("type", "hidden") 
+					.attr("name", "email")
+					.val(email);
+
+				frm.append($(input));				
 				frm.submit();
 			}						
 		};
@@ -428,10 +435,15 @@
 		
 		const initObj = function() {								
 			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
-			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
+			const comboObj2 = {"objId" : "emailserver", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
 			
 			commonInitObj(comboObj);
-			commonInitObj(comboObj2);			
+			commonInitObj(comboObj2);
+			
+			/*<![CDATA[*/
+			const emailserver = /*[[${data.emailserver}]]*/;			
+			$("#emailserver option:contains('"+ emailserver +"')").prop("selected", "selected");
+			/*]]>*/
 		};
 		
 		$(function() {
@@ -439,7 +451,7 @@
 			initObj();
 			initGridDept();
 			initGridPart();
-			initGridPos();			
+			initGridPos();						
 		});		
 	</script>
 </th:block>

@@ -25,7 +25,6 @@
 		     , PRIMENUM   	  = #{primenum}
 		     , EMAIL 	  	  = #{email}
 		     , USER_CODE_RULE = #{userCodeRule}
-		     , POS_CATEGORY   = #{posCategory}
 		     , CMP_LOGO 	  = #{cmpLogo}
 		 WHERE CMP_CODE = #{cmpCode}
 	</update>

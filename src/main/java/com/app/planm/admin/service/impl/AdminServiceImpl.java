@@ -27,11 +27,11 @@ public class AdminServiceImpl implements AdminService {
 		
 		if ("".equals(email)) {
 			map.put("email", "");
-			map.put("emailServer", "");			
+			map.put("emailserver", "");			
 		} else {
 			String[] fullEmail = email.split("@");
 			map.put("email", fullEmail[0]);
-			map.put("emailServer", fullEmail[1]);
+			map.put("emailserver", fullEmail[1]);
 		}
 		
 		return map;
