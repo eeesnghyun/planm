@@ -510,6 +510,7 @@
 					return;
 				}	
 				
+				$(".layer-pop").css("left", "0");
 				$("#layerTitle").text("부서장 선택");
 				$("#layerBtn").on("click", function(){
 					setDeptUser();
@@ -524,6 +525,7 @@
 					return;
 				}
 				
+				$(".layer-pop").css("left", "50%");
 				$("#layerTitle").text("파트장 선택");
 				$("#layerBtn").on("click", function(){
 					setPartUser();
