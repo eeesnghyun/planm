@@ -123,15 +123,18 @@
 			<div class="col-12">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item">
-				    	<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">부서/파트관리</a>
+				    	<a class="nav-link active" data-toggle="tab" href="#dept" role="tab" aria-controls="dept" aria-selected="true">부서/파트관리</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">직급관리</a>
+				    	<a class="nav-link" data-toggle="tab" href="#pos" role="tab" aria-controls="pos" aria-selected="false">직급관리</a>
+				  	</li>
+				  	<li class="nav-item">
+				    	<a class="nav-link" data-toggle="tab" href="#doc" role="tab" aria-controls="doc" aria-selected="false">전자결재관리</a>
 				  	</li>							  
 				</ul>
 							
-				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<div class="tab-content">
+					<div class="tab-pane fade show active" id="dept" role="tabpanel" aria-labelledby="dept-tab">
 				  		<div class="container-fluid">
 							<div class="row">	
 								<div class="col-6">
@@ -233,9 +236,9 @@
 								</div>
 							</div>	<!-- End row -->
 						</div>		<!-- End container -->							  		
-				  	</div>
+				  	</div>			<!-- Tab:부서/파트 -->
 				  	
-				  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				  	<div class="tab-pane fade" id="pos" role="tabpanel" aria-labelledby="pos-tab">
 				  		<div class="container-fluid">
 							<div class="row">	
 								<div class="col-12 border-bottom">												
@@ -261,7 +264,32 @@
 								</div>										
 							</div>
 						</div>																			
-				  	</div>
+				  	</div>	<!-- Tab:직급 -->
+				  	
+				  	<div class="tab-pane fade" id="doc" role="tabpanel" aria-labelledby="doc-tab">
+				  		<div class="container-fluid">
+							<div class="row">	
+								<div class="col-12 border-bottom">												
+									<div class="float-left">
+										<h5><strong>결재선</strong></h5>
+									</div>
+								</div>																			
+								
+								<div class="col-12 mt-2 pb-2">
+									<div class="input-group" style="width: 350px;">
+										<div class="input-group-prepend">
+									    	<span class="input-group-text">문서유형</span>
+									  	</div>
+									  	<select class="form-control" id="document"></select>									  										  
+									</div>								
+								</div>
+								
+								<div class="col-12">
+									
+								</div>										
+							</div>
+						</div>																			
+				  	</div>	<!-- Tab:전자결재 -->
 				</div>							
 			</div>
 		</div>	<!-- End row -->										
@@ -333,7 +361,7 @@
 		        	//Grid draw
 					gridDept = new Tabulator("#gridDept", {
 						layout: "fitDataTable",
-						height: "250px",	    
+						height: "220px",	    
 					    columns: [
 					    	{title: "부서코드" , field: "deptCode"    , width: 100},
 					    	{title: "부서명"   , field: "deptName"    , width: 100},
@@ -382,7 +410,7 @@
 				gridPart = new Tabulator("#gridPart", {
 					layout: "fitDataTable",
 					placeholder: nullMsg,
-					height: "250px",	    
+					height: "220px",	    
 				    columns: [
 				    	{title: "파트코드" , field: "partCode"    , width: 100},
 				    	{title: "파트명"   , field: "partName"    , width: 100},
@@ -486,9 +514,11 @@
 		const initObj = function() {								
 			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
 			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
+			const comboObj3 = {"objId" : "document", "params" : {"parentCode" : "DOC001"}, "defaultSelected" : "blank"};			
 			
 			commonInitObj(comboObj);
 			commonInitObj(comboObj2);
+			commonInitObj(comboObj3);
 			
 			if (!commonIsNull(fullEmail)) {
 				const email = fullEmail.split("@")[0];
