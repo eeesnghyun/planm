@@ -15,7 +15,8 @@ public class AdminDTO {
 	private String cmpName;
 	private String cmpOwner;
 	private String address;
-	private int zipcode;
+	private String addressDetail;
+	private String zipcode;
 	private String primenum;
 	private String email;
 	private String userCodeRule;

@@ -22,7 +22,7 @@
 			<div class="row mt-2">
 				<div class="col-3 text-center">
 					<p>
-						<img class="img-thumbnail" src="/images/logo.png" id="cmpLogo" style="width: 100px; height: 100px;">
+						<img class="img-thumbnail" src="" id="cmpLogo" style="width: 100px; height: 100px;">
 						<input type="hidden" id="imgSource" value="">
 					</p>
 					
@@ -50,11 +50,22 @@
 					
 					<div class="form-group row">								
 						<label class="col-sm-1 col-form-label">주소</label>
-					    <div class="col-sm-2">
-					    	<input type="text" class="form-control mr-1" id="zipcode" name="zipcode" th:value="${data.zipcode}" disabled="disabled">
+					    <div class="col-sm-3">
+					    	<div class="form-inline">
+						    	<input type="text" class="form-control mr-1" id="zipcode" name="zipcode" th:value="${data.zipcode}" readonly="readonly" placeholder="우편번호">
+						    	<button type="button" class="btn-img" style="height: 27px;" onclick="findAddr()"><img src="/images/search.png" class="w18-h18"></button>
+					    	</div>
 					    </div>
-					    <div class="col-sm-9">					    	
-							<input type="text" class="form-control" id="address" name="address" th:value="${data.address}">					    
+					    <div class="col-sm-8">
+					    	 <div class="form-row">
+    							<div class="col">					    	
+									<input type="text" class="form-control mr-1" id="address" name="address" th:value="${data.address}">
+								</div>
+								
+								<div class="col">   
+									<input type="text" class="form-control" id="addressDetail" name="addressDetail" th:value="${data.addressDetail}">
+								</div>
+							</div>
 					    </div>				    		   
 					</div>
 					
@@ -256,11 +267,29 @@
 		</div>	<!-- End row -->										
 	</div>		<!-- End container -->			
 	
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>
 	<script th:inline="javascript">
 		var gridDept = null;
 		var gridPart = null;
 		var gridPos  = null;
+		
+		const findAddr = function() {
+			new daum.Postcode({
+		        oncomplete: function(data) {		        	
+		            var roadAddr = data.roadAddress; 	//도로명 주소
+		            var jibunAddr = data.jibunAddress;  //지번 주소
+		            
+		            $("#zipcode").val(data.zonecode);	//우편번호
+		            
+		            if (roadAddr !== "") {
+		            	$("#address").val(roadAddr);
+		            } else if(jibunAddr !== "") {
+		            	$("#address").val(jibunAddr);            
+		            }
+		        }
+		    }).open();
+		};
 		
 		const isValid = function() {
 			
@@ -455,8 +484,14 @@
 				$("#emailServer option:contains('"+ emailServer +"')").prop("selected", "selected");				
 			}
 			
-			const logo = /*[[${data.cmpLogo}]]*/;			
-			$("#cmpLogo").attr("src", logo);
+			const logo = /*[[${data.cmpLogo}]]*/;
+			if (commonIsNull(logo)) {
+				$("#cmpLogo").attr("src", "/images/logo.png");
+				$("#imgSource").val("");
+			} else {				
+				$("#cmpLogo").attr("src", logo);
+				$("#imgSource").val(logo);	
+			}			
 			/*]]>*/
 		};
 		

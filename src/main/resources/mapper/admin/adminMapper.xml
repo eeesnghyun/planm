@@ -6,6 +6,7 @@
 		SELECT CMP_NAME	
 		     , CMP_OWNER
 		     , ADDRESS
+		     , ADDRESS_DETAIL
 		     , ZIPCODE
 		     , PRIMENUM
 		     , EMAIL
@@ -21,6 +22,7 @@
 		   SET CMP_NAME   	  = #{cmpName}
 		     , CMP_OWNER  	  = #{cmpOwner}
 		     , ADDRESS    	  = #{address}
+		     , ADDRESS_DETAIL = #{addressDetail}
 		     , ZIPCODE    	  = #{zipcode}
 		     , PRIMENUM   	  = #{primenum}
 		     , EMAIL 	  	  = #{email}
