@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.app.planm.admin.dao.AdminDao;
 import com.app.planm.admin.service.AdminService;
 import com.app.planm.admin.vo.AdminDTO;
-import com.app.planm.common.util.CommonUtil;
+import com.app.planm.admin.vo.AdminVO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -20,21 +20,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public HashMap<String, Object> getCmpInfo(String cmpCode) throws Exception {
-		HashMap<String, Object> map = adminDao.getCmpInfo(cmpCode);
-		
-		String email = CommonUtil.null2Str(map.get("email"), "");
-		
-		if ("".equals(email)) {
-			map.put("email", "");
-			map.put("emailserver", "");			
-		} else {
-			String[] fullEmail = email.split("@");
-			map.put("email", fullEmail[0]);
-			map.put("emailserver", fullEmail[1]);
-		}
-		
-		return map;
+	public AdminVO getCmpInfo(String cmpCode) throws Exception {
+		return adminDao.getCmpInfo(cmpCode);	
 	}
 
 	@Override

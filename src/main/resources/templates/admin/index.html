@@ -68,14 +68,14 @@
 					    <div class="col-sm-7">
 					    	<div class="form-row align-items-center">
 							    <div class="col">									    	
-							      	<input type="text" class="form-control" id="email" th:value="${data.email}">
+							      	<input type="text" class="form-control" id="email">
 							    </div>
 							    <div class="col">									    	
 							      	<div class="input-group">
 							        	<div class="input-group-prepend">
 							          		<div class="input-group-text">@</div>
 							        	</div>
-							        	<select class="form-control" id="emailserver"></select>
+							        	<select class="form-control" id="emailServer"></select>
 							      	</div>
 							    </div>									    
 							 </div>
@@ -270,14 +270,19 @@
 		const saveCmp = function() {
 			if (isValid()) {
 				const frm = $("form");				
-				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailserver option:checked").text();
+				const email = $("#email").val().replace(/\@/g,'') + "@" + $("#emailServer option:checked").text();
 				
 				const input = $("<input>")
 					.attr("type", "hidden") 
 					.attr("name", "email")
 					.val(email);
-
-				frm.append($(input));				
+				const logo = $("<input>")
+					.attr("type", "hidden") 
+					.attr("name", "cmpLogo")
+					.val($("#imgSource").val());
+				
+				frm.append($(input));
+				frm.append($(logo));
 				frm.submit();
 			}						
 		};
@@ -435,14 +440,23 @@
 		
 		const initObj = function() {								
 			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
-			const comboObj2 = {"objId" : "emailserver", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
+			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
 			
 			commonInitObj(comboObj);
 			commonInitObj(comboObj2);
 			
 			/*<![CDATA[*/
-			const emailserver = /*[[${data.emailserver}]]*/;			
-			$("#emailserver option:contains('"+ emailserver +"')").prop("selected", "selected");
+			const fullEmail = /*[[${data.email}]]*/;
+			if (!commonIsNull(fullEmail)) {
+				const email = fullEmail.split("@")[0];
+				const emailServer = fullEmail.split("@")[1];
+				
+				$("#email").val(email);
+				$("#emailServer option:contains('"+ emailServer +"')").prop("selected", "selected");				
+			}
+			
+			const logo = /*[[${data.cmpLogo}]]*/;			
+			$("#cmpLogo").attr("src", logo);
 			/*]]>*/
 		};
 		

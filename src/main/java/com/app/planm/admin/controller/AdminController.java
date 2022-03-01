@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.planm.admin.service.AdminService;
 import com.app.planm.admin.vo.AdminDTO;
+import com.app.planm.admin.vo.AdminVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,7 +33,7 @@ public class AdminController {
 	public String admin(Model model) throws Exception {
 		String cmpCode = "0000";
 		
-		HashMap<String, Object> resultMap = adminService.getCmpInfo(cmpCode);
+		AdminVO resultMap = adminService.getCmpInfo(cmpCode);
 		
 		model.addAttribute("data", resultMap);
 		

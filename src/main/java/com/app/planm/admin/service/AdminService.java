@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.app.planm.admin.vo.AdminDTO;
+import com.app.planm.admin.vo.AdminVO;
 
 public interface AdminService {
 
-	public HashMap<String, Object> getCmpInfo(String cmpCode) throws Exception;
+	public AdminVO getCmpInfo(String cmpCode) throws Exception;
 	
 	public void saveCmp(AdminDTO adminDTO) throws Exception;
 	
