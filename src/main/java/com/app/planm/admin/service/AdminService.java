@@ -18,5 +18,8 @@ public interface AdminService {
 	
 	public List<HashMap<String,Object>> getPartList(AdminDTO adminDTO) throws Exception;
 	
-
+	public void updateDept(AdminDTO adminDTO) throws Exception;
+	
+	public void updatePart(AdminDTO adminDTO) throws Exception;
+	
 }

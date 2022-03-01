@@ -95,4 +95,29 @@ public class AdminController {
 		return resultMap;
 	}	
 	
+	@RequestMapping(value = "/updateDept", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> updateDept(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		adminDTO.setCmpCode("0000");
+		adminService.updateDept(adminDTO);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/updatePart", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> updatePart(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		adminDTO.setCmpCode("0000");
+		adminService.updatePart(adminDTO);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
 }

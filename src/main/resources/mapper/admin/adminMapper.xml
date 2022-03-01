@@ -38,26 +38,44 @@
 	</update>
 	
 	<select id="getDeptList" parameterType="String" resultType="camelHashMap">
-		SELECT DEPT_CODE	
-		     , DEPT_NAME
-		     , DEPT_MANAGER
-		     , DATE_FORMAT(CREATE_DATE, '%Y-%m-%d') CREATE_DATE
-		  FROM PM_DEPT
-		 WHERE CMP_CODE = #{cmpCode}
-		 ORDER BY DEPT_NAME
+		SELECT PD.DEPT_CODE	
+		     , PD.DEPT_NAME
+		     , PD.DEPT_MANAGER
+		     , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PD.CMP_CODE AND USER_CODE=PD.DEPT_MANAGER) MANAGER_NAME
+		     , DATE_FORMAT(PD.CREATE_DATE, '%Y-%m-%d') CREATE_DATE
+		  FROM PM_DEPT PD
+		 WHERE PD.CMP_CODE = #{cmpCode}
+		 ORDER BY PD.DEPT_NAME
 	</select>
 	
 	<select id="getPartList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
-		SELECT DEPT_CODE			     
-		     , PART_CODE
-		     , PART_NAME
-		     , PART_MANAGER
-		     , DATE_FORMAT(CREATE_DATE, '%Y-%m-%d') CREATE_DATE
-		  FROM PM_DEPT_PART
-		 WHERE CMP_CODE  = #{cmpCode}
-		   AND DEPT_CODE = #{deptCode}
-		 ORDER BY PART_NAME
+		SELECT PDP.DEPT_CODE			     
+		     , PDP.PART_CODE
+		     , PDP.PART_NAME
+		     , PDP.PART_MANAGER
+   		     , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PDP.CMP_CODE AND USER_CODE=PDP.PART_MANAGER) MANAGER_NAME
+		     , DATE_FORMAT(PDP.CREATE_DATE, '%Y-%m-%d') CREATE_DATE
+		  FROM PM_DEPT_PART PDP
+		 WHERE PDP.CMP_CODE  = #{cmpCode}
+		   AND PDP.DEPT_CODE = #{deptCode}
+		 ORDER BY PDP.PART_NAME
 	</select>
 	
+	<update id="updateDept" parameterType="com.app.planm.admin.vo.AdminDTO">
+		UPDATE PM_DEPT
+		   SET DEPT_NAME    = #{deptName}
+		     , DEPT_MANAGER = #{deptManager}
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DEPT_CODE = #{deptCode}
+	</update>
+	
+	<update id="updatePart" parameterType="com.app.planm.admin.vo.AdminDTO">
+		UPDATE PM_DEPT_PART
+		   SET PART_NAME    = #{partName}
+		   	 , PART_MANAGER = #{partManager}
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DEPT_CODE = #{deptCode}
+		   AND PART_CODE = #{partCode}
+	</update>
 	
 </mapper>

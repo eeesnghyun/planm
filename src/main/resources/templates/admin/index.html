@@ -390,7 +390,8 @@
 					    columns: [
 					    	{title: "부서코드" , field: "deptCode"    , width: 100},
 					    	{title: "부서명"   , field: "deptName"    , width: 100},
-					    	{title: "부서장"   , field: "deptManager" , width: 100},
+					    	{title: "부서장코드", field: "deptManager" , width: 100, visible: false},
+					    	{title: "부서장"   , field: "managerName" , width: 100},
 						    {title: "생성일"   , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
 					    ]			  
 					});		        	
@@ -408,7 +409,10 @@
 					        $("#deptCode").prop("disabled", true);
 					        $("#deptCode").val(rowData.deptCode);
 							$("#deptName").val(rowData.deptName);
-							$("#deptManager").val(rowData.deptManager);
+							$("#deptManager").val(rowData.managerName);
+							$("#deptManagerCode").val(rowData.deptManager);
+							$("#saveBtnDept").hide();
+							$("#updateBtnDept").show();
 							
 					    	initGridPart(rowData.deptCode);
 						});
@@ -437,10 +441,11 @@
 					placeholder: nullMsg,
 					height: "220px",	    
 				    columns: [
-				    	{title: "파트코드" , field: "partCode"    , width: 100},
-				    	{title: "파트명"   , field: "partName"    , width: 100},
-				    	{title: "파트장"   , field: "partManager" , width: 100},
-					    {title: "생성일"   , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
+				    	{title: "파트코드"  , field: "partCode"    , width: 100},
+				    	{title: "파트명"    , field: "partName"    , width: 100},
+				    	{title: "파트장코드", field: "partManager" , width: 100, visible: false},
+				    	{title: "파트장"    , field: "managerName" , width: 100},				    	
+					    {title: "생성일"    , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
 				    ]			  
 				});		        	
 
@@ -456,7 +461,8 @@
 				    	
 				        $("#partCode").val(rowData.partCode);
 						$("#partName").val(rowData.partName);
-						$("#partManager").val(rowData.partManager);				    	
+						$("#partManager").val(rowData.managerName);
+						$("#partManagerCode").val(rowData.partManager);			
 					});
 				});				
 			}	
@@ -530,7 +536,7 @@
 					        const rowData = row._row.data;
 					    	
 					        userCode = rowData.userCode;
-							userName = rowData.userName + "(" + rowData.jobPos + ")";		    	
+							userName = rowData.userName;
 						});
 					});					
 		        }	
@@ -580,6 +586,8 @@
 		
 		const newDept = function() {
 			$("#deptCode").prop("disabled", false);
+			$("#saveBtnDept").show();
+			$("#updateBtnDept").hide();
 		};
 		
 		const saveDept = function() {
@@ -587,7 +595,33 @@
 		};
 		
 		const updateDept = function() {
+			const params = {
+				"deptCode" : $("#deptCode").val(),
+				"deptName" : $("#deptName").val(),
+				"deptManager" : $("#deptManagerCode").val()
+			};
+			const data = commonCallAjax("/admin/updateDept", params);
 			
+			if (data.code == "ok") {
+				alert("저장되었습니다.");
+				
+				initGridDept();
+			}
+		};
+		
+		const updatePart = function() {
+			const params = {
+				"deptCode" : $("#deptCode").val(),
+				"partCode" : $("#partCode").val(),
+				"partName" : $("#partName").val(),
+				"partManager" : $("#partManagerCode").val()
+			};
+			const data = commonCallAjax("/admin/updatePart", params);
+			
+			if (data.code == "ok") {
+				alert("저장되었습니다.");
+				
+			}
 		};
 		
 		const updatePos = function() {

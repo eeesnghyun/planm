@@ -44,6 +44,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getPartList(adminDTO);
 	}
 
+	@Override
+	public void updateDept(AdminDTO adminDTO) throws Exception {
+		adminDao.updateDept(adminDTO);
+	}
+
+	@Override
+	public void updatePart(AdminDTO adminDTO) throws Exception {
+		adminDao.updatePart(adminDTO);
+	}
+
 
 	
 }
