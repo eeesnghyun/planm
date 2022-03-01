@@ -110,4 +110,24 @@
 		   AND USER_CODE  = #{userCode}		
 	</update>
 	
+	<select id="getDeptUser" parameterType="com.app.planm.user.vo.UserDTO" resultType="com.app.planm.user.vo.UserVO">
+		SELECT PU.USER_CODE
+			 , PU.USER_NAME
+			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='POS001' AND CHILD_CODE=PU.JOB_POS) JOB_POS
+		  FROM PM_USER PU
+		 WHERE PU.CMP_CODE  = #{cmpCode}
+		   AND PU.DEPT_CODE = #{deptCode}
+		 ORDER BY PU.JOB_POS
+	</select>
+	
+	<select id="getPartUser" parameterType="com.app.planm.user.vo.UserDTO" resultType="com.app.planm.user.vo.UserVO">
+		SELECT PU.USER_CODE
+			 , PU.USER_NAME
+			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='POS001' AND CHILD_CODE=PU.JOB_POS) JOB_POS
+		  FROM PM_USER PU
+		 WHERE PU.CMP_CODE  = #{cmpCode}		   
+		   AND PU.PART_CODE = #{partCode}
+		 ORDER BY PU.JOB_POS
+	</select>
+	
 </mapper>

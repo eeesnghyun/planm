@@ -7,6 +7,9 @@
     <meta charset="UTF-8">
     	 
 	<link rel="stylesheet" href="/plugins/grid/tabulator/tabulator_semanticui.min.css" type="text/css"/>
+	<style>
+		.layer-pop { z-index: 9; position: absolute; display: none; margin-top: 10px; }
+	</style>	
 </head>
 <th:block layout:fragment="content-area">
 	<div class="container-fluid">
@@ -136,7 +139,24 @@
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="dept" role="tabpanel" aria-labelledby="dept-tab">
 				  		<div class="container-fluid">
-							<div class="row">	
+							<div class="row">
+								<div class="layer-pop">
+									<div class="card border-theme text-center" >
+										<div class="card-header">
+									    	<h5><strong>부서장 선택</strong></h5>
+									    	<div class="float-right">
+									    		<i class="far fa-window-close" onclick="closeLayer()"></i>
+									    	</div>
+									  	</div>
+									  	<div class="card-body">
+									    	<div id="gridUser"></div>								    									    
+									  	</div>
+									  	<div class="card-footer">
+									    	<button type="button" class="btn btn-primary" onclick="setDeptUser()">선택</button>
+									    </div>
+									</div>
+								</div>			
+							
 								<div class="col-6">
 									<div class="row border-right">
 										<div class="col-12 border-bottom">
@@ -164,12 +184,12 @@
 													<td><input type="text" class="form-control" id="deptName"></td>
 												</tr>
 												<tr>
-													<th>부서장(사번)</th>
+													<th>부서장/사번</th>
 													<td>
 														<div class="form-inline">
 															<input type="text" class="form-control mr-2" id="deptManager" disabled="disabled">
 															<input type="text" class="form-control mr-2" id="deptManagerCode" disabled="disabled">
-															<button type="button" class="btn-img" style="height: 27px;"><img src="/images/search.png" class="w18-h18"></button>
+															<button type="button" class="btn-img" style="height: 27px;" onclick="showUser()"><img src="/images/search.png" class="w18-h18"></button>
 														</div>
 													</td>													
 												</tr>
@@ -213,7 +233,7 @@
 													<td><input type="text" class="form-control" id="partName"></td>
 												</tr>
 												<tr>
-													<th>파트장(사번)</th>
+													<th>파트장/사번</th>
 													<td>
 														<div class="form-inline">
 															<input type="text" class="form-control mr-2" id="partManager" disabled="disabled">
@@ -301,6 +321,11 @@
 		var gridDept = null;
 		var gridPart = null;
 		var gridPos  = null;
+		var gridUser = null;
+		var gridPartUser = null;
+		
+		let userCode = "";
+		let userName = "";
 		
 		/*<![CDATA[*/
 		const fullEmail = /*[[${data.email}]]*/;
@@ -467,6 +492,71 @@
 			}					    	        
 		};
 		
+		const showUser = function() {
+			const dept = $("#deptCode").val();
+			
+			if (commonIsNull(dept)) {
+				alert("부서를 선택해주세요.");
+				return;
+			}
+									
+			const data = commonCallAjax("/user/getDeptUser", {"deptCode" : $("#deptCode").val()});
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+
+				if (result.length > 0) {
+					$(".layer-pop").show();
+					
+		        	//Grid draw
+					gridUser = new Tabulator("#gridUser", {
+						layout: "fitDataTable",
+						height: "220px",	    
+					    columns: [
+					    	{title: "사번" , field: "userCode" , width: 100},
+					    	{title: "이름" , field: "userName" , width: 120},
+					    	{title: "직급" , field: "jobPos"   , width: 100}						    						    						  
+					    ]			  
+					});		        	
+
+					//Data set
+					gridUser.on("tableBuilt", function(){				
+						gridUser.setData(result);
+						gridUser.on("rowClick", function(e, row) {		
+							gridPart.deselectRow();
+							row.toggleSelect();
+					    	//e - click object
+					        //row - row component
+					        const rowData = row._row.data;
+					    	
+					        userCode = rowData.userCode;
+							userName = rowData.userName + "(" + rowData.jobPos + ")";		    	
+						});
+					});					
+		        }	
+			}					    	        
+		};
+		
+		const setDeptUser = function() {
+			$("#deptManagerCode").val(userCode);
+			$("#deptManager").val(userName);
+			$(".layer-pop").hide();
+		};
+		
+		const setPartUser = function() {
+			$("#partManagerCode").val(userCode);
+			$("#partManager").val(userName);
+			$(".layer-pop").hide();
+		};
+		
+		const closeLayer = function() {
+			gridUser = null;
+			userCode = "";
+			userName = "";
+			
+			$(".layer-pop").hide();			
+		};
+		
 		const readCmpLogo = function(input) {			
 			$("#fileName").val(input.files[0].name);
 			
@@ -544,7 +634,7 @@
 			initObj();
 			initGridDept();
 			initGridPart();
-			initGridPos();						
+			initGridPos();
 		});		
 	</script>
 </th:block>

@@ -46,5 +46,15 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(UserDTO userDTO) throws Exception {
 		userDao.updateUser(userDTO);
 	}
+
+	@Override
+	public List<UserVO> getDeptUser(UserDTO userDTO) throws Exception {		
+		return userDao.getDeptUser(userDTO);
+	}
+
+	@Override
+	public List<UserVO> getPartUser(UserDTO userDTO) throws Exception {
+		return userDao.getPartUser(userDTO);
+	}
 	
 }

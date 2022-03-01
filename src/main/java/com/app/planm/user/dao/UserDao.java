@@ -15,4 +15,8 @@ public interface UserDao {
 	
 	public void updateUser(UserDTO userDTO) throws Exception;
 	
+	public List<UserVO> getDeptUser(UserDTO userDTO) throws Exception;
+	
+	public List<UserVO> getPartUser(UserDTO userDTO) throws Exception;
+	
 }

@@ -54,8 +54,7 @@ public class UserController {
 			HttpSession session, @RequestBody UserDTO userDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		userDTO.setCmpCode("0000");
-	
+		userDTO.setCmpCode("0000");	
 		userService.saveUser(userDTO);
 		
 		resultMap.put("code", "ok");
@@ -68,11 +67,38 @@ public class UserController {
 			HttpSession session, @RequestBody UserDTO userDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		userDTO.setCmpCode("0000");
-	
+		userDTO.setCmpCode("0000");	
 		userService.updateUser(userDTO);
 		
 		resultMap.put("code", "ok");
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/getDeptUser", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getDeptUser(
+			HttpSession session, @RequestBody UserDTO userDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		userDTO.setCmpCode("0000");
+		List<UserVO> resultList = userService.getDeptUser(userDTO);
+		
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/getPartUser", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getPartUser(
+			HttpSession session, @RequestBody UserDTO userDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		userDTO.setCmpCode("0000");
+		List<UserVO> resultList = userService.getPartUser(userDTO);
+		
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
 		
 		return resultMap;
 	}
