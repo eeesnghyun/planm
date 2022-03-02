@@ -559,7 +559,7 @@
 
 				//Data set
 				gridSignUser.on("tableBuilt", function(){				
-					gridSignUser.setData(result);						
+					gridSignUser.setData(result);
 				});
 			}			
 		}			
@@ -703,6 +703,10 @@
 			}
 		};
 		
+		const savePart = function() {
+			
+		};
+		
 		const updatePart = function() {
 			const params = {
 				"deptCode" : $("#deptCode").val(),
@@ -720,6 +724,17 @@
 		};
 		
 		const updatePos = function() {
+			const data = commonCallAjax("/admin/updatePos", {"posCategory" : $("#posCategory").val()});
+			
+			if (data.code == "ok") {
+				alert("저장되었습니다.");
+				
+				posCategory = data.posCategory;
+				initGridPos();
+			}
+		};
+		
+		const saveSignUser = function() {
 			const data = commonCallAjax("/admin/updatePos", {"posCategory" : $("#posCategory").val()});
 			
 			if (data.code == "ok") {

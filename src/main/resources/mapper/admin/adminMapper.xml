@@ -93,4 +93,19 @@
 		   AND PART_CODE = #{partCode}
 	</update>
 	
+	<insert id="saveSignUser" parameterType="camelHashMap">
+		INSERT INTO PM_SIGN_USER (
+			  CMP_CODE
+			, DOC_TYPE
+			, USER_CODE
+			, CREATE_DATE
+		) VALUES (
+			  #{cmpCode}
+			, #{docType}
+			, #{userCode}
+			, NOW()
+		)
+	</insert>
+	
+	
 </mapper>
