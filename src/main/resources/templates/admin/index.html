@@ -330,8 +330,8 @@
 										<div id="gridSignUser"></div>
 									</div>
 									
-									<div class="float-right">
-										<button type="button">저장</button>
+									<div class="float-right mt-2">
+										<button type="button" class="btn btn-outline-secondary">저장</button>
 									</div>
 								</div>										
 							</div>
@@ -537,24 +537,30 @@
 			
 			if (data.code == "ok") {
 				const result = data.resultList;
+				
+				//Grid draw
+				gridSignUser = new Tabulator("#gridSignUser", {
+					layout: "fitDataTable",
+					placeholder: "데이터가 존재하지 않습니다.",
+					height: "220px",	    
+				    columns: [
+				    	{formatter: "rowSelection", 
+				    	 titleFormatter: "rowSelection", 
+				    	 hozAlign: "center", 
+				    	 headerSort: false, 
+				    	 cellClick: function(e, cell) {		    	 	 
+				    	 	cell.getRow().toggleSelect();
+				    	}},
+				    	{title: "사번" , field: "userCode"  , width: 100},
+				    	{title: "이름" , field: "userName"  , width: 120},
+				    	{title: "직급" , field: "jobPosName", width: 100}						    						    						  
+				    ]
+				});		        	
 
-				if (result.length > 0) {
-					//Grid draw
-					gridSignUser = new Tabulator("#gridSignUser", {
-						layout: "fitDataTable",
-						height: "220px",	    
-					    columns: [
-					    	{title: "사번" , field: "userCode"  , width: 100},
-					    	{title: "이름" , field: "userName"  , width: 120},
-					    	{title: "직급" , field: "jobPosName", width: 100}						    						    						  
-					    ]			  
-					});		        	
-
-					//Data set
-					gridSignUser.on("tableBuilt", function(){				
-						gridSignUser.setData(result);						
-					});			
-				}
+				//Data set
+				gridSignUser.on("tableBuilt", function(){				
+					gridSignUser.setData(result);						
+				});
 			}			
 		}			
 		
