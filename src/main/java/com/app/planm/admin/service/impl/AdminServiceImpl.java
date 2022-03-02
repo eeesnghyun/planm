@@ -43,6 +43,11 @@ public class AdminServiceImpl implements AdminService {
 	public List<HashMap<String, Object>> getPartList(AdminDTO adminDTO) throws Exception {
 		return adminDao.getPartList(adminDTO);
 	}
+	
+	@Override
+	public List<HashMap<String, Object>> getSignUserList(AdminDTO adminDTO) throws Exception {
+		return adminDao.getSignUserList(adminDTO);
+	}
 
 	@Override
 	public void updateDept(AdminDTO adminDTO) throws Exception {
@@ -53,7 +58,5 @@ public class AdminServiceImpl implements AdminService {
 	public void updatePart(AdminDTO adminDTO) throws Exception {
 		adminDao.updatePart(adminDTO);
 	}
-
-
 	
 }

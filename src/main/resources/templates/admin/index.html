@@ -291,7 +291,7 @@
 							<div class="row">	
 								<div class="col-12 border-bottom">												
 									<div class="float-left">
-										<h5><strong>결재선</strong></h5>
+										<h5><strong>결재권한등록</strong></h5>
 									</div>
 								</div>																			
 								
@@ -304,8 +304,35 @@
 									</div>								
 								</div>
 								
-								<div class="col-12">
+								<div class="col-12 mt-2 pb-2">
+									<div class="form-row align-items-center" style="width: 360px;">
+									    <div class="col">									    	
+									      	<div class="input-group">
+												<div class="input-group-prepend">
+											    	<span class="input-group-text">부서</span>
+											  	</div>
+											  	<select class="form-control" id="signDept" onchange="getSignPartList(this.value)"></select>									  										  
+											</div>
+									    </div>
+									    <div class="col">									    	
+									      	<div class="input-group">
+												<div class="input-group-prepend">
+											    	<span class="input-group-text">파트</span>
+											  	</div>
+											  	<select class="form-control" id="signPart" onchange="initGridUser()"></select>									  										  
+											</div>
+									    </div>									    
+									</div>																
+								</div>
+								
+								<div class="col-4">
+									<div class="border rounded" style="height: 250px; padding-left: 10px; padding-right: 10px;">
+										<div id="gridSignUser"></div>
+									</div>
 									
+									<div class="float-right">
+										<button type="button">저장</button>
+									</div>
 								</div>										
 							</div>
 						</div>																			
@@ -321,8 +348,8 @@
 		var gridDept = null;
 		var gridPart = null;
 		var gridPos  = null;
-		var gridUser = null;
-		var gridPartUser = null;
+		var gridUser = null;				
+		var gridSignUser = null;
 		
 		let userCode = "";
 		let userName = "";
@@ -500,6 +527,37 @@
 			}					    	        
 		};
 		
+		const initGridUser = function() {
+			const params = {
+				"deptCode" : $("#signDept").val(),
+				"partCode" : $("#signPart").val()
+			};
+			
+			const data = commonCallAjax("/admin/getSignUserList", params);
+			
+			if (data.code == "ok") {
+				const result = data.resultList;
+
+				if (result.length > 0) {
+					//Grid draw
+					gridSignUser = new Tabulator("#gridSignUser", {
+						layout: "fitDataTable",
+						height: "220px",	    
+					    columns: [
+					    	{title: "사번" , field: "userCode"  , width: 100},
+					    	{title: "이름" , field: "userName"  , width: 120},
+					    	{title: "직급" , field: "jobPosName", width: 100}						    						    						  
+					    ]			  
+					});		        	
+
+					//Data set
+					gridSignUser.on("tableBuilt", function(){				
+						gridSignUser.setData(result);						
+					});			
+				}
+			}			
+		}			
+		
 		const showUser = function(task) {
 			const dept = $("#deptCode").val();
 			let data = null;
@@ -670,10 +728,26 @@
 			const comboObj = {"objId" : "posCategory", "params" : {"parentCode" : "POS003"}, "defaultSelected" : "blank"};			
 			const comboObj2 = {"objId" : "emailServer", "params" : {"parentCode" : "FRM001"}, "defaultSelected" : "blank"};			
 			const comboObj3 = {"objId" : "document", "params" : {"parentCode" : "DOC001"}, "defaultSelected" : "blank"};			
-			
+								
 			commonInitObj(comboObj);
 			commonInitObj(comboObj2);
 			commonInitObj(comboObj3);
+			
+			const data = commonCallAjax("/admin/getDeptList", "");
+			const result = data.resultList;
+			let dataList = new Array();
+			
+			for (idx in result) {				
+	            let data = new Object();
+	             
+	            data.code = result[idx].deptCode;
+	            data.name = result[idx].deptName;
+
+				dataList.push(data);
+			}
+						
+			const comboObj4  = {"objId" : "signDept", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};	
+			commonInitObj(comboObj4);
 			
 			if (!commonIsNull(fullEmail)) {
 				const email = fullEmail.split("@")[0];
@@ -692,6 +766,24 @@
 			}		
 			
 			$("#posCategory").val(posCategory);
+		};
+		
+		const getSignPartList = function(deptCode) {			
+			const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode})
+			const result = data.resultList;
+			let dataList = new Array();
+			
+			for (idx in result) {				
+	            let data = new Object();
+	             
+	            data.code = result[idx].partCode;
+	            data.name = result[idx].partName;
+
+				dataList.push(data);
+			}
+			
+			const comboObj = {"objId" : "signPart", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};
+			commonInitObj(comboObj);
 		};
 		
 		$(function() {

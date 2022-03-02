@@ -17,6 +17,8 @@ public interface AdminDao {
 	public List<HashMap<String,Object>> getDeptList(String cmpCode) throws Exception;
 	
 	public List<HashMap<String,Object>> getPartList(AdminDTO adminDTO) throws Exception;
+		
+	public List<HashMap<String,Object>> getSignUserList(AdminDTO adminDTO) throws Exception;
 	
 	public void updateDept(AdminDTO adminDTO) throws Exception;
 	

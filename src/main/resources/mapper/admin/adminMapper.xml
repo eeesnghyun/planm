@@ -61,6 +61,21 @@
 		 ORDER BY PDP.PART_NAME
 	</select>
 	
+	<select id="getSignUserList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
+		<![CDATA[
+			SELECT PU.USER_CODE
+			 	 , PU.USER_NAME  
+			     , PU.JOB_POS
+			     , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME
+			 FROM shxdb.PM_USER PU
+			WHERE PU.CMP_CODE = #{cmpCode} 
+			  AND PU.JOB_POS <> '9000'	-- 사원제외
+			  AND PU.DEPT_CODE = #{deptCode}
+			  AND PU.PART_CODE = #{partCode}		
+			ORDER BY PU.JOB_POS
+		]]>		 
+	</select>
+	
 	<update id="updateDept" parameterType="com.app.planm.admin.vo.AdminDTO">
 		UPDATE PM_DEPT
 		   SET DEPT_NAME    = #{deptName}

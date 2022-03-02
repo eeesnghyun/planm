@@ -73,7 +73,7 @@ public class AdminController {
 				
 		String cmpCode = "0000";
 		
-		List<HashMap<String,Object>> resultList = adminService.getDeptList(cmpCode);
+		List<HashMap<String, Object>> resultList = adminService.getDeptList(cmpCode);
 		
 		resultMap.put("code", "ok");
 		resultMap.put("resultList", resultList);
@@ -85,9 +85,21 @@ public class AdminController {
 	public @ResponseBody Map<String, Object> getPartList(HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 				
-		adminDTO.setCmpCode("0000");
+		adminDTO.setCmpCode("0000");		
+		List<HashMap<String, Object>> resultList = adminService.getPartList(adminDTO);
 		
-		List<HashMap<String,Object>> resultList = adminService.getPartList(adminDTO);
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
+		
+		return resultMap;
+	}	
+	
+	@RequestMapping(value = "/getSignUserList", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getSignUserList(HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		adminDTO.setCmpCode("0000");		
+		List<HashMap<String, Object>> resultList = adminService.getSignUserList(adminDTO);
 		
 		resultMap.put("code", "ok");
 		resultMap.put("resultList", resultList);
