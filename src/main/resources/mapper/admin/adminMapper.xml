@@ -64,15 +64,20 @@
 	<select id="getSignUserList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
 		<![CDATA[
 			SELECT PU.USER_CODE
-			 	 , PU.USER_NAME  
-			     , PU.JOB_POS
-			     , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME
-			 FROM shxdb.PM_USER PU
+				 , PU.USER_NAME  
+				 , PU.JOB_POS
+				 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME     
+			     , IF(IFNULL(PD.DEPT_MANAGER,'N') = 'N', 1, 0) MANAGER	-- 부서장
+			 FROM PM_USER PU
+				  LEFT OUTER JOIN PM_DEPT PD
+			        ON PU.CMP_CODE  = PD.CMP_CODE	   
+			       AND PU.USER_CODE = PD.DEPT_MANAGER
+				   AND PU.DEPT_CODE = PD.DEPT_CODE
 			WHERE PU.CMP_CODE = #{cmpCode} 
 			  AND PU.JOB_POS <> '9000'	-- 사원제외
 			  AND PU.DEPT_CODE = #{deptCode}
-			  AND PU.PART_CODE = #{partCode}		
-			ORDER BY PU.JOB_POS
+			  AND PU.PART_CODE = #{partCode}
+			ORDER BY MANAGER, PU.JOB_POS ASC
 		]]>		 
 	</select>
 	

@@ -319,13 +319,13 @@
 												<div class="input-group-prepend">
 											    	<span class="input-group-text">파트</span>
 											  	</div>
-											  	<select class="form-control" id="signPart" onchange="initGridUser()"></select>									  										  
+											  	<select class="form-control" id="signPart" onchange="initGridSignUser()"></select>									  										  
 											</div>
 									    </div>									    
 									</div>																
 								</div>
 								
-								<div class="col-4">
+								<div class="col-5">
 									<div class="border rounded" style="height: 250px; padding-left: 10px; padding-right: 10px;">
 										<div id="gridSignUser"></div>
 									</div>
@@ -527,7 +527,7 @@
 			}					    	        
 		};
 		
-		const initGridUser = function() {
+		const initGridSignUser = function() {
 			const params = {
 				"deptCode" : $("#signDept").val(),
 				"partCode" : $("#signPart").val()
@@ -551,9 +551,10 @@
 				    	 cellClick: function(e, cell) {		    	 	 
 				    	 	cell.getRow().toggleSelect();
 				    	}},
-				    	{title: "사번" , field: "userCode"  , width: 100},
-				    	{title: "이름" , field: "userName"  , width: 120},
-				    	{title: "직급" , field: "jobPosName", width: 100}						    						    						  
+				    	{title: "사번"   , field: "userCode"  , width: 100},
+				    	{title: "이름"   , field: "userName"  , width: 120},
+				    	{title: "직급"   , field: "jobPosName", width: 100},
+				    	{title: "부서장" , field: "manager"   , width: 100}
 				    ]
 				});		        	
 
