@@ -2,7 +2,11 @@ package com.app.planm.admin.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
 import com.app.planm.admin.dao.AdminDao;
@@ -57,6 +61,28 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void updatePart(AdminDTO adminDTO) throws Exception {
 		adminDao.updatePart(adminDTO);
+	}
+
+	@Override
+	public void saveSignUser(Map<String, Object> paramMap) throws Exception {
+		String cmpCode = (String) paramMap.get("cmpCode");
+		String docType = (String) paramMap.get("docType");
+		String data = (String) paramMap.get("data");
+		
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(data);
+		JSONArray jsonArray = (JSONArray) obj;
+		
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject json = (JSONObject) jsonArray.get(i);
+			
+			Map<String, Object> newMap = new HashMap<String, Object>();
+			newMap.put("cmpCode", cmpCode);
+			newMap.put("docType", docType);
+			newMap.put("userCode", json.get("userCode"));					
+			
+			adminDao.saveSignUser(newMap);	
+		}		
 	}
 	
 }

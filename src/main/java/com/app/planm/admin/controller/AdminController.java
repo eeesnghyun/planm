@@ -133,4 +133,17 @@ public class AdminController {
 		
 		return resultMap;
 	}
+	
+	@RequestMapping(value = "/saveSignUser", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> saveSignUser(
+			HttpSession session, @RequestBody Map<String, Object> paramMap) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		paramMap.put("cmpCode", "0000");
+		adminService.saveSignUser(paramMap);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
 }

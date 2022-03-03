@@ -331,7 +331,7 @@
 									</div>
 									
 									<div class="float-right mt-2">
-										<button type="button" class="btn btn-outline-secondary">저장</button>
+										<button type="button" class="btn btn-outline-secondary" onclick="saveSignUser()">저장</button>
 									</div>
 								</div>										
 							</div>
@@ -554,7 +554,7 @@
 				    	{title: "사번"   , field: "userCode"  , width: 100},
 				    	{title: "이름"   , field: "userName"  , width: 120},
 				    	{title: "직급"   , field: "jobPosName", width: 100},
-				    	{title: "부서장" , field: "manager"   , width: 100}
+				    	{title: "부서장" , field: "manager"   , hozAlign:"center", formatter:"tickCross", width: 100}				    	
 				    ]
 				});		        	
 
@@ -736,13 +736,16 @@
 		};
 		
 		const saveSignUser = function() {
-			const data = commonCallAjax("/admin/updatePos", {"posCategory" : $("#posCategory").val()});
+			const params = {
+				"docType" : $("#document").val(),
+				"data" : JSON.stringify(gridSignUser.getSelectedData())
+			};			
+			
+			const data = commonCallAjax("/admin/saveSignUser", params);
 			
 			if (data.code == "ok") {
 				alert("저장되었습니다.");
 				
-				posCategory = data.posCategory;
-				initGridPos();
 			}
 		};
 		

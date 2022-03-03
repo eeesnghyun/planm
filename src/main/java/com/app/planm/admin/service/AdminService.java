@@ -2,6 +2,7 @@ package com.app.planm.admin.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.app.planm.admin.vo.AdminDTO;
 import com.app.planm.admin.vo.AdminVO;
@@ -23,5 +24,7 @@ public interface AdminService {
 	public void updateDept(AdminDTO adminDTO) throws Exception;
 	
 	public void updatePart(AdminDTO adminDTO) throws Exception;
+	
+	public void saveSignUser(Map<String, Object> paramMap) throws Exception;
 	
 }
