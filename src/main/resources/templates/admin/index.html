@@ -307,7 +307,7 @@
 							
 							<div class="row mt-2 mb-2">
 								<div class="col-6">
-									<div class="form-row align-items-center" style="width: 360px;">
+									<div class="form-row align-items-center">
 									    <div class="col">									    	
 									      	<div class="input-group">
 												<div class="input-group-prepend">
@@ -316,6 +316,7 @@
 											  	<select class="form-control" id="signDept" onchange="getSignPartList(this.value)"></select>									  										  
 											</div>
 									    </div>
+									    
 									    <div class="col">									    	
 									      	<div class="input-group">
 												<div class="input-group-prepend">
@@ -323,6 +324,11 @@
 											  	</div>
 											  	<select class="form-control" id="signPart" onchange="initGridSignUser()"></select>									  										  
 											</div>
+									    </div>
+									    
+									    <div class="col">
+									    	*부서장 : <span id="signManager"></span>
+									    	<input type="hidden" id="signManagerCode">
 									    </div>									    
 									</div>																
 								</div>

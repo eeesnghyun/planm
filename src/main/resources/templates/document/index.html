@@ -109,7 +109,7 @@
    		<div class="row border-bottom" onclick="getDocInfo()" th:each="doc : ${resultList}">
 	   		<div class="col-2 text-center"><span th:text="${doc.docNo}"></span></div>	   	
 	   		<div class="col-2 text-center"><span th:text="${doc.docType}"></span></div>
-	   		<div class="col-2 text-center"><span th:text="${doc.userCode}"></span></div>
+	   		<div class="col-2 text-center"><span th:text="${doc.userName}"></span></div>
 	   		<div class="col-2 text-center"><span th:text="${doc.requestYmd}"></span></div>
 	   		<div class="col-2 text-center"><span th:text="${doc.signYmd}"></span></div>
 	   		<div class="col-2 text-center"><span th:text="${doc.docStatus}"></span></div>
@@ -143,12 +143,12 @@
 
 			   	for (let i = 0; i < resultList.length; i++) {
 			   		docHtml += "<div class='row border-bottom'>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docNo + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docType + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].userName + " (" + resultList[i].userCode + ")</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].requestYmd + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].signYmd + "</div>";
-				   	docHtml += "	<div class='col-2 text-center'>" + resultList[i].docStatus + "</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].docNo +"</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].docType +"</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].userName +"</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].requestYmd +"</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].signYmd +"</div>";
+				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].docStatus +"</div>";
 				   	docHtml += "</div>";
 			    }
 		

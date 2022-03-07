@@ -435,18 +435,26 @@ const initObj = function() {
 
 const getSignPartList = function(deptCode) {			
 	const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode})
-	const result = data.resultList;
-	let dataList = new Array();
 	
-	for (idx in result) {				
-        let data = new Object();
-         
-        data.code = result[idx].partCode;
-        data.name = result[idx].partName;
+	if (data.code == "ok") {
+		const result = data.resultList;
+		
+		//부서장 입력
+		$("#signManagerCode").val(result[0].deptManager);
+		$("#signManager").text(result[0].deptManagerName);
+		
+		let dataList = new Array();
+		
+		for (idx in result) {				
+	        let data = new Object();
+	         
+	        data.code = result[idx].partCode;
+	        data.name = result[idx].partName;
 
-		dataList.push(data);
+			dataList.push(data);
+		}
+		
+		const comboObj = {"objId" : "signPart", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};
+		commonInitObj(comboObj);	
 	}
-	
-	const comboObj = {"objId" : "signPart", "params" : {}, "data" : dataList, "defaultSelected" : "blank"};
-	commonInitObj(comboObj);
 };
