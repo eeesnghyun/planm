@@ -68,11 +68,17 @@
 				 , PU.JOB_POS
 				 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME     
 			     , IF(IFNULL(PD.DEPT_MANAGER,'N') = 'N', false, true) MANAGER	-- 부서장
+			     , IF(IFNULL(PGU.USER_CODE,'N') = 'N', false, true) SIGNAUTH -- 결재권한
 			 FROM PM_USER PU
 				  LEFT OUTER JOIN PM_DEPT PD
 			        ON PU.CMP_CODE  = PD.CMP_CODE	   
 			       AND PU.USER_CODE = PD.DEPT_MANAGER
 				   AND PU.DEPT_CODE = PD.DEPT_CODE
+				  LEFT OUTER JOIN PM_SIGN_USER PGU
+                    ON PU.CMP_CODE   = PGU.CMP_CODE
+				   AND PU.DEPT_CODE  = PGU.DEPT_CODE
+                   AND PU.USER_CODE  = PGU.USER_CODE
+                   AND PGU.DEPT_CODE = #{deptCode}
 			WHERE PU.CMP_CODE = #{cmpCode} 
 			  AND PU.JOB_POS <> '9000'	-- 사원제외
 			  AND PU.DEPT_CODE = #{deptCode}
@@ -102,11 +108,13 @@
 		INSERT INTO PM_SIGN_USER (
 			  CMP_CODE
 			, DOC_TYPE
+			, DEPT_CODE
 			, USER_CODE
 			, CREATE_DATE
 		) VALUES (
 			  #{cmpCode}
 			, #{docType}
+			, #{deptCode}
 			, #{userCode}
 			, NOW()
 		)

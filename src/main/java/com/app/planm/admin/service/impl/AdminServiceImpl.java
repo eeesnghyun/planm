@@ -67,6 +67,7 @@ public class AdminServiceImpl implements AdminService {
 	public void saveSignUser(Map<String, Object> paramMap) throws Exception {
 		String cmpCode = (String) paramMap.get("cmpCode");
 		String docType = (String) paramMap.get("docType");
+		String deptCode = (String) paramMap.get("deptCode");
 		String data = (String) paramMap.get("data");
 		
 		JSONParser parser = new JSONParser();
@@ -79,6 +80,7 @@ public class AdminServiceImpl implements AdminService {
 			Map<String, Object> newMap = new HashMap<String, Object>();
 			newMap.put("cmpCode", cmpCode);
 			newMap.put("docType", docType);
+			newMap.put("deptCode", deptCode);
 			newMap.put("userCode", json.get("userCode"));					
 			
 			adminDao.saveSignUser(newMap);	
