@@ -160,7 +160,7 @@ const commonInitObj = function(comboObj) {
 		obj.append("<option value='all'>전체</option>");
 	}
 	
-	if (commonIsNull(comboObj.data)) {	
+	if (commonIsNull(comboObj.data)) {
 		const data = commonCallAjax("/cmn/getCodeList", {"parentCode" : params.parentCode});
 			
 		if (data.code == "ok") {

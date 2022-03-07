@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="row border-bottom">
 	   		<div class="col-12">
 		    	<table class="table">
 		    		<colgroup>
@@ -71,14 +71,10 @@
 			}						
 		};
 		
-		const initObj = function() {													
-			const comboObj = {"objId" : "docType", "params" : {"parentCode" : "DOC001"}, "defaultSelected" : "blank"};			
-								
-			commonInitObj(comboObj);		
-		};
-		
 		$(function() {
-			initObj();
+			const comboObj = {"objId" : "docType", "params" : {"parentCode" : "DOC001"}, "defaultSelected" : "blank"};			
+			
+			commonInitObj(comboObj);
 		});	
 	</script>
 </th:block>

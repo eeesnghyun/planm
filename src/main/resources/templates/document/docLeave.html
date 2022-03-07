@@ -15,7 +15,7 @@
     		<col width="100">
     		<col width="">
     	</colgroup>
-		<tr class="border-top">
+		<tr>
 	    	<th>발생일수</th>
 	    	<td><input type="text" class="form-control w80" id="createDay" disabled></td>
 	      	<th>사용일수</th>
@@ -30,21 +30,11 @@
 	    	</td>
 	      	<th>구분</th>
 	      	<td>
-	      		<select class="form-control" id="leaveType">
-					<option value="">선택</option>
-					<option value="A001" selected="selected">년차</option>
-					<option value="A002">병가</option>
-					<option value="A003">훈련</option>
-				</select>
+	      		<select class="form-control" id="leaveType"></select>
 	      	</td>
 	      	<th>전일/반일</th>
 	    	<td>
-	    		<select class="form-control w100" id="dayType">
-					<option value="">선택</option>
-					<option value="D001" selected="selected">전일</option>
-					<option value="D002">오전반차</option>
-					<option value="D003">오후반차</option>
-				</select>
+	    		<select class="form-control w100" id="dayType"></select>
 	    	</td>
 	    </tr>
 	    <tr>
@@ -99,7 +89,7 @@
 	
 	<div class="mt-2 pt-2 border-top">
 		<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">임시저장</button>
-		<button type="button" class="btn btn-outline-secondary" onclick="reqeustDoc()">결재신청</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="requestDoc()">결재신청</button>
 	</div>
 		
 	<script src="/js/docLeave.js"></script>
@@ -115,8 +105,11 @@
 			$("#startDay").val(today);
 			$("#endDay").val(after);
 			
+			initObj();
 			initLeave();
 			initSignLine();
+			
+			getLeaveUseday();
 		});
 	</script>
 </body>

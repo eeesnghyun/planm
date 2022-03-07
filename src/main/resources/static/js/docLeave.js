@@ -1,3 +1,14 @@
+const initObj = function() {													
+	const comboObj  = {"objId" : "leaveType", "params" : {"parentCode" : "LVE001"}, "defaultSelected" : "blank"};			
+	const comboObj2 = {"objId" : "dayType", "params" : {"parentCode" : "LVE002"}, "defaultSelected" : "blank"};			
+						
+	commonInitObj(comboObj);
+	commonInitObj(comboObj2);
+
+	$("#leaveType option:eq(1)").prop("selected", true); //년차 기본값
+	$("#dayType option:eq(1)").prop("selected", true); 	 //전일 기본값
+};
+
 const initLeave = function() {
 	const data = commonCallAjax("/document/getUserLeave", "");
 	
@@ -6,9 +17,7 @@ const initLeave = function() {
 						
 		$("#createDay").val(result.createDay);
 		$("#useDay").val(result.useDay);
-		$("#remainDay").val(result.remainDay);
-		
-	   	getLeaveUseday();
+		$("#remainDay").val(result.remainDay);			   	
 	}
 };
 
@@ -135,7 +144,7 @@ const saveDoc = function() {
 
 const requestDoc = function() {
 	const params = {
-		"docType"   : "0002",
+		"docType"   : $("#docType").val(),
 		"leaveType" : "A001",
 		"dayType"   : "D001",
 		"startDay"  : "2022-02-17",
@@ -148,6 +157,6 @@ const requestDoc = function() {
 	const data = commonCallAjax("/document/requestDoc", params);
 	
 	if (data.code == "ok") {				
-		alert("임시저장 되었습니다.");
+		alert("결재신청 되었습니다.");
 	}
 };
