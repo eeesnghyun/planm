@@ -40,7 +40,7 @@ public class DocumentController {
 	public String document(Model model) throws Exception {
 		DocumentDTO documentDTO = new DocumentDTO();
 		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("lsh");
+		documentDTO.setUserCode("test1");
 		documentDTO.setDocStatus("all");
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
@@ -51,11 +51,12 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/getDocList", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getDocList(HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
+	public @ResponseBody Map<String, Object> getDocList(
+			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("lsh");
+		documentDTO.setUserCode("test1");
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
 		
@@ -71,7 +72,7 @@ public class DocumentController {
 		
 		DocumentDTO documentDTO = new DocumentDTO();
 		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("lsh");
+		documentDTO.setUserCode("test1");
 		
 		DocumentVO documentVO = documentService.getUserLeave(documentDTO);		
 		
@@ -98,7 +99,8 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/saveDoc", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> saveDoc(Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+	public @ResponseBody Map<String, Object> saveDoc(
+			Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		documentDTO.setCmpCode("0000");
@@ -112,15 +114,32 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/requestDoc", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> requestDoc(Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+	public @ResponseBody Map<String, Object> requestDoc(
+			Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("lsh");
+		documentDTO.setUserCode("test1");
 		
 		documentService.requestDoc(documentDTO);
 		
 		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/getSignUser", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getSignUser(
+			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		documentDTO.setCmpCode("0000");
+		documentDTO.setUserCode("test1");
+		
+		List<DocumentVO> resultList = documentService.getSignUser(documentDTO);		
+		
+		resultMap.put("code", "ok");
+		resultMap.put("resultList", resultList);
 		
 		return resultMap;
 	}

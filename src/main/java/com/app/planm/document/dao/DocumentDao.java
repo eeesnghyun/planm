@@ -24,5 +24,7 @@ public interface DocumentDao {
 	public void saveDocSign(DocumentDTO documentDTO) throws Exception;
 	
 	public List<String> getHoliday() throws Exception;
+
+	public List<DocumentVO> getSignUser(DocumentDTO documentDTO) throws Exception;
 	
 }

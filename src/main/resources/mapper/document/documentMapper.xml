@@ -201,5 +201,32 @@
 		WHERE YYYY = DATE_FORMAT(CURDATE(),'%Y')
 	</select>
 	
+	<select id="getSignUser" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="camelHashMap">
+		SELECT PSU.USER_CODE
+			 , PU.USER_NAME
+			 , IF(IFNULL(PD.DEPT_MANAGER,'N') = 'N', false, true) MANAGER	-- 부서장
+		     , PU.JOB_POS
+		     , (SELECT CHILD_NAME 
+		         FROM CODE_CHILD 
+		        WHERE PARENT_CODE=PC.POS_CATEGORY 
+		          AND CHILD_CODE=PU.JOB_POS) JOB_NAME  -- 직책  
+		  FROM PM_SIGN_USER PSU
+			   INNER JOIN PM_USER PU
+				  ON PSU.CMP_CODE  = PU.CMP_CODE
+		         AND PSU.USER_CODE = PU.USER_CODE
+			   INNER JOIN PM_COMPANY PC
+		          ON PSU.CMP_CODE = PC.CMP_CODE
+			   LEFT OUTER JOIN PM_DEPT PD
+				 ON PU.CMP_CODE  = PD.CMP_CODE	   
+				AND PU.USER_CODE = PD.DEPT_MANAGER
+				AND PU.DEPT_CODE = PD.DEPT_CODE
+		 WHERE PSU.CMP_CODE = #{cmpCode} 
+		   AND PSU.DOC_TYPE = #{docType}
+		   AND PSU.DEPT_CODE = (SELECT DEPT_CODE
+							  FROM PM_USER PU
+							 WHERE CMP_CODE  = #{cmpCode}
+							   AND USER_CODE = #{userCode})
+		ORDER BY IF(MANAGER = true, 1, 0), PU.JOB_POS DESC
+	</select>
 	
 </mapper>

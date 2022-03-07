@@ -36,11 +36,7 @@
 			    	<tr>
 			      		<th>문서구분</th>
 			      		<td>
-			      			<select class="form-control" onchange="loadDocTemplate(this.value)" style="width: 200px;">
-	  							<option value="">선택</option>
-	  							<option value="0001">휴가신청서</option>
-	  							<option value="0002">제증명신청서</option>
-							</select>
+			      			<select class="form-control" id="docType" onchange="loadDocTemplate(this.value)" style="width: 200px;"></select>
 						</td>
 			    	</tr>
 				</table>
@@ -67,16 +63,22 @@
 				$("#docTemplate").empty();
 			} else {
 				if (page == "0001") {
-					template = "/document/docLeave.load";
+					template = "/document/docProof.load";					
 				} else {
-					template = "/document/docProof.load";	
+					template = "/document/docLeave.load";
 				}								
 				$("#docTemplate").load(template);	
 			}						
 		};
 		
-		$(function() {
+		const initObj = function() {													
+			const comboObj = {"objId" : "docType", "params" : {"parentCode" : "DOC001"}, "defaultSelected" : "blank"};			
+								
+			commonInitObj(comboObj);		
+		};
 		
+		$(function() {
+			initObj();
 		});	
 	</script>
 </th:block>
