@@ -70,6 +70,8 @@ public class AdminServiceImpl implements AdminService {
 		String deptCode = (String) paramMap.get("deptCode");
 		String data = (String) paramMap.get("data");
 		
+		adminDao.saveSignUser(paramMap);	//부서장 자동 등록
+		
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(data);
 		JSONArray jsonArray = (JSONArray) obj;

@@ -71,8 +71,7 @@
 			SELECT PU.USER_CODE
 				 , PU.USER_NAME  
 				 , PU.JOB_POS
-				 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME     
-			     , IF(IFNULL(PD.DEPT_MANAGER,'N') = 'N', false, true) MANAGER	-- 부서장
+				 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE CHILD_CODE=PU.JOB_POS) JOB_POS_NAME     			     
 			     , IF(IFNULL(PGU.USER_CODE,'N') = 'N', false, true) SIGNAUTH -- 결재권한
 			 FROM PM_USER PU
 				  LEFT OUTER JOIN PM_DEPT PD
@@ -88,7 +87,11 @@
 			  AND PU.JOB_POS <> '9000'	-- 사원제외
 			  AND PU.DEPT_CODE = #{deptCode}
 			  AND PU.PART_CODE = #{partCode}
-			ORDER BY IF(MANAGER = true, 0, 1), PU.JOB_POS ASC
+			  AND PU.USER_CODE NOT IN (SELECT DEPT_MANAGER 
+			  						     FROM PM_DEPT A 
+			  						    WHERE CMP_CODE  = #{cmpCode} 
+			  						      AND DEPT_CODE = #{deptCode})
+			ORDER BY PU.JOB_POS ASC
 		]]>		 
 	</select>
 	

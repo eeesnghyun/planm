@@ -191,8 +191,7 @@ const initGridSignUser = function() {
 		    	}},
 		    	{title: "사번"     , field: "userCode"  , width: 100},
 		    	{title: "이름"     , field: "userName"  , width: 120},
-		    	{title: "직급"     , field: "jobPosName", width: 100},
-		    	{title: "부서장"   , field: "manager"   , hozAlign:"center", formatter:"tickCross", width: 100},				    	
+		    	{title: "직급"     , field: "jobPosName", width: 100},		    					    
 		    	{title: "결재권한" , field: "signauth"  , hozAlign:"center", formatter:"tickCross", width: 100}
 		    ]
 		});		        	
@@ -376,8 +375,9 @@ const updatePos = function() {
 
 const saveSignUser = function() {
 	const params = {
-		"docType" : $("#document").val(),
+		"docType"  : $("#document").val(),
 		"deptCode" : $("#signDept").val(),
+		"userCode" : $("#signManagerCode").val(),
 		"data" : JSON.stringify(gridSignUser.getSelectedData())
 	};			
 	
@@ -386,6 +386,7 @@ const saveSignUser = function() {
 	if (data.code == "ok") {
 		alert("저장되었습니다.");
 		
+		initGridSignUser();
 	}
 };
 

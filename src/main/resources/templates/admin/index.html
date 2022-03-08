@@ -334,7 +334,11 @@
 								</div>
 								
 								<div class="col-6">
-									결재라인 고정하기
+									
+									<div class="custom-control custom-switch">										
+										<input type="checkbox" class="custom-control-input" id="customSwitch1">
+									  	<label class="custom-control-label" for="customSwitch1">결재라인 고정</label>
+									</div>
 								</div>
 							</div>
 							
@@ -365,7 +369,7 @@
 	</div>		<!-- End container -->			
 	
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script src="/plugins/grid/tabulator/tabulator.min.js"></script>
+	<script src="/plugins/grid/tabulator/tabulator.js"></script>
 	<script src="/js/admin.js"></script>
 	<script th:inline="javascript">				
 		var gridDept = null;
