@@ -237,7 +237,7 @@ const initGridSignUser = function() {
 			gridSignUser.replaceData(result);	
 		}		
 		
-		getSignUser();
+		getSignUser(autoSign);
 	}			
 }			
 
@@ -511,7 +511,7 @@ const getSignPartList = function(deptCode) {
 };
 
 //결재권자 조회
-const getSignUser = function() {
+const getSignUser = function(autoSign) {
 	const params = {
 		"docType"  : $("#document").val(),
 		"deptCode" : $("#signDept").val(),
@@ -521,30 +521,40 @@ const getSignUser = function() {
 	
 	if (data.code == "ok") {
 		const result = data.resultList;
+		const checked = autoSign == "Y" ? "checked" : "";
 		
-		let userHtml = "";				
+		let userHtml = "";	
+		let signHtml = "";
 		
-		for (let i = 0; i < result.length; i++) {
-				userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
-				userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
-				userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' data-code='"+ result[i].userCode +"' onclick='setSignLine(this)'>";
-				userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
-				userHtml += "	</div></div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].userName +"</div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].jobName +"</div>";
-				userHtml += "</div>";
+		for (let i = 0; i < result.length; i++) {				
+			userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
+			userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
+			userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' data-code='"+ result[i].userCode +"' onclick='setSignLine(this)' checked='"+ checked +"'>";
+			userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
+			userHtml += "	</div></div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].userName +"</div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].jobName +"</div>";
+			userHtml += "</div>";
+
+			if (autoSign == "Y") {								
+				signHtml += "<li class='list-group-item' id='li-sign"+ i +"' data-code='"+ result[i].userCode +"'>";
+				signHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>"+ result[i].userName +"(<span class='badge badge-primary badge-pill'>"+ result[i].userCode +"</span>)";
+				signHtml += "</li>";					
+			}
 		}
 		
 		$("#userList").empty();
-		$("#userList").append(userHtml);
+		$("#userList").append(userHtml);		
+		$("#signuserList").empty();
+		$("#signuserList").append(signHtml);
 	}
 };	
 
 //결재라인 출력
 const setSignLine = function(e) {
-	var userHtml = "";
-	var liId = "#li-" + e.id;
+	let userHtml = "";
+	const liId = "#li-" + e.id;
 
 	if ($("input:checkbox[id='" + e.id + "']").is(":checked")) {
 		const user = $("#" + e.id).data("user");
@@ -553,7 +563,7 @@ const setSignLine = function(e) {
 		userHtml += "<li class='list-group-item' id='li-" + e.id + "' data-code='"+ code +"'>";
 		userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + code + "</span>)";
 		userHtml += "</li>";
-		
+				
 		$("#signuserList").append(userHtml);
 	} else {
 		$(liId).remove();
