@@ -591,5 +591,7 @@ const saveSignLine = function() {
 	
 	if (data.code == "ok") {
 		alert("저장되었습니다.");
+		
+		initGridSignUser();
 	}	
 };
