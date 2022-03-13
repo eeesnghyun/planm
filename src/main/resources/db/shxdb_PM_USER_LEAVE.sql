@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `PM_USER_LEAVE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `PM_USER_LEAVE` (
-  `CMP_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `USER_CODE` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `CREATE_YM` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `CREATE_DAY` int DEFAULT NULL,
-  `USE_DAY` int DEFAULT NULL,
-  `REMAIN_DAY` int DEFAULT NULL,
+  `CMP_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '회사코드',
+  `USER_CODE` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '사번',
+  `CREATE_YM` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '생성년도',
+  `CREATE_DAY` int DEFAULT NULL COMMENT '생성일수',
+  `USE_DAY` int DEFAULT NULL COMMENT '사용일수',
+  `REMAIN_DAY` int DEFAULT NULL COMMENT '잔여일수',
   PRIMARY KEY (`CMP_CODE`,`USER_CODE`,`CREATE_YM`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='사원휴가일수';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `PM_USER_LEAVE` (
 
 LOCK TABLES `PM_USER_LEAVE` WRITE;
 /*!40000 ALTER TABLE `PM_USER_LEAVE` DISABLE KEYS */;
-INSERT INTO `PM_USER_LEAVE` VALUES ('0000','lsh','202201',15,0,15);
+INSERT INTO `PM_USER_LEAVE` VALUES ('0000','test1','202201',15,0,15);
 /*!40000 ALTER TABLE `PM_USER_LEAVE` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23 23:16:37
+-- Dump completed on 2022-03-13 17:38:02

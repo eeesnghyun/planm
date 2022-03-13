@@ -16,33 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `PM_DOCUMENT_LEAVE`
+-- Table structure for table `PM_SIGN`
 --
 
-DROP TABLE IF EXISTS `PM_DOCUMENT_LEAVE`;
+DROP TABLE IF EXISTS `PM_SIGN`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `PM_DOCUMENT_LEAVE` (
+CREATE TABLE `PM_SIGN` (
   `CMP_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '회사코드',
-  `DOC_NO` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '문서번호',
-  `LEAVE_TYPE` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '휴가구분(LVE001)',
-  `DAY_TYPE` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '휴가사용종류(LVE002)',
-  `START_DAY` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '시작일',
-  `END_DAY` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '종료일',
-  `LEAVE_CNT` int DEFAULT NULL COMMENT '요청일',
-  `REMARK` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '비고',
-  PRIMARY KEY (`CMP_CODE`,`DOC_NO`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='휴가문서';
+  `DOC_TYPE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '문서유형',
+  `DEPT_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '부서코드',
+  `PART_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '파트코드',
+  `AUTOSIGN_YN` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '결재라인자동생성',
+  `UPDATE_USER` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '수정자',
+  `UPDATE_DATE` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`CMP_CODE`,`DOC_TYPE`,`DEPT_CODE`,`PART_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='회사결재라인';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `PM_DOCUMENT_LEAVE`
+-- Dumping data for table `PM_SIGN`
 --
 
-LOCK TABLES `PM_DOCUMENT_LEAVE` WRITE;
-/*!40000 ALTER TABLE `PM_DOCUMENT_LEAVE` DISABLE KEYS */;
-INSERT INTO `PM_DOCUMENT_LEAVE` VALUES ('0000','2202160001','A001','D001','20220213','20220214',2,NULL),('0000','2202160003','A001','D001','20220217','20220217',1,'테스트'),('0000','2202200001','A001','D001','20220217','20220217',1,'테스트'),('0000','2203070001','A001','D001','20220217','20220217',1,'테스트');
-/*!40000 ALTER TABLE `PM_DOCUMENT_LEAVE` ENABLE KEYS */;
+LOCK TABLES `PM_SIGN` WRITE;
+/*!40000 ALTER TABLE `PM_SIGN` DISABLE KEYS */;
+INSERT INTO `PM_SIGN` VALUES ('0000','0002','3000','3001','Y','test','2022-03-13 16:53:18');
+/*!40000 ALTER TABLE `PM_SIGN` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-13 17:38:02
+-- Dump completed on 2022-03-13 17:38:03

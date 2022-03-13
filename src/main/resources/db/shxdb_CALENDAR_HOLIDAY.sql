@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `CALENDAR_HOLIDAY`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CALENDAR_HOLIDAY` (
-  `SEQ` int NOT NULL,
-  `YYYY` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `MMDD` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `REMARK` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `SEQ` int NOT NULL AUTO_INCREMENT COMMENT '시퀀스(AUTO)',
+  `YYYY` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '년도',
+  `MMDD` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '월일',
+  `REMARK` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '내용',
   PRIMARY KEY (`SEQ`,`YYYY`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23 23:16:38
+-- Dump completed on 2022-03-13 17:38:01

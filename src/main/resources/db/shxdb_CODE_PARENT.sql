@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `CODE_PARENT`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `CODE_PARENT` (
-  `PARENT_CODE` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `PARENT_NAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PARENT_CODE` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '부모코드',
+  `PARENT_NAME` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '코드명',
   PRIMARY KEY (`PARENT_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='부모코드';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `CODE_PARENT` (
 
 LOCK TABLES `CODE_PARENT` WRITE;
 /*!40000 ALTER TABLE `CODE_PARENT` DISABLE KEYS */;
-INSERT INTO `CODE_PARENT` VALUES ('DOC001','문서유형'),('DOC002','문서상태'),('LVE001','휴가구분'),('LVE002','휴가사용종류');
+INSERT INTO `CODE_PARENT` VALUES ('DOC001','문서유형'),('DOC002','문서상태'),('FRM001','이메일서버'),('LVE001','휴가구분'),('LVE002','휴가사용종류'),('POS001','직급코드(일반)'),('POS002','직급코드(연구)'),('POS003','직급유형');
 /*!40000 ALTER TABLE `CODE_PARENT` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23 23:16:37
+-- Dump completed on 2022-03-13 17:38:03
