@@ -199,6 +199,18 @@
 		SELECT CONCAT(YYYY,MMDD) AS YYYYMMDD			 
 		 FROM shxdb.CALENDAR_HOLIDAY 
 		WHERE YYYY = DATE_FORMAT(CURDATE(),'%Y')
+	</select>		
+	
+	<select id="getUserAutoSign" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="String">
+		SELECT IFNULL(MAX(PS.AUTOSIGN_YN),'N') AUTOSIGN_YN
+		  FROM PM_SIGN PS
+		       LEFT OUTER JOIN PM_USER PU
+		         ON PS.CMP_CODE  = PU.CMP_CODE
+				AND PS.DEPT_CODE = PU.DEPT_CODE
+		        AND PS.PART_CODE = PU.PART_CODE
+		 WHERE PS.CMP_CODE  = #{cmpCode}
+		   AND PS.DOC_TYPE  = #{docType}
+		   AND PU.USER_CODE = #{userCode}		   
 	</select>
 	
 	<select id="getSignUser" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="camelHashMap">
@@ -220,12 +232,10 @@
 				 ON PU.CMP_CODE  = PD.CMP_CODE	   
 				AND PU.USER_CODE = PD.DEPT_MANAGER
 				AND PU.DEPT_CODE = PD.DEPT_CODE
-		 WHERE PSU.CMP_CODE = #{cmpCode} 
-		   AND PSU.DOC_TYPE = #{docType}
-		   AND PSU.DEPT_CODE = (SELECT DEPT_CODE
-							  FROM PM_USER PU
-							 WHERE CMP_CODE  = #{cmpCode}
-							   AND USER_CODE = #{userCode})
+		 WHERE PSU.CMP_CODE  = #{cmpCode} 
+		   AND PSU.DOC_TYPE  = #{docType}
+		   AND PSU.DEPT_CODE = (SELECT DEPT_CODE FROM PM_USER WHERE CMP_CODE=#{cmpCode} AND USER_CODE=#{userCode})
+   		   AND PSU.PART_CODE = (SELECT PART_CODE FROM PM_USER WHERE CMP_CODE=#{cmpCode} AND USER_CODE=#{userCode})
 		ORDER BY IF(MANAGER = true, 1, 0), PU.JOB_POS DESC
 	</select>
 	

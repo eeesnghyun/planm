@@ -76,6 +76,17 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.getHoliday();
 	}
 
+	@Override
+	public String getUserAutoSign(DocumentDTO documentDTO) throws Exception {	
+		return documentDao.getUserAutoSign(documentDTO);
+	}
+	
+	@Override
+	public List<DocumentVO> getSignUser(DocumentDTO documentDTO) throws Exception {	
+		return documentDao.getSignUser(documentDTO);
+	}
+
+
 
 	
 }

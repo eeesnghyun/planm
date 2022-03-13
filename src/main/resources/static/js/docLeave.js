@@ -27,6 +27,7 @@ const initSignLine = function() {
 	
 	if (data.code == "ok") {
 		const result = data.resultList;
+		const autoSign = data.autoSign;
 		
 		let userHtml = "";				
 		

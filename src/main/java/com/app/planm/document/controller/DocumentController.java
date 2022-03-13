@@ -27,7 +27,7 @@ public class DocumentController {
 	
 	private final DocumentService documentService;		
 	private final UserService userService;
-	
+
 	@Autowired
 	public DocumentController(
 			DocumentService documentService,
@@ -136,10 +136,12 @@ public class DocumentController {
 		documentDTO.setCmpCode("0000");
 		documentDTO.setUserCode("test1");
 		
-		//List<DocumentVO> resultList = documentService.getUserList(documentDTO);		
+		String autoSign = documentService.getUserAutoSign(documentDTO);
+		List<DocumentVO> resultList = documentService.getSignUser(documentDTO);		
 		
 		resultMap.put("code", "ok");
-		//resultMap.put("resultList", resultList);
+		resultMap.put("autoSign", autoSign);
+		resultMap.put("resultList", resultList);
 		
 		return resultMap;
 	}
