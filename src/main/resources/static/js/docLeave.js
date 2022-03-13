@@ -135,6 +135,7 @@ const isHoliday = function(yyyymmdd) {
 	}
 };
 
+//임시저장
 const saveDoc = function() {
 	const params = {
 		"docType"   : "0002",
@@ -150,9 +151,12 @@ const saveDoc = function() {
 	
 	if (data.code == "ok") {				
 		alert("임시저장 되었습니다.");
+		
+		location.replace("/document");
 	}
 };
 
+//결재신청
 const requestDoc = function() {
 	const params = {
 		"docType"   : $("#docType").val(),
@@ -169,5 +173,7 @@ const requestDoc = function() {
 	
 	if (data.code == "ok") {				
 		alert("결재신청 되었습니다.");
+		
+		location.replace("/document");
 	}
 };
