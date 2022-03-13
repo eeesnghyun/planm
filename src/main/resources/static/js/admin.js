@@ -47,10 +47,11 @@ const initGridDept = function() {
 	if (data.code == "ok") {
 		const result = data.resultList;
 
-		if (result.length > 0) {
-        	//Grid draw
+		if (commonIsNull(gridDept)) {
+			//Grid draw
 			gridDept = new Tabulator("#gridDept", {
 				layout: "fitDataTable",
+				placeholder: "데이터가 존재하지 않습니다.",
 				height: "220px",	    
 			    columns: [
 			    	{title: "부서코드" , field: "deptCode"    , width: 100},
@@ -81,8 +82,10 @@ const initGridDept = function() {
 					
 			    	initGridPart(rowData.deptCode);
 				});
-			});					
-        }	
+			});	
+		} else {
+			gridDept.replaceData(result);
+		}    				
 	}					    	        
 };
 
@@ -93,45 +96,49 @@ const initGridPart = function(deptCode) {
 	if (data.code == "ok") {
 		const result = data.resultList;
 		
-		let nullMsg = "";				
-		if (commonIsNull(deptCode)) {
-			nullMsg = "부서를 선택해주세요.";
-		} else {
-			nullMsg = "데이터가 존재하지 않습니다.";
-		}
-		
-    	//Grid draw
-		gridPart = new Tabulator("#gridPart", {
-			layout: "fitDataTable",
-			placeholder: nullMsg,
-			height: "220px",	    
-		    columns: [
-		    	{title: "파트코드"  , field: "partCode"    , width: 100},
-		    	{title: "파트명"    , field: "partName"    , width: 100},
-		    	{title: "파트장코드", field: "partManager" , width: 100, visible: false},
-		    	{title: "파트장"    , field: "managerName" , width: 100},				    	
-			    {title: "생성일"    , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
-		    ]			  
-		});		        	
+		if (commonIsNull(gridPart)) {
+			let nullMsg = "";				
+			if (commonIsNull(deptCode)) {
+				nullMsg = "부서를 선택해주세요.";
+			} else {
+				nullMsg = "데이터가 존재하지 않습니다.";
+			}
+			
+	    	//Grid draw
+			gridPart = new Tabulator("#gridPart", {
+				layout: "fitDataTable",
+				placeholder: nullMsg,
+				height: "220px",	    
+			    columns: [
+			    	{title: "파트코드"  , field: "partCode"    , width: 100},
+			    	{title: "파트명"    , field: "partName"    , width: 100},
+			    	{title: "파트장코드", field: "partManager" , width: 100, visible: false},
+			    	{title: "파트장"    , field: "managerName" , width: 100},				    	
+				    {title: "생성일"    , field: "createDate"  , width: 120, hozAlign: "center"}						    						   
+			    ]			  
+			});		        	
 
-		//Data set
-		gridPart.on("tableBuilt", function(){				
-			gridPart.setData(result);
-			gridPart.on("rowClick", function(e, row) {		
-				gridPart.deselectRow();
-				row.toggleSelect();
-		    	//e - click object
-		        //row - row component
-		        const rowData = row._row.data;
-		    	
-		        $("#partCode").val(rowData.partCode);
-				$("#partName").val(rowData.partName);
-				$("#partManager").val(rowData.managerName);
-				$("#partManagerCode").val(rowData.partManager);
-				$("#saveBtnPart").hide();
-				$("#updateBtnPart").show();
-			});
-		});				
+			//Data set
+			gridPart.on("tableBuilt", function(){				
+				gridPart.setData(result);
+				gridPart.on("rowClick", function(e, row) {		
+					gridPart.deselectRow();
+					row.toggleSelect();
+			    	//e - click object
+			        //row - row component
+			        const rowData = row._row.data;
+			    	
+			        $("#partCode").val(rowData.partCode);
+					$("#partName").val(rowData.partName);
+					$("#partManager").val(rowData.managerName);
+					$("#partManagerCode").val(rowData.partManager);
+					$("#saveBtnPart").hide();
+					$("#updateBtnPart").show();
+				});
+			});		
+		} else {
+			gridPart.replaceData(result);
+		}						
 	}	
 };
 
@@ -146,22 +153,26 @@ const initGridPos = function() {
 	if (data.code == "ok") {
 		const result = data.resultList;
 		
-    	//Grid draw
-		gridPos = new Tabulator("#gridPos", {
-			layout: "fitDataTable",
-			placeholder: "데이터가 존재하지 않습니다.",
-			height: "250px",	    
-		    columns: [
-		    	{title: "직급코드" , field: "code"  , width: 100},
-		    	{title: "직급명"   , field: "name"  , width: 120},					    						    						    						  
-		    	{title: "보이기"   , field: "useYn" , width: 100, hozAlign: "center"}
-		    ]			  
-		});		        	
+		if (commonIsNull(gridPos)) {
+			//Grid draw
+			gridPos = new Tabulator("#gridPos", {
+				layout: "fitDataTable",
+				placeholder: "데이터가 존재하지 않습니다.",
+				height: "250px",	    
+			    columns: [
+			    	{title: "직급코드" , field: "code"  , width: 100},
+			    	{title: "직급명"   , field: "name"  , width: 120},					    						    						    						  
+			    	{title: "보이기"   , field: "useYn" , width: 100, hozAlign: "center"}
+			    ]			  
+			});		        	
 
-		//Data set
-		gridPos.on("tableBuilt", function(){				
-			gridPos.setData(result);						
-		});
+			//Data set
+			gridPos.on("tableBuilt", function(){				
+				gridPos.setData(result);						
+			});	
+		} else {
+			gridPos.replaceData(result);
+		}    	
 	}					    	        
 };
 
@@ -175,31 +186,35 @@ const initGridSignUser = function() {
 	
 	if (data.code == "ok") {
 		const result = data.resultList;
-		
-		//Grid draw
-		gridSignUser = new Tabulator("#gridSignUser", {
-			layout: "fitDataTable",
-			placeholder: "데이터가 존재하지 않습니다.",
-			height: "220px",	    
-		    columns: [
-		    	{formatter: "rowSelection", 
-		    	 titleFormatter: "rowSelection", 
-		    	 hozAlign: "center", 
-		    	 headerSort: false, 
-		    	 cellClick: function(e, cell) {		    	 	 
-		    	 	cell.getRow().toggleSelect();
-		    	}},
-		    	{title: "사번"     , field: "userCode"  , width: 100},
-		    	{title: "이름"     , field: "userName"  , width: 120},
-		    	{title: "직급"     , field: "jobPosName", width: 100},		    					    
-		    	{title: "결재권한" , field: "signauth"  , hozAlign:"center", formatter:"tickCross", width: 100}
-		    ]
-		});		        	
 
-		//Data set
-		gridSignUser.on("tableBuilt", function(){				
-			gridSignUser.setData(result);
-		});
+		if (commonIsNull(gridSignUser)) {
+			//Grid draw
+			gridSignUser = new Tabulator("#gridSignUser", {
+				layout: "fitDataTable",
+				placeholder: "데이터가 존재하지 않습니다.",
+				height: "220px",	    
+			    columns: [
+			    	{formatter: "rowSelection", 
+			    	 titleFormatter: "rowSelection", 
+			    	 hozAlign: "center", 
+			    	 headerSort: false, 
+			    	 cellClick: function(e, cell) {		    	 	 
+			    	 	cell.getRow().toggleSelect();
+			    	}},
+			    	{title: "사번"     , field: "userCode"  , width: 100},
+			    	{title: "이름"     , field: "userName"  , width: 120},
+			    	{title: "직급"     , field: "jobPosName", width: 100},		    					    
+			    	{title: "결재권한" , field: "signauth"  , hozAlign:"center", formatter:"tickCross", width: 100}
+			    ]
+			});		        	
+
+			//Data set
+			gridSignUser.on("tableBuilt", function(){				
+				gridSignUser.setData(result);
+			});	
+		} else {
+			gridSignUser.replaceData(result);	
+		}		
 	}			
 }			
 
@@ -244,12 +259,13 @@ const showUser = function(task) {
 	if (data.code == "ok") {
 		const result = data.resultList;
 
-		if (result.length > 0) {
-			$(".layer-pop").show();
-			
-        	//Grid draw
+		$(".layer-pop").show();
+		
+		if (commonIsNull(gridUser)) {
+			//Grid draw
 			gridUser = new Tabulator("#gridUser", {
 				layout: "fitDataTable",
+				placeholder: "데이터가 존재하지 않습니다.",
 				height: "220px",	    
 			    columns: [
 			    	{title: "사번" , field: "userCode" , width: 100},
@@ -271,8 +287,10 @@ const showUser = function(task) {
 			        userCode = rowData.userCode;
 					userName = rowData.userName;
 				});
-			});					
-        }	
+			});	
+		} else {
+			gridUser.replaceData(result);
+		}
 	}					    	        
 };
 
