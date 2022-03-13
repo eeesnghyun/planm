@@ -47,6 +47,16 @@ public class AdminServiceImpl implements AdminService {
 	public List<HashMap<String, Object>> getPartList(AdminDTO adminDTO) throws Exception {
 		return adminDao.getPartList(adminDTO);
 	}
+
+	@Override
+	public String getAutoSign(AdminDTO adminDTO) throws Exception {		
+		return adminDao.getAutoSign(adminDTO);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getUserList(AdminDTO adminDTO) throws Exception {
+		return adminDao.getUserList(adminDTO);
+	}
 	
 	@Override
 	public List<HashMap<String, Object>> getSignUserList(AdminDTO adminDTO) throws Exception {
@@ -65,12 +75,13 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void saveSignUser(Map<String, Object> paramMap) throws Exception {
-		String cmpCode = (String) paramMap.get("cmpCode");
-		String docType = (String) paramMap.get("docType");
-		String deptCode = (String) paramMap.get("deptCode");
 		String data = (String) paramMap.get("data");
 		
-		adminDao.saveSignUser(paramMap);	//부서장 자동 등록
+		//결재권한 삭제 후 재등록
+		adminDao.deleteSignUser(paramMap);
+		
+		//부서장 자동 등록
+		adminDao.saveSignUser(paramMap);	
 		
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(data);
@@ -80,13 +91,45 @@ public class AdminServiceImpl implements AdminService {
 			JSONObject json = (JSONObject) jsonArray.get(i);
 			
 			Map<String, Object> newMap = new HashMap<String, Object>();
-			newMap.put("cmpCode", cmpCode);
-			newMap.put("docType", docType);
-			newMap.put("deptCode", deptCode);
+			newMap.put("cmpCode" , paramMap.get("cmpCode"));
+			newMap.put("docType" , paramMap.get("docType"));
+			newMap.put("deptCode", paramMap.get("deptCode"));
+			newMap.put("partCode", paramMap.get("partCode"));
 			newMap.put("userCode", json.get("userCode"));					
 			
 			adminDao.saveSignUser(newMap);	
 		}		
 	}
+
+	@Override
+	public void saveCompanySign(Map<String, Object> paramMap) throws Exception {
+		adminDao.saveCompanySign(paramMap);
+		
+		//결재라인 고정시
+		if ("Y".equals(paramMap.get("autoSign"))) {
+			String data = (String) paramMap.get("data");
+			
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(data);
+			JSONArray jsonArray = (JSONArray) obj;				
+			
+			if (jsonArray.size() > 0) {
+				//결재권한 삭제 후 재등록
+				adminDao.deleteSignUser(paramMap);
+				
+				for (int i = 0; i < jsonArray.size(); i++) {				
+					Map<String, Object> newMap = new HashMap<String, Object>();
+					newMap.put("cmpCode" , paramMap.get("cmpCode"));
+					newMap.put("docType" , paramMap.get("docType"));
+					newMap.put("deptCode", paramMap.get("deptCode"));
+					newMap.put("partCode", paramMap.get("partCode"));
+					newMap.put("userCode", jsonArray.get(i));					
+					
+					adminDao.saveSignUser(newMap);	
+				}	
+			}	
+		}											
+	}
+
 	
 }

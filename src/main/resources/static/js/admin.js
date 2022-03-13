@@ -1,3 +1,4 @@
+//주소 API 가져오기
 const findAddr = function() {
 	new daum.Postcode({
         oncomplete: function(data) {		        	
@@ -15,11 +16,13 @@ const findAddr = function() {
     }).open();
 };
 
+//회사 정보 유효성 체크
 const isValid = function() {
 	
 	return true;
 };
 
+//회사 정보 저장
 const saveCmp = function() {
 	if (isValid()) {
 		const frm = $("form");				
@@ -40,7 +43,7 @@ const saveCmp = function() {
 	}						
 };
 
-//부서 그리드 생성
+//부서,파트관리 : 부서 그리드 생성
 const initGridDept = function() {
 	const data = commonCallAjax("/admin/getDeptList", "");
 	
@@ -89,7 +92,7 @@ const initGridDept = function() {
 	}					    	        
 };
 
-//파트 그리드 생성
+//부서,파트관리 : 파트 그리드 생성
 const initGridPart = function(deptCode) {
 	const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode});
 	
@@ -142,7 +145,7 @@ const initGridPart = function(deptCode) {
 	}	
 };
 
-//직급 그리드 생성
+//직급관리 : 직급 그리드 생성
 const initGridPos = function() {
 	const params = {
 		"parentCode" : posCategory,
@@ -176,17 +179,35 @@ const initGridPos = function() {
 	}					    	        
 };
 
+//전자결재관리 : 결재유저 그리드 생성
 const initGridSignUser = function() {
+	if (commonIsNull($("#signDept").val())) {
+		alert("부서를 선택해주세요.");
+		return;
+	}
+	
+	if (commonIsNull($("#signPart").val())) {
+		alert("파트를 선택해주세요.");
+		return;
+	}
+	
 	const params = {
+		"docType"  : $("#document").val(),
 		"deptCode" : $("#signDept").val(),
 		"partCode" : $("#signPart").val()
-	};
-	
-	const data = commonCallAjax("/admin/getSignUserList", params);
+	};	
+	const data = commonCallAjax("/admin/getUserList", params);
 	
 	if (data.code == "ok") {
+		const autoSign = data.autoSign;
 		const result = data.resultList;
 
+		if (autoSign == "Y") {
+			$("input:checkbox[id='signPicker']").prop("checked", true);	
+		} else {
+			$("input:checkbox[id='signPicker']").prop("checked", false);
+		}
+		
 		if (commonIsNull(gridSignUser)) {
 			//Grid draw
 			gridSignUser = new Tabulator("#gridSignUser", {
@@ -215,9 +236,12 @@ const initGridSignUser = function() {
 		} else {
 			gridSignUser.replaceData(result);	
 		}		
+		
+		getSignUser();
 	}			
 }			
 
+//부서,파트 관리 : 파트,부서장 조회
 const showUser = function(task) {
 	const dept = $("#deptCode").val();
 	let data = null;
@@ -341,10 +365,12 @@ const newDept = function() {
 	$("#updateBtnDept").hide();
 };
 
+//부서,파트 관리 : 부서 저장
 const saveDept = function() {
 	
 };
 
+//부서,파트 관리 : 부서 수정
 const updateDept = function() {
 	const params = {
 		"deptCode" : $("#deptCode").val(),
@@ -360,10 +386,12 @@ const updateDept = function() {
 	}
 };
 
+//부서,파트 관리 : 파트 저장
 const savePart = function() {
 	
 };
 
+//부서,파트 관리 : 파트 수정
 const updatePart = function() {
 	const params = {
 		"deptCode" : $("#deptCode").val(),
@@ -380,6 +408,7 @@ const updatePart = function() {
 	}
 };
 
+//직급관리 : 직급유형 변경
 const updatePos = function() {
 	const data = commonCallAjax("/admin/updatePos", {"posCategory" : $("#posCategory").val()});
 	
@@ -391,10 +420,12 @@ const updatePos = function() {
 	}
 };
 
+//결재권한 등록
 const saveSignUser = function() {
 	const params = {
 		"docType"  : $("#document").val(),
 		"deptCode" : $("#signDept").val(),
+		"partCode" : $("#signPart").val(),
 		"userCode" : $("#signManagerCode").val(),
 		"data" : JSON.stringify(gridSignUser.getSelectedData())
 	};			
@@ -452,6 +483,7 @@ const initObj = function() {
 	$("#posCategory").val(posCategory);
 };
 
+//전자결재관리 : 파트 조회
 const getSignPartList = function(deptCode) {			
 	const data = commonCallAjax("/admin/getPartList", {"deptCode" : deptCode})
 	
@@ -478,8 +510,14 @@ const getSignPartList = function(deptCode) {
 	}
 };
 
+//결재권자 조회
 const getSignUser = function() {
-	const data = commonCallAjax("/document/getSignUser", {"docType" : $("#document").val()});
+	const params = {
+		"docType"  : $("#document").val(),
+		"deptCode" : $("#signDept").val(),
+		"partCode" : $("#signPart").val()
+	};	
+	const data = commonCallAjax("/admin/getSignUserList", params);
 	
 	if (data.code == "ok") {
 		const result = data.resultList;
@@ -489,7 +527,7 @@ const getSignUser = function() {
 		for (let i = 0; i < result.length; i++) {
 				userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
 				userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
-				userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' onclick='setSignLine(this)'>";
+				userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' data-code='"+ result[i].userCode +"' onclick='setSignLine(this)'>";
 				userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
 				userHtml += "	</div></div>";
 				userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";
@@ -497,24 +535,51 @@ const getSignUser = function() {
 				userHtml += "	<div class='col text-center'>"+ result[i].jobName +"</div>";
 				userHtml += "</div>";
 		}
-
+		
+		$("#userList").empty();
 		$("#userList").append(userHtml);
 	}
 };	
 
+//결재라인 출력
 const setSignLine = function(e) {
 	var userHtml = "";
 	var liId = "#li-" + e.id;
-	
+
 	if ($("input:checkbox[id='" + e.id + "']").is(":checked")) {
 		const user = $("#" + e.id).data("user");
+		const code = $("#" + e.id).data("code");
 		
-		userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
-		userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
+		userHtml += "<li class='list-group-item' id='li-" + e.id + "' data-code='"+ code +"'>";
+		userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + code + "</span>)";
 		userHtml += "</li>";
 		
 		$("#signuserList").append(userHtml);
 	} else {
 		$(liId).remove();
 	}
+};
+
+//결재라인 저장
+const saveSignLine = function() {
+	const params = {
+		"autoSign" : $("#signPicker").prop("checked") == true ? "Y" : "N",
+		"docType"  : $("#document").val(),
+		"deptCode" : $("#signDept").val(),
+		"partCode" : $("#signPart").val()
+	};
+	
+	let array = new Array();
+	const signUser = $(".list-group-item");	
+	
+	for (let i = 0; i < signUser.length; i++) { 
+		array.push(signUser[i].dataset.code);
+	}	
+	params.data = JSON.stringify(array);
+	
+	const data = commonCallAjax("/admin/saveCompanySign", params);
+	
+	if (data.code == "ok") {
+		alert("저장되었습니다.");
+	}	
 };

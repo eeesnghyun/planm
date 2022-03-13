@@ -328,9 +328,8 @@
 											</div>
 									    </div>
 									    
-									    <div class="col">
-									    	<!-- *부서장 : <span id="signManager"></span>
-									    	<input type="hidden" id="signManagerCode"> -->
+									    <div class="col">									    	
+									    	<input type="hidden" id="signManagerCode">
 									    	<button type="button" class="btn btn btn-secondary" onclick="initGridSignUser()">조회</button>
 									    </div>
 									</div>	<!-- End row -->
@@ -422,15 +421,7 @@
 		let posCategory = /*[[${data.posCategory}]]*/;
 		/*]]>*/
 		
-		$(function() {
-			$("#signPicker").change(function(){
-				if ($("#signPicker").is(":checked")) {
-					getSignUser();	
-				} else {
-					$("#userList").empty();
-				}
-			});
-			
+		$(function() {			
 			initObj();
 			initGridDept();
 			initGridPart();

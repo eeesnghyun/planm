@@ -66,7 +66,16 @@
 		 ORDER BY PDP.PART_NAME
 	</select>
 	
-	<select id="getSignUserList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
+	<select id="getAutoSign" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="String">
+		SELECT IFNULL(MAX(AUTOSIGN_YN),'N') AUTOSIGN_YN
+		  FROM PM_SIGN			
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DOC_TYPE  = #{docType}
+		   AND DEPT_CODE = #{deptCode}
+		   AND PART_CODE = #{partCode}
+	</select>
+	
+	<select id="getUserList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
 		<![CDATA[
 			SELECT PU.USER_CODE
 				 , PU.USER_NAME  
@@ -90,8 +99,36 @@
 			  AND PU.USER_CODE NOT IN (SELECT DEPT_MANAGER 
 			  						     FROM PM_DEPT A 
 			  						    WHERE CMP_CODE  = #{cmpCode} 
-			  						      AND DEPT_CODE = #{deptCode})
+			  						      AND DEPT_CODE = #{deptCode})	-- 부서장 제외
 			ORDER BY PU.JOB_POS ASC
+		]]>		 
+	</select>
+	
+	<select id="getSignUserList" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="camelHashMap">
+		<![CDATA[
+			SELECT PSU.USER_CODE
+				 , PU.USER_NAME
+				 , IF(IFNULL(PD.DEPT_MANAGER,'N') = 'N', false, true) MANAGER	-- 부서장
+			     , PU.JOB_POS
+			     , (SELECT CHILD_NAME 
+			         FROM CODE_CHILD 
+			        WHERE PARENT_CODE=PC.POS_CATEGORY 
+			          AND CHILD_CODE=PU.JOB_POS) JOB_NAME  -- 직책  
+			  FROM PM_SIGN_USER PSU
+				   INNER JOIN PM_USER PU
+					  ON PSU.CMP_CODE  = PU.CMP_CODE
+			         AND PSU.USER_CODE = PU.USER_CODE				
+				   INNER JOIN PM_COMPANY PC
+			          ON PSU.CMP_CODE = PC.CMP_CODE
+				   LEFT OUTER JOIN PM_DEPT PD
+					 ON PU.CMP_CODE  = PD.CMP_CODE	   
+					AND PU.USER_CODE = PD.DEPT_MANAGER
+					AND PU.DEPT_CODE = PD.DEPT_CODE
+			 WHERE PSU.CMP_CODE  = #{cmpCode} 
+			   AND PSU.DOC_TYPE  = #{docType}
+			   AND PSU.DEPT_CODE = #{deptCode}
+	           AND PSU.PART_CODE = #{partCode}
+			ORDER BY IF(MANAGER = true, 1, 0), PU.JOB_POS DESC
 		]]>		 
 	</select>
 	
@@ -112,21 +149,54 @@
 		   AND PART_CODE = #{partCode}
 	</update>
 	
+	<delete id="deleteSignUser" parameterType="camelHashMap">
+		DELETE FROM PM_SIGN_USER
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DOC_TYPE  = #{docType}
+		   AND DEPT_CODE = #{deptCode}
+		   AND PART_CODE = #{partCode} 
+	</delete>
+	
 	<insert id="saveSignUser" parameterType="camelHashMap">
 		INSERT INTO PM_SIGN_USER (
 			  CMP_CODE
 			, DOC_TYPE
 			, DEPT_CODE
+			, PART_CODE
 			, USER_CODE
 			, CREATE_DATE
 		) VALUES (
 			  #{cmpCode}
 			, #{docType}
 			, #{deptCode}
+			, #{partCode}
 			, #{userCode}
 			, NOW()
 		)
 	</insert>
 	
+	<update id="saveCompanySign" parameterType="camelHashMap">
+		INSERT INTO PM_SIGN (
+			  CMP_CODE
+			, DOC_TYPE
+			, DEPT_CODE
+			, PART_CODE
+			, AUTOSIGN_YN
+			, UPDATE_USER
+			, UPDATE_DATE
+		) VALUES (
+			  #{cmpCode}
+			, #{docType}
+			, #{deptCode}
+			, #{partCode}
+			, #{autoSign}
+			, #{userCode}
+			, NOW()
+		)
+		ON DUPLICATE KEY
+		UPDATE AUTOSIGN_YN = #{autoSign}
+			 , UPDATE_USER = #{userCode}
+			 , UPDATE_DATE = NOW()
+	</update>
 	
 </mapper>

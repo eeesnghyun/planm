@@ -128,18 +128,18 @@ public class DocumentController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value = "/getSignUser", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getSignUser(
+	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getUserList(
 			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		documentDTO.setCmpCode("0000");
 		documentDTO.setUserCode("test1");
 		
-		List<DocumentVO> resultList = documentService.getSignUser(documentDTO);		
+		//List<DocumentVO> resultList = documentService.getUserList(documentDTO);		
 		
 		resultMap.put("code", "ok");
-		resultMap.put("resultList", resultList);
+		//resultMap.put("resultList", resultList);
 		
 		return resultMap;
 	}

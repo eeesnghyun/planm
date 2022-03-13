@@ -22,6 +22,6 @@ public class AdminDTO {
 	private String userCodeRule;
 	private String posCategory;
 	private String cmpLogo;
-	
+	private String docType;
 	
 }

@@ -82,7 +82,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/getPartList", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getPartList(HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+	public @ResponseBody Map<String, Object> getPartList(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 				
 		adminDTO.setCmpCode("0000");		
@@ -94,8 +95,25 @@ public class AdminController {
 		return resultMap;
 	}	
 	
+	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getUserList(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		adminDTO.setCmpCode("0000");		
+		String autoSign = adminService.getAutoSign(adminDTO);
+		List<HashMap<String, Object>> resultList = adminService.getUserList(adminDTO);
+		
+		resultMap.put("code", "ok");
+		resultMap.put("autoSign", autoSign);
+		resultMap.put("resultList", resultList);
+		
+		return resultMap;
+	}	
+	
 	@RequestMapping(value = "/getSignUserList", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getSignUserList(HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
+	public @ResponseBody Map<String, Object> getSignUserList(
+			HttpSession session, @RequestBody AdminDTO adminDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 				
 		adminDTO.setCmpCode("0000");		
@@ -141,6 +159,20 @@ public class AdminController {
 				
 		paramMap.put("cmpCode", "0000");
 		adminService.saveSignUser(paramMap);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/saveCompanySign", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> saveCompanySign(
+			HttpSession session, @RequestBody Map<String, Object> paramMap) throws Exception {		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+				
+		paramMap.put("cmpCode", "0000");
+		paramMap.put("userCode", "test");
+		adminService.saveCompanySign(paramMap);
 		
 		resultMap.put("code", "ok");		
 		

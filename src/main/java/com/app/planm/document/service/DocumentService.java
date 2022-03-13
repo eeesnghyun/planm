@@ -17,6 +17,4 @@ public interface DocumentService {
 
 	public List<String> getHoliday() throws Exception;
 
-	public List<DocumentVO> getSignUser(DocumentDTO documentDTO) throws Exception;
-	
 }
