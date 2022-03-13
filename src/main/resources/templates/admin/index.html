@@ -294,21 +294,23 @@
 										<h5><strong>결재권한등록</strong></h5>
 									</div>
 								</div>																			
-								
-								<div class="col-12 mt-2 pb-2">
+							</div>
+							
+							<div class="row mt-2">								
+								<div class="col-12">
 									<div class="input-group" style="width: 350px;">
 										<div class="input-group-prepend">
 									    	<span class="input-group-text">문서유형</span>
 									  	</div>
 									  	<select class="form-control" id="document"></select>									  										  
-									</div>								
-								</div>
+									</div>		
+								</div>																	
 							</div>
 							
-							<div class="row mt-2 mb-2">
-								<div class="col-6">
-									<div class="form-row align-items-center">
-									    <div class="col">									    	
+							<div class="row">
+								<div class="col-6">									
+									<div class="row mt-2">
+										<div class="col">									    	
 									      	<div class="input-group">
 												<div class="input-group-prepend">
 											    	<span class="input-group-text">부서</span>
@@ -322,73 +324,80 @@
 												<div class="input-group-prepend">
 											    	<span class="input-group-text">파트</span>
 											  	</div>
-											  	<select class="form-control" id="signPart" onchange="initGridSignUser()"></select>									  										  
+											  	<select class="form-control" id="signPart"></select>									  										  
 											</div>
 									    </div>
 									    
 									    <div class="col">
-									    	*부서장 : <span id="signManager"></span>
-									    	<input type="hidden" id="signManagerCode">
-									    </div>									    
-									</div>																
-								</div>
-								
-								<div class="col-6">									
-									<div class="custom-control custom-switch">										
-										<input type="checkbox" class="custom-control-input" id="signPicker">
-									  	<label class="custom-control-label" for="signPicker">결재라인 고정</label>
-									  	(*결재라인 고정후에는 전자결재시 결재선 변경이 불가합니다.)
-									</div>									
-								</div>
-							</div>
-							
-							<div class="row mt-2 mb-2">
-								<div class="col-6 border-right">
-									<div class="border rounded" style="height: 250px; padding-left: 10px; padding-right: 10px;">
-										<div id="gridSignUser"></div>
-									</div>																		
-								</div>
+									    	<!-- *부서장 : <span id="signManager"></span>
+									    	<input type="hidden" id="signManagerCode"> -->
+									    	<button type="button" class="btn btn btn-secondary" onclick="initGridSignUser()">조회</button>
+									    </div>
+									</div>	<!-- End row -->
+									
+									<div class="row mt-2">
+										<div class="col-12">
+											<div class="border rounded" style="height: 250px; padding-left: 10px; padding-right: 10px;">
+												<div id="gridSignUser"></div>
+											</div>	
+										</div>
+									</div>	<!-- End row -->									
+								</div>	
 								
 								<div class="col-6">
-									<div class="card-body text-secondary" style="overflow: auto">	        
-								        <div class="container-fluid">
-								        	<div class="row">
-								        		<div class="col-6 border-right">
-											        <div class="container-fluid">
-												        <div class="row mb-2 bg-theme3">
-															<div class="col-1"></div>
-															<div class="col"><h6><strong>사번</strong></h6></div>
-															<div class="col"><h6><strong>성명</strong></h6></div>
-															<div class="col"><h6><strong>직책</strong></h6></div>
-														</div>
+									<div class="row mt-2">
+										<div class="col-12">
+											<div class="custom-control custom-switch">										
+												<input type="checkbox" class="custom-control-input" id="signPicker">
+											  	<label class="custom-control-label" for="signPicker">결재라인 고정</label>
+											  	(*결재라인 고정후에는 전자결재시 결재선 변경이 불가합니다.)
+											</div>
+										</div>
+									</div>	<!-- End row -->
+																		
+									<div class="row mt-2">
+										<div class="col-12">
+											<div class="card-body text-secondary" style="overflow: auto">	        
+										        <div class="container-fluid">
+										        	<div class="row">
+										        		<div class="col-6 border-right">
+													        <div class="container-fluid">
+														        <div class="row mb-2 bg-theme3">
+																	<div class="col-1"></div>
+																	<div class="col"><h6><strong>사번</strong></h6></div>
+																	<div class="col"><h6><strong>성명</strong></h6></div>
+																	<div class="col"><h6><strong>직책</strong></h6></div>
+																</div>
+													        </div>
+													        <div class="container-fluid" id="userList" style="height: 200px;"></div>
+												        </div>
+												         
+													    <div class="col-6">
+													    	<ul class="list-group list-group-flush" id="signuserList"></ul>			    	
+													    </div>
 											        </div>
-											        <div class="container-fluid" id="userList" style="height: 200px;"></div>
 										        </div>
-										         
-											    <div class="col-6">
-											    	<ul class="list-group list-group-flush" id="signuserList"></ul>			    	
-											    </div>
-									        </div>
-								        </div>
-								    </div>	
-								</div>										
-							</div>
-							
-							<div class="row">
+										    </div>	
+										</div>																				
+									</div>	<!-- End row -->									
+								</div>								
+							</div>	<!-- End row -->
+														
+							<div class="row mt-2">
 								<div class="col-6">
 									<div class="float-right">
 										<button type="button" class="btn btn-outline-secondary" onclick="saveSignUser()">저장</button>
 									</div>
 								</div>
-								
+																
 								<div class="col-6">
 									<div class="float-right">
 										<button type="button" class="btn btn-outline-secondary" onclick="saveSignLine()">저장</button>
 									</div>
 								</div>
-							</div>
-						</div>																			
-				  	</div>	<!-- Tab:전자결재 -->
+							</div>	<!-- End row -->							
+						</div>		<!-- End container -->																
+				  	</div>			<!-- Tab:전자결재 -->
 				</div>							
 			</div>
 		</div>	<!-- End row -->										

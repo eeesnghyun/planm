@@ -506,7 +506,7 @@ const setSignLine = function(e) {
 	var userHtml = "";
 	var liId = "#li-" + e.id;
 	
-	if($("input:checkbox[id='" + e.id + "']").is(":checked")) {
+	if ($("input:checkbox[id='" + e.id + "']").is(":checked")) {
 		const user = $("#" + e.id).data("user");
 		
 		userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
