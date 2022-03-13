@@ -21,6 +21,7 @@ const initLeave = function() {
 	}
 };
 
+//결재라인 가져오기
 const initSignLine = function() {
 	const data = commonCallAjax("/document/getSignUser", {"docType" : $("#docType").val()});
 	

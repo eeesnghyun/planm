@@ -473,7 +473,7 @@ const initObj = function() {
 	}
 	
 	if (commonIsNull(logo)) {
-		$("#cmpLogo").attr("src", "/images/logo.png");
+		$("#cmpLogo").attr("src", "/images/blank.png");
 		$("#imgSource").val("");
 	} else {				
 		$("#cmpLogo").attr("src", logo);

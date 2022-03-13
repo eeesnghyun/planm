@@ -128,8 +128,8 @@ public class DocumentController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getUserList(
+	@RequestMapping(value = "/getSignUser", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> getSignUser(
 			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
