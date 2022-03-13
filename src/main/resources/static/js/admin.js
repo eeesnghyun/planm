@@ -521,7 +521,7 @@ const getSignUser = function(autoSign) {
 	
 	if (data.code == "ok") {
 		const result = data.resultList;
-		const checked = autoSign == "Y" ? "checked" : "";
+		const checked = autoSign == "Y" ? "checked='checked' disabled='disabled'" : "";
 		
 		let userHtml = "";	
 		let signHtml = "";
@@ -529,7 +529,7 @@ const getSignUser = function(autoSign) {
 		for (let i = 0; i < result.length; i++) {				
 			userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
 			userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
-			userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' data-code='"+ result[i].userCode +"' onclick='setSignLine(this)' checked='"+ checked +"'>";
+			userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' data-code='"+ result[i].userCode +"' onclick='setSignLine(this)' "+ checked +">";
 			userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
 			userHtml += "	</div></div>";
 			userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";

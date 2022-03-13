@@ -28,24 +28,50 @@ const initSignLine = function() {
 	if (data.code == "ok") {
 		const result = data.resultList;
 		const autoSign = data.autoSign;
+		const checked = autoSign == "Y" ? "checked='checked' disabled='disabled'" : "";
 		
 		let userHtml = "";				
+		let signHtml = "";
 		
 		for (let i = 0; i < result.length; i++) {
-				userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
-				userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
-				userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' onclick='setSignUser(this)'>";
-				userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
-				userHtml += "	</div></div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].userName +"</div>";
-				userHtml += "	<div class='col text-center'>"+ result[i].jobName +"</div>";
-				userHtml += "</div>";
+			userHtml += "<div class='row mt-2 pb-1 border-bottom'>";
+			userHtml += "	<div class='col-1 text-center'><div class='custom-control custom-checkbox pb-2'>";
+			userHtml += "	  <input type='checkbox' class='custom-control-input' id='sign"+i+"' data-user='"+ result[i].userName +"' onclick='setSignUser(this)' "+ checked +">";
+			userHtml += "	     <label class='custom-control-label' for='sign"+i+"'></label>";
+			userHtml += "	</div></div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].userCode +"</div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].userName +"</div>";
+			userHtml += "	<div class='col text-center'>"+ result[i].jobName +"</div>";
+			userHtml += "</div>";
+			
+			if (autoSign == "Y") {								
+				signHtml += "<li class='list-group-item' id='li-sign"+ i +"' data-code='"+ result[i].userCode +"'>";
+				signHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>"+ result[i].userName +"(<span class='badge badge-primary badge-pill'>"+ result[i].userCode +"</span>)";
+				signHtml += "</li>";					
+			}
 		}
-
+		
 		$("#userList").append(userHtml);
+		$("#signuserList").append(signHtml);
 	}
 };	
+
+const setSignUser = function(e) {
+	var userHtml = "";
+	var liId = "#li-" + e.id;
+	
+	if($("input:checkbox[id='" + e.id + "']").is(":checked")) {
+		const user = $("#" + e.id).data("user");
+		
+		userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
+		userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
+		userHtml += "</li>";
+		
+		$("#signuserList").append(userHtml);
+	} else {
+		$(liId).remove();
+	}
+};
 
 const getLeaveUseday = function(gubun) {
 	let count = 0;
@@ -106,23 +132,6 @@ const isHoliday = function(yyyymmdd) {
   		if (holidays[i] == yyyymmdd) {
    			return true;
   		}
-	}
-};
-
-const setSignUser = function(e) {
-	var userHtml = "";
-	var liId = "#li-" + e.id;
-	
-	if($("input:checkbox[id='" + e.id + "']").is(":checked")) {
-		const user = $("#" + e.id).data("user");
-		
-		userHtml += "<li class='list-group-item' id='li-" + e.id + "'>";
-		userHtml += "	<img src='/images/down.png' class='w18-h18 mr-2'>" + user + "(<span class='badge badge-primary badge-pill'>" + e.id + "</span>)";
-		userHtml += "</li>";
-		
-		$("#signuserList").append(userHtml);
-	} else {
-		$(liId).remove();
 	}
 };
 
