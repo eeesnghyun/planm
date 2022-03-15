@@ -7,7 +7,7 @@
 			 , USER_CODE
 		     , PASSWORD
 		     , SALT
-		     , USER_AUTH
+		     , (SELECT ROLE_NAME FROM ROLE_MANAGE WHERE AUTH_CODE=USER_AUTH) USER_AUTH
 		  FROM PM_USER
 		 WHERE USER_CODE = #{userCode}
 	</select>
