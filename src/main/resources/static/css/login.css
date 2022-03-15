@@ -55,6 +55,10 @@ body {
 .form-signin .logo {
   height: 100px;
 }
+.form-signin .alert {
+  position: absolute!important; 
+  width: 300px!important;
+}
 
 .bd-placeholder-img {
   font-size: 1.125rem;

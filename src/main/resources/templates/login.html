@@ -8,17 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" th:href="@{/plugins/bootstrap/bootstrap.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">    	
 </head>
 <body class="text-center">
 	<form class="form-signin" th:action="@{/authenticate}" method="post">
   		<img class="logo mb-4" src="/images/logo.png">  		
- 		
-		<label for="inputEmail" class="sr-only">Email address</label>  			
-		<input type="text" name="username" id="username" class="form-control" placeholder="Email address" required autofocus>
-		
-		<label for="inputPassword" class="sr-only">Password</label>
-		<input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+ 			
+		<input type="text" name="username" id="username" class="form-control" placeholder="아이디" required autofocus>		
+		<input type="password" name="password" id="password" class="form-control" placeholder="패스워드" required>
 		
 		<div class="checkbox mb-3">
 	   		<label>
@@ -26,9 +23,12 @@
 	   		</label>
   		</div>
   		
-  		<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
-  		
+  		<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>  		  		        
   		<p class="mt-5 mb-3 text-muted">&copy; PlANM, Co., Ltd.. All Rights Reserved</p>
-  	</form>	
+  			
+	  	<div class="alert alert-danger" th:if="${param.error}">            
+	     아이디 또는 패스워드가 틀립니다.
+	    </div>
+  	</form>  	
 </body>
 </html>
