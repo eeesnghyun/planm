@@ -24,4 +24,9 @@ public class MenuController {
 		return root + "/" + page;
 	}
 	
+	@RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+	public String login() {
+		return "login";
+	}
+	
 }
