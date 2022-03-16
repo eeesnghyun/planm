@@ -5,8 +5,10 @@
 <head>
     <title>PLAN-M : 일정관리의 모든 것</title> 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">            
+    <meta name="_csrf" th:content="${_csrf.token}"/>   
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <!-- resource area -->
 	<th:block th:replace="include/common::common-area"></th:block>	
 </head>
@@ -28,7 +30,7 @@
 				</div>
 			</div>
 		</div>
-	</section>	
+	</section>
 	
 	<!-- footer area -->
 	<footer th:replace="include/footer::footer-area"></footer>

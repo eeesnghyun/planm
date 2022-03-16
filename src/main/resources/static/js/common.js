@@ -5,6 +5,9 @@
  * Create  : 2020.05.06
  ************************************************************/
 
+const token = $("meta[name='_csrf']").attr("content");
+const header = $("meta[name='_csrf_header']").attr("content");
+    
 /**
  * 공통 ajax 호출(Method : POST)
  * return : json 
@@ -21,14 +24,14 @@ const commonCallAjax = function(url, params) {
         data       : JSON.stringify(params),
         contentType: "application/json; charset=utf-8",
         beforeSend : function(xhr)
-	    {
-	        xhr.setRequestHeader("X-CSRF-TOKEN", $("input[name='_csrf']").val());
-	    },
+        {
+        	xhr.setRequestHeader(header, token);
+        },
         success: function(data) {
         	returnData = data;
         },
 		error : function(request, status, error) {
-			//alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);			
+			console.log("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);			
 		}
 	});
 

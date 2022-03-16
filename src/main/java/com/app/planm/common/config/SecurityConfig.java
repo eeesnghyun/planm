@@ -28,32 +28,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(
-        		"/css/**",
-        		"/fonts/**",				
-        		"/js/**",
-        		"/images/**",
-        		"/plugins/**");
+    	//static 하위 파일은 인증 대상에서 제외
+        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("/favicon.ico");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests()
-    			.antMatchers("/login").permitAll()
     			
-    			//인사관리는 MANAGER 권한이 있는 경우
-    			.antMatchers("/user/**").hasRole("MANAGER")
+    			//인사관리는 ADMIN 또는 MANAGER 권한이 있는 경우    			
+    			.antMatchers("/user/**").hasAnyRole("ADMIN", "MANAGER")
     			
     			//관리자메뉴는 ADMIN 권한이 있는 경우
     			.antMatchers("/admin/**").hasRole("ADMIN")
-		        .antMatchers("/**").authenticated();
+    			.anyRequest().authenticated();
 		
     	//로그인 설정
 		http.formLogin()
 		        .loginPage("/login")
 		        .loginProcessingUrl("/authenticate")
 		        .failureUrl("/login?error=true")
-		        .defaultSuccessUrl("/")		        
+		        .defaultSuccessUrl("/")
 		        .permitAll();
 		
 		http.logout()
