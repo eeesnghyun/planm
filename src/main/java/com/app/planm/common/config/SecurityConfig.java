@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.app.planm.common.security.CustomAuthenticationProvider;
+import com.app.planm.common.security.CustomAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -20,21 +21,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private Log logger = LogFactory.getLog(this.getClass());
 
 	private CustomAuthenticationProvider customAuthenticationProvider;
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 	
 	@Autowired
-	public SecurityConfig(CustomAuthenticationProvider customAuthenticationProvider) {
+	public SecurityConfig(
+			CustomAuthenticationProvider customAuthenticationProvider,
+			CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
 		this.customAuthenticationProvider = customAuthenticationProvider;
+		this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
 	}
 	
     @Override
     public void configure(WebSecurity web) throws Exception {
     	//static 하위 파일은 인증 대상에서 제외
-        web.ignoring().antMatchers("/resources/**");
+    	 web.ignoring().antMatchers(
+         		"/css/**",
+         		"/fonts/**",				
+         		"/js/**",
+         		"/images/**",
+         		"/plugins/**/**");
         web.ignoring().antMatchers("/favicon.ico");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	logger.info(":: PLANM :: ==========================");
+    	logger.info(">> Run on Spring security");
+    	logger.info("======================================");
+    	
     	http.authorizeRequests()
     			
     			//인사관리는 ADMIN 또는 MANAGER 권한이 있는 경우    			
@@ -49,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .loginPage("/login")
 		        .loginProcessingUrl("/authenticate")
 		        .failureUrl("/login?error=true")
-		        .defaultSuccessUrl("/")
+		        .successHandler(customAuthenticationSuccessHandler)
 		        .permitAll();
 		
 		http.logout()
