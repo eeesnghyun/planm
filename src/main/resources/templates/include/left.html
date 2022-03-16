@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head> 
     <meta charset="UTF-8">
 </head>
 <th:block th:fragment="left-area">
 	<div class="container-fluid">
-		<ul class="nav justify-content-left" style="min-width: 280px;">							
-			<!-- 메뉴 -->
+		<ul class="nav justify-content-left" style="min-width: 280px;">
 			<li class="nav-item">	
 				<a href="/document">							
 					<button type="button" class="btn-img" style="width: 120px">
@@ -18,7 +18,8 @@
 					</button>								
 				</a>
 			</li>
-			<li class="nav-item">	
+			
+			<li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">	
 				<a href="/user">							
 					<button type="button" class="btn-img" style="width: 120px">
 						<img th:src="@{~/images/manage.png}" class="w64-h64">
@@ -28,8 +29,9 @@
 						</div>
 					</button>								
 				</a>
-			</li>			
-			<li class="nav-item">	
+			</li>
+			
+			<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">	
 				<a href="/admin">							
 					<button type="button" class="btn-img" style="width: 120px">
 						<img th:src="@{~/images/admin.png}" class="w64-h64">

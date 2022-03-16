@@ -68,6 +68,12 @@
 		    <groupId>nz.net.ultraq.thymeleaf</groupId>
 		    <artifactId>thymeleaf-layout-dialect</artifactId>		    
 		</dependency>
+		<!-- thymeleaf security tag -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		    <version>3.0.4.RELEASE</version>
+		</dependency>				
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
