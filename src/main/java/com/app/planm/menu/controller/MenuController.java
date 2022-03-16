@@ -10,9 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MenuController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
-		
+	public String home() {		
 		return "index";
+	}
+	
+	@RequestMapping(value = "/denied", method = RequestMethod.GET)
+	public String denied(Model model) {
+		model.addAttribute("msg", "권한이 없습니다.");
+		model.addAttribute("url", "/document");
+		
+		return "common/msg";
 	}
 	
 	@RequestMapping(value = "/{root}/{page}.load", method = {RequestMethod.GET, RequestMethod.POST})
