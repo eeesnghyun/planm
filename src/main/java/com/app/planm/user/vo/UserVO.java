@@ -7,6 +7,7 @@ public class UserVO {
 
 	private String userCode;
 	private String userName;
+	private String userAuth;
 	private String birthYmd;
 	private String gender;
 	private String mobile;

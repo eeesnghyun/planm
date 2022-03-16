@@ -7,7 +7,7 @@
 			 , USER_CODE
 		     , PASSWORD
 		     , SALT
-		     , (SELECT ROLE_NAME FROM ROLE_MANAGE WHERE AUTH_CODE=USER_AUTH) USER_AUTH
+		     , CONCAT('ROLE_', USER_AUTH) USER_AUTH
 		  FROM PM_USER
 		 WHERE USER_CODE = #{userCode}
 	</select>
@@ -15,6 +15,7 @@
 	<select id="getUserList" parameterType="String" resultType="com.app.planm.user.vo.UserVO">
 		SELECT PU.USER_CODE
 			 , PU.USER_NAME
+			 , PU.USER_AUTH
 			 , DATE_FORMAT(PU.BIRTH_YMD,'%Y-%m-%d') BIRTH_YMD			 
 			 , IF(PU.GENDER='male','남','여') GENDER
 			 , PU.MOBILE
