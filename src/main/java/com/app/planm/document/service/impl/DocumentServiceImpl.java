@@ -22,11 +22,14 @@ public class DocumentServiceImpl implements DocumentService {
 		
 		if ("sign".equals(gubun)) {
 			return documentDao.getDocumentSignList(documentDTO);
-		} else if ("all".equals(gubun)) {
-			return documentDao.getDocumentAllList(documentDTO);
 		} else {
 			return documentDao.getDocumentList(documentDTO);
 		}		
+	}
+
+	@Override
+	public DocumentVO getDocumentInfo(DocumentDTO documentDTO) throws Exception {
+		return documentDao.getDocumentInfo(documentDTO);
 	}
 
 	@Override

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko"
-	 xmlns:th="http://www.thymeleaf.org"
-	 xmlns:layout="http://www.w3.org/1999/xhtml">
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{index}">
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<th:block layout:fragment="content-area">
 	<table class="table table-hover">
     	<colgroup>
     		<col width="100">
@@ -88,28 +89,13 @@
 	</div>
 	
 	<div class="mt-2 pt-2 border-top">
-		<button type="button" class="btn btn-outline-secondary" onclick="saveDoc()">임시저장</button>
-		<button type="button" class="btn btn-outline-secondary" onclick="requestDoc()">결재신청</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="requestDoc()">결재</button>
 	</div>
 		
 	<script>		
 		$(function() {			
-			$("input[name=formDatePicker]").each(function(index, item){
-				$("#" + item.id).datepicker(commonDatePickerOpt);
-		    });
-			
-			const today = commonGetToday();
-			const after = commonDateCalcurator(today, +1, "dd");
-			$("#requestYmd").val(today);
-			$("#startDay").val(today);
-			$("#endDay").val(after);
-			
-			initObj();
-			initLeave();
-			initSignLine();
-			
-			getLeaveUseday();
+		
 		});
 	</script>
-</body>
+</th:block>
 </html>

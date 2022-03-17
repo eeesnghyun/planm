@@ -85,7 +85,6 @@
 							<ul class="list-group list-group-horizontal">
 							  <li class="list-group-item a-basic click" data-type="my">내문서함</li>
 							  <li class="list-group-item a-basic" data-type="sign">결재문서</li>
-							  <li class="list-group-item a-basic" data-type="all">문서현황</li>
 							</ul>
 						</td>
 					</tr>
@@ -106,7 +105,7 @@
 	</div>
 
 	<div class="container-fluid" id="docListSpace">	   		
-   		<div class="row border-bottom" onclick="getDocInfo()" th:each="doc : ${resultList}">
+   		<div class="row border-bottom" onclick="getDocInfo(this)" th:each="doc : ${resultList}">
 	   		<div class="col-2 text-center"><span th:text="${doc.docNo}"></span></div>	   	
 	   		<div class="col-2 text-center"><span th:text="${doc.docType}"></span></div>
 	   		<div class="col-2 text-center"><span th:text="${doc.userName}"></span></div>
@@ -117,13 +116,26 @@
 	</div>
 	
 	<script>
-		const getDocList = function() {
-			const docStatus = $("#docStatus option:selected").val();
-			let viewType = "";
+		const getDocInfo = function(e) {			
+			const docNo = $(e).find(">:first-child").text();
+			let gubun = "";
 			
 			$(".list-group-item").each(function(index, item){ 
 				if ($(this).hasClass("click")) { 					
-					viewType = $(this).data("type");
+					gubun = $(this).data("type");
+				} 
+			});			
+			
+			location.replace("/document/info?gubun="+gubun+"&docNo="+docNo);
+		};
+	
+		const getDocList = function() {
+			const docStatus = $("#docStatus option:selected").val();
+			let gubun = "";
+			
+			$(".list-group-item").each(function(index, item){ 
+				if ($(this).hasClass("click")) { 					
+					gubun = $(this).data("type");
 				} 
 			});
 			
@@ -132,7 +144,7 @@
 				"startDay"  : $("#startDay").val(),
 				"endDay"    : $("#endDay").val(),
 				"docStatus" : docStatus,
-				"gubun" 	: viewType
+				"gubun" 	: gubun
 			};
 			
 			const data = commonCallAjax("/document/getDocList", params);
@@ -142,7 +154,7 @@
 			   	let docHtml = "";
 
 			   	for (let i = 0; i < resultList.length; i++) {
-			   		docHtml += "<div class='row border-bottom'>";
+			   		docHtml += "<div class='row border-bottom' onclick='getDocInfo(this)'>";
 				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].docNo +"</div>";
 				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].docType +"</div>";
 				   	docHtml += "	<div class='col-2 text-center'>"+ resultList[i].userName +"</div>";

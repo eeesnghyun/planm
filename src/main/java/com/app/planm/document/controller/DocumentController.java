@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.planm.document.service.DocumentService;
@@ -65,6 +66,23 @@ public class DocumentController {
 		resultMap.put("resultList", resultList);
 		
 		return resultMap;
+	}
+	
+	@RequestMapping(value = "/info", method = RequestMethod.GET)
+	public String getDocInfo(
+			HttpSession session, Model model,
+			@RequestParam String gubun, @RequestParam String docNo) throws Exception {
+		DocumentDTO documentDTO = new DocumentDTO();
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
+		documentDTO.setDocNo(docNo);		
+		
+		DocumentVO documentVO = documentService.getDocumentInfo(documentDTO);	
+		
+		model.addAttribute("gubun", gubun);
+		model.addAttribute("result", documentVO);
+		
+		return "document/docInfo";
 	}
 	
 	@RequestMapping(value = "/getUserLeave", method = RequestMethod.POST)

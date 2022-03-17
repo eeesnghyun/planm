@@ -104,6 +104,18 @@
 	   	ORDER BY X.DOC_NO DESC
 	</select>
 	
+	<select id="getDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT DOC_NO
+			 , USER_CODE -- 신청자
+		     , DOC_TYPE  -- 문서유형
+		     , REQUEST_YMD -- 신청일
+		     , SIGN_YMD  -- 결재일
+		     , RETURN_CAUSE -- 반려사유
+		  FROM shxdb.PM_DOCUMENT
+		 WHERE CMP_CODE = #{cmpCode}
+		   AND DOC_NO   = #{docNo}
+	</select>
+	
 	<select id="getUserLeave" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
 		SELECT A.USER_CODE
 			 , A.USER_NAME
