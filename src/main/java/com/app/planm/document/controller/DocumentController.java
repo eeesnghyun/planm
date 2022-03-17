@@ -37,10 +37,11 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String document(Model model) throws Exception {
+	public String document(
+			HttpSession session, Model model) throws Exception {
 		DocumentDTO documentDTO = new DocumentDTO();
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("test1");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		documentDTO.setDocStatus("all");
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
@@ -55,8 +56,8 @@ public class DocumentController {
 			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("test1");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		List<DocumentVO> resultList = documentService.getDocumentList(documentDTO);		
 		
@@ -71,8 +72,8 @@ public class DocumentController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		DocumentDTO documentDTO = new DocumentDTO();
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("test1");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		DocumentVO documentVO = documentService.getUserLeave(documentDTO);		
 		
@@ -83,10 +84,11 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createDoc(Model model) throws Exception {
+	public String createDoc(
+			HttpSession session, Model model) throws Exception {
 		UserDTO userDTO = new UserDTO();
-		userDTO.setCmpCode("0000");
-		userDTO.setUserCode("test1");
+		userDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		userDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		UserVO userVO = userService.getUserInfo(userDTO);
 		
@@ -100,11 +102,11 @@ public class DocumentController {
 	
 	@RequestMapping(value = "/saveDoc", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> saveDoc(
-			Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+			Model model, HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("lsh");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		documentService.saveDoc(documentDTO);
 		
@@ -115,11 +117,11 @@ public class DocumentController {
 	
 	@RequestMapping(value = "/requestDoc", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> requestDoc(
-			Model model, @RequestBody DocumentDTO documentDTO) throws Exception {
+			Model model, HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("test1");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		documentService.requestDoc(documentDTO);
 		
@@ -133,8 +135,8 @@ public class DocumentController {
 			HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		documentDTO.setCmpCode("0000");
-		documentDTO.setUserCode("test1");
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		
 		String autoSign = documentService.getUserAutoSign(documentDTO);
 		List<DocumentVO> resultList = documentService.getSignUser(documentDTO);		
