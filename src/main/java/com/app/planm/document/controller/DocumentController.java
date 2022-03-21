@@ -71,16 +71,17 @@ public class DocumentController {
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
 	public String getDocInfo(
 			HttpSession session, Model model,
-			@RequestParam String gubun, @RequestParam String docNo) throws Exception {
+			@RequestParam String type, @RequestParam String docNo) throws Exception {
 		DocumentDTO documentDTO = new DocumentDTO();
 		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
 		documentDTO.setUserCode((String) session.getAttribute("userCode"));
+		documentDTO.setType(type);
 		documentDTO.setDocNo(docNo);		
 		
-		DocumentVO documentVO = documentService.getDocumentInfo(documentDTO);	
+		List<DocumentVO> resultList = documentService.getDocumentInfo(documentDTO);	
 		
-		model.addAttribute("gubun", gubun);
-		model.addAttribute("result", documentVO);
+		model.addAttribute("type", type);
+		model.addAttribute("resultList", resultList);
 		
 		return "document/docInfo";
 	}

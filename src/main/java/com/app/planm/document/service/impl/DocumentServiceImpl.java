@@ -18,9 +18,9 @@ public class DocumentServiceImpl implements DocumentService {
 	
 	@Override
 	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception {		
-		String gubun = documentDTO.getGubun();
+		String type = documentDTO.getType();
 		
-		if ("sign".equals(gubun)) {
+		if ("sign".equals(type)) {
 			return documentDao.getDocumentSignList(documentDTO);
 		} else {
 			return documentDao.getDocumentList(documentDTO);
@@ -28,8 +28,14 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public DocumentVO getDocumentInfo(DocumentDTO documentDTO) throws Exception {
-		return documentDao.getDocumentInfo(documentDTO);
+	public List<DocumentVO> getDocumentInfo(DocumentDTO documentDTO) throws Exception {
+		String type = documentDTO.getType();
+		
+		if ("sign".equals(type)) {
+			return documentDao.getSignDocumentInfo(documentDTO);
+		} else {
+			return documentDao.getDocumentInfo(documentDTO);	
+		}				
 	}
 
 	@Override

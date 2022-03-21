@@ -18,7 +18,7 @@ public class DocumentDTO {
 	private String leaveCnt;
 	private String dayType;
 	private String signUser;
-	private String gubun;
+	private String type;
 	private String remark;
 	private String yyyymmdd;
 }

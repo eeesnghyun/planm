@@ -9,7 +9,7 @@ public interface DocumentService {
 
 	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception;
 	
-	public DocumentVO getDocumentInfo(DocumentDTO documentDTO) throws Exception;
+	public List<DocumentVO> getDocumentInfo(DocumentDTO documentDTO) throws Exception;
 	
 	public DocumentVO getUserLeave(DocumentDTO documentDTO) throws Exception;
 		
