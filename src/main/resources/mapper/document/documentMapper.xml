@@ -106,14 +106,34 @@
 	
 	<select id="getDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
 		SELECT DOC_NO
-			 , USER_CODE -- 신청자
-		     , DOC_TYPE  -- 문서유형
-		     , REQUEST_YMD -- 신청일
-		     , SIGN_YMD  -- 결재일
+			 , USER_CODE    -- 신청자
+		     , DOC_TYPE     -- 문서유형
+		     , REQUEST_YMD  -- 신청일
+		     , SIGN_YMD     -- 결재일
 		     , RETURN_CAUSE -- 반려사유
-		  FROM shxdb.PM_DOCUMENT
+		  FROM PM_DOCUMENT
 		 WHERE CMP_CODE = #{cmpCode}
 		   AND DOC_NO   = #{docNo}
+	</select>
+	
+	<select id="getSignDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT PDS.CMP_CODE
+			 , PDS.DOC_NO
+			 , PDS.SIGN_SEQ
+			 , PDS.SIGN_USER			 
+             , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PDS.CMP_CODE AND USER_CODE=PDS.SIGN_USER) SIGN_NAME
+			 , DATE_FORMAT(PDS.SIGN_YMD, '%Y.%m.%d. %H:%i')	SIGN_YMD	 
+			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=PDS.DOC_STATUS) DOC_STATUS			 
+			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CHILD_CODE=PD.DOC_TYPE) DOC_TYPE             
+             , PD.USER_CODE
+             , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PD.CMP_CODE AND USER_CODE=PD.USER_CODE) REQUEST_NAME
+             , DATE_FORMAT(PD.REQUEST_YMD, '%Y.%m.%d. %H:%i') REQUEST_YMD
+		  FROM PM_DOCUMENT_SIGN PDS
+			   INNER JOIN PM_DOCUMENT PD
+				  ON PDS.CMP_CODE = PD.CMP_CODE
+				 AND PDS.DOC_NO = PD.DOC_NO	   
+         WHERE PDS.CMP_CODE = #{cmpCode}
+           AND PDS.DOC_NO = #{docNo}
 	</select>
 	
 	<select id="getUserLeave" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
