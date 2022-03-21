@@ -126,16 +126,16 @@
 				} 
 			});			
 			
-			location.replace("/document/info?gubun="+gubun+"&docNo="+docNo);
+			location.replace("/document/info?type="+gubun+"&docNo="+docNo);
 		};
 	
 		const getDocList = function() {
 			const docStatus = $("#docStatus option:selected").val();
-			let gubun = "";
+			let type = "";
 			
 			$(".list-group-item").each(function(index, item){ 
 				if ($(this).hasClass("click")) { 					
-					gubun = $(this).data("type");
+					type = $(this).data("type");
 				} 
 			});
 			
@@ -144,7 +144,7 @@
 				"startDay"  : $("#startDay").val(),
 				"endDay"    : $("#endDay").val(),
 				"docStatus" : docStatus,
-				"gubun" 	: gubun
+				"type" 	    : type
 			};
 			
 			const data = commonCallAjax("/document/getDocList", params);
