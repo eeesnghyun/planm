@@ -16,20 +16,30 @@
 	<div th:if="${docType == '0002'}">	<!-- 휴가신청서 -->
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-12">
-					문서구분 : <input type="text">
-					
-					신청일 :
-					
-					구분
-					
-					전일/반일
-					 
-					기간 : 
-					일수 : 
-					휴가사유 : 					
+				<div class="col-12 border-bottom">
+					<div class="float-left">
+						<h4><strong>휴가신청서</strong></h4>
+					</div>
 				</div>
 			</div>
+			
+			<div class="row mt-2">								
+				<div class="col-12">
+					<div class="form-group row">
+						<label for="staticEmail" class="col-sm-1 col-form-label">문서번호</label>
+					    <div class="col-sm-10">
+					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.docNo}">
+					    </div>
+					</div>
+					
+					<div class="form-group row">								
+						<label class="col-sm-1 col-form-label">구분</label>
+					    <div class="col-sm-3">
+					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveType}">
+					    </div>					    	   
+					</div>					
+				</div>
+			</div>					
 		</div>
 	</div>
 	
