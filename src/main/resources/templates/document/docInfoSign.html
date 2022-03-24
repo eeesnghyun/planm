@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{index}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block layout:fragment="content-area">
+	<div th:if="${docType == '0001'}">	<!-- 제증명 -->
+		<div class="container-fluid">
+		
+		</div>		
+	</div>
+	
+	<div th:if="${docType == '0002'}">	<!-- 휴가신청서 -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12">
+					문서구분 : <input type="text">
+					
+					신청일 :
+					
+					구분
+					
+					전일/반일
+					 
+					기간 : 
+					일수 : 
+					휴가사유 : 					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="card border-theme">
+		<div class="card-header">
+			<div class="float-left">
+				<h5><strong>결재라인</strong></h5>
+			</div>					
+		</div>
+			    
+	    <div class="card-body text-secondary" style="overflow: auto">	        
+	        <div class="container-fluid">
+	        	<div class="row">
+	        		<div class="col-12">
+	        			<ul class="list-group list-group-flush"></ul>	
+	        		</div>				         
+		        </div>
+	        </div>
+	    </div>
+	</div>	
+	
+	<div class="mt-2 pt-2 border-top">
+		<button type="button" class="btn btn-outline-secondary" onclick="">결재</button>
+	</div>	
+	
+	<script>		
+		$(function() {			
+		
+		});
+	</script>
+</th:block>
+</html>

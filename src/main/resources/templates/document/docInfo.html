@@ -7,91 +7,80 @@
     <meta charset="UTF-8">
 </head>
 <th:block layout:fragment="content-area">
-	<table class="table table-hover">
-    	<colgroup>
-    		<col width="100">
-    		<col width="160">
-    		<col width="100">
-    		<col width="160">
-    		<col width="100">
-    		<col width="">
-    	</colgroup>
-		<tr>
-	    	<th>발생일수</th>
-	    	<td><input type="text" class="form-control w80" id="createDay" disabled></td>
-	      	<th>사용일수</th>
-	      	<td><input type="text" class="form-control w80" id="useDay" disabled></td>
-	      	<th>잔여일수</th>
-	    	<td><input type="text" class="form-control w80" id="remainDay" disabled></td>
-	    </tr>
-		<tr>
-	    	<th>신청일</th>
-	    	<td>
-	    		<input class="form-control" type="text" id="requestYmd" name="formDatePicker">
-	    	</td>
-	      	<th>구분</th>
-	      	<td>
-	      		<select class="form-control" id="leaveType"></select>
-	      	</td>
-	      	<th>전일/반일</th>
-	    	<td>
-	    		<select class="form-control w100" id="dayType"></select>
-	    	</td>
-	    </tr>
-	    <tr>
-	    	<th>기간</th>
-	    	<td colspan="5">
-	    		<div class="form-inline">
-					<div class="input-group">
-			            <input class="form-control" type="text" id="startDay" name="formDatePicker" onchange="getLeaveUseday('s')" placeholder="시작일">			            
-			        </div>~
-			        <div class="input-group">
-			            <input class="form-control" type="text" id="endDay" name="formDatePicker" onchange="getLeaveUseday('e')" placeholder="종료일">			            
-			        </div>
-			        (일수 :  <input class="form-control w80" type="text" id="leaveCnt" disabled>)
-			    </div>
-	    	</td>
-	    </tr>
-	    <tr>
-	    	<th>휴가사유</th>
-	    	<td colspan="5"><textarea class="form-control" id="remark" style="line-height: 3;"></textarea></td>
-	    </tr>	    
-	</table>
-	
-	<div class="card border-theme" style="width: 50%;">
-		<div class="card-header">
-			<div class="float-left">
-				<h5><strong>결재자 지정</strong></h5>
-			</div>					
-		</div>
-			    
-	    <div class="card-body text-secondary" style="overflow: auto">	        
-	        <div class="container-fluid">
-	        	<div class="row">
-	        		<div class="col-6 border-right">
-				        <div class="container-fluid">
-					        <div class="row mb-2 bg-theme3">
-								<div class="col-1"></div>
-								<div class="col"><h6><strong>사번</strong></h6></div>
-								<div class="col"><h6><strong>성명</strong></h6></div>
-								<div class="col"><h6><strong>직책</strong></h6></div>
-							</div>
-				        </div>
-				        <div class="container-fluid" id="userList" style="height: 200px;"></div>
-			        </div>
-			         
-				    <div class="col-6">
-				    	<ul class="list-group list-group-flush" id="signuserList"></ul>			    	
-				    </div>
-		        </div>
-	        </div>
-	    </div>
-	</div>
-	
-	<div class="mt-2 pt-2 border-top">
-		<button type="button" class="btn btn-outline-secondary" onclick="requestDoc()">결재</button>
-	</div>
+	<div th:if="${docType == 'sign'}">
+		<div class="container-fluid">
 		
+		</div>
+		<table class="table table-hover">
+	    	<colgroup>
+	    		<col width="100">
+	    		<col width="160">
+	    		<col width="100">
+	    		<col width="160">
+	    		<col width="100">
+	    		<col width="">
+	    	</colgroup>			
+			<tr>
+		    	<th>신청일</th>
+		    	<td>
+		    		<input class="form-control" type="text" id="requestYmd" name="formDatePicker">
+		    	</td>
+		      	<th>구분</th>
+		      	<td>
+		      		<select class="form-control" id="leaveType"></select>
+		      	</td>
+		      	<th>전일/반일</th>
+		    	<td>
+		    		<select class="form-control w100" id="dayType"></select>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<th>기간</th>
+		    	<td colspan="5">
+		    		<div class="form-inline">
+						<div class="input-group">
+				            <input class="form-control" type="text" id="startDay" name="formDatePicker" onchange="getLeaveUseday('s')" placeholder="시작일">			            
+				        </div>~
+				        <div class="input-group">
+				            <input class="form-control" type="text" id="endDay" name="formDatePicker" onchange="getLeaveUseday('e')" placeholder="종료일">			            
+				        </div>
+				        (일수 :  <input class="form-control w80" type="text" id="leaveCnt" disabled>)
+				    </div>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<th>휴가사유</th>
+		    	<td colspan="5"><textarea class="form-control" id="remark" style="line-height: 3;"></textarea></td>
+		    </tr>	    
+		</table>
+		
+		<div class="card border-theme">
+			<div class="card-header">
+				<div class="float-left">
+					<h5><strong>결재라인</strong></h5>
+				</div>					
+			</div>
+				    
+		    <div class="card-body text-secondary" style="overflow: auto">	        
+		        <div class="container-fluid">
+		        	<div class="row">
+		        		<div class="col-12">
+		        			<ul class="list-group list-group-flush"></ul>	
+		        		</div>				         
+			        </div>
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="mt-2 pt-2 border-top">
+			<button type="button" class="btn btn-outline-secondary" onclick="">결재</button>
+		</div>			
+	</div>
+	
+	<div th:if="${type == 'my'}">
+	
+	</div>
+	
 	<script>		
 		$(function() {			
 		
