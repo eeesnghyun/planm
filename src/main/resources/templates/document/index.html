@@ -118,15 +118,15 @@
 	<script>
 		const getDocInfo = function(e) {			
 			const docNo = $(e).find(">:first-child").text();
-			let gubun = "";
+			let type = "";
 			
 			$(".list-group-item").each(function(index, item){ 
 				if ($(this).hasClass("click")) { 					
-					gubun = $(this).data("type");
+					type = $(this).data("type");
 				} 
 			});			
-			
-			location.replace("/document/info?type="+gubun+"&docNo="+docNo);
+						
+			location.replace("/document/info?type="+type+"&docNo="+docNo);									
 		};
 	
 		const getDocList = function() {

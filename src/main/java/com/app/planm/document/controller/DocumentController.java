@@ -71,19 +71,30 @@ public class DocumentController {
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
 	public String getDocInfo(
 			HttpSession session, Model model,
-			@RequestParam String type, @RequestParam String docNo) throws Exception {
+			@RequestParam String type,
+			@RequestParam String docNo) throws Exception {
 		DocumentDTO documentDTO = new DocumentDTO();
 		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
 		documentDTO.setUserCode((String) session.getAttribute("userCode"));
-		documentDTO.setType(type);
 		documentDTO.setDocNo(docNo);		
 		
-		List<DocumentVO> resultList = documentService.getDocumentInfo(documentDTO);	
-		
-		model.addAttribute("type", type);
-		model.addAttribute("resultList", resultList);
-		
-		return "document/docInfo";
+		if ("sign".equals(type)) {
+			DocumentVO docInfo = documentService.getSignDocumentInfo(documentDTO);
+			List<DocumentVO> signList = documentService.getDocumentSign(documentDTO);	
+			
+			model.addAttribute("docType" , docInfo.getDocType());
+			model.addAttribute("docInfo" , docInfo);		
+			model.addAttribute("signList", signList);
+			
+			return "document/docInfoSign";	
+		} else {
+			//List<DocumentVO> resultList = documentService.getDocumentInfo(documentDTO);	
+			
+			//model.addAttribute("type", type);
+			//model.addAttribute("resultList", resultList);
+			
+			return "document/docInfo";
+		}				
 	}
 	
 	@RequestMapping(value = "/getUserLeave", method = RequestMethod.POST)

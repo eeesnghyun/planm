@@ -54,57 +54,7 @@
 	   	ORDER BY PS.DOC_NO DESC
 	</select>
 	
-	<select id="getDocumentAllList" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
-		SELECT X.DOC_NO
-			 , X.USER_CODE
-			 , PU.USER_NAME
-			 , X.DOC_TYPE
-			 , X.DOC_STATUS			 
-			 , X.REQUEST_YMD
-			 , X.SIGN_YMD
-		  FROM (
-				SELECT CMP_CODE
-					 , DOC_NO
-					 , USER_CODE					 
-					 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CHILD_CODE=DOC_TYPE) DOC_TYPE
-					 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=DOC_STATUS) DOC_STATUS			 
-					 , DATE_FORMAT(REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD
-					 , DATE_FORMAT(SIGN_YMD,'%Y-%m-%d') SIGN_YMD
-				  FROM PM_DOCUMENT       
-				 WHERE CMP_CODE  = #{cmpCode}
-				   AND USER_CODE = #{userCode}		
-				 UNION ALL
-				SELECT PS.CMP_CODE
-					 , PS.DOC_NO
-					 , PD.USER_CODE					 
-					 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CHILD_CODE=PD.DOC_TYPE) DOC_TYPE
-					 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=PD.DOC_STATUS) DOC_STATUS			 			 
-					 , DATE_FORMAT(PD.REQUEST_YMD,'%Y-%m-%d') REQUEST_YMD			 
-					 , DATE_FORMAT(PS.SIGN_YMD,'%Y-%m-%d') SIGN_YMD			 
-				  FROM PM_DOCUMENT_SIGN PS
-					   INNER JOIN PM_DOCUMENT PD 
-						  ON PS.CMP_CODE = PD.CMP_CODE
-					 	 AND PS.DOC_NO   = PD.DOC_NO
-				 WHERE PS.CMP_CODE  = #{cmpCode}
-				   AND PS.SIGN_USER = #{userCode}
-				) X
-			  LEFT OUTER JOIN PM_USER PU
-			    ON X.CMP_CODE  = PU.CMP_CODE
-			   AND X.USER_CODE = PU.USER_CODE
-		WHERE 1=1	
-		<if test="docStatus != 'all'">
-			AND X.DOC_STATUS = #{docStatus}
-	   	</if>
-	   	<if test="viewType == 'request'">
-	   		AND DATE_FORMAT(X.REQUEST_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
-	   	</if>
-	   	<if test="viewType == 'sign'">
-	   		AND DATE_FORMAT(X.SIGN_YMD,'%Y%m%d') BETWEEN REPLACE(#{startDay},'-','') AND REPLACE(#{endDay},'-','')
-	   	</if>
-	   	ORDER BY X.DOC_NO DESC
-	</select>
-	
-	<select id="getDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+	<select id="getMyDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
 		SELECT DOC_NO
 			 , USER_CODE    -- 신청자
 		     , DOC_TYPE     -- 문서유형
@@ -117,6 +67,31 @@
 	</select>
 	
 	<select id="getSignDocumentInfo" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT PD.DOC_NO
+			 , PD.USER_CODE
+		     , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PD.CMP_CODE AND USER_CODE=PD.USER_CODE) USER_NAME		  
+		     , PD.DOC_TYPE
+     		 , PD.DOC_STATUS
+		     , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=PD.DOC_STATUS) DOC_STATUS_NM			 
+			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CHILD_CODE=PD.DOC_TYPE) DOC_TYPE_NM
+		     , DATE_FORMAT(PD.REQUEST_YMD, '%Y년 %m월 %d일 %H:%i') REQUEST_YMD
+		     , DATE_FORMAT(PD.SIGN_YMD, '%Y년 %m월 %d일 %H:%i') SIGN_YMD
+		     , PD.RETURN_CAUSE
+		     , PDL.LEAVE_TYPE
+		     , PDL.DAY_TYPE
+		     , PDL.START_DAY
+		     , PDL.END_DAY
+		     , PDL.LEAVE_CNT
+		     , PDL.REMARK
+		  FROM PM_DOCUMENT PD
+		  	   LEFT OUTER JOIN PM_DOCUMENT_LEAVE PDL
+         		 ON PD.CMP_CODE = PDL.CMP_CODE
+				AND PD.DOC_NO = PDL.DOC_NO
+		 WHERE PD.CMP_CODE = #{cmpCode}
+		   AND PD.DOC_NO = #{docNo}
+	</select>
+	
+	<select id="getDocumentSign" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
 		SELECT PDS.CMP_CODE
 			 , PDS.DOC_NO
 			 , PDS.SIGN_SEQ
@@ -124,16 +99,10 @@
              , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PDS.CMP_CODE AND USER_CODE=PDS.SIGN_USER) SIGN_NAME
 			 , DATE_FORMAT(PDS.SIGN_YMD, '%Y.%m.%d. %H:%i')	SIGN_YMD	 
 			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=PDS.DOC_STATUS) DOC_STATUS			 
-			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC001' AND CHILD_CODE=PD.DOC_TYPE) DOC_TYPE             
-             , PD.USER_CODE
-             , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PD.CMP_CODE AND USER_CODE=PD.USER_CODE) REQUEST_NAME
-             , DATE_FORMAT(PD.REQUEST_YMD, '%Y.%m.%d. %H:%i') REQUEST_YMD
-		  FROM PM_DOCUMENT_SIGN PDS
-			   INNER JOIN PM_DOCUMENT PD
-				  ON PDS.CMP_CODE = PD.CMP_CODE
-				 AND PDS.DOC_NO = PD.DOC_NO	   
+		  FROM PM_DOCUMENT_SIGN PDS 
          WHERE PDS.CMP_CODE = #{cmpCode}
            AND PDS.DOC_NO = #{docNo}
+		 ORDER BY PDS.SIGN_SEQ
 	</select>
 	
 	<select id="getUserLeave" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">

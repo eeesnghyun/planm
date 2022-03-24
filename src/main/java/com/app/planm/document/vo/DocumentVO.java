@@ -11,7 +11,9 @@ public class DocumentVO extends UserVO {
 
 	private String docNo;
 	private String docType;
+	private String docTypeNm;
 	private String docStatus;
+	private String docStatusNm;
 	private String requestYmd;
 	private String signYmd;
 	private String returnCause;

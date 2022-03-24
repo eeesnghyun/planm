@@ -1,5 +1,7 @@
 package com.app.planm.menu.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MenuController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {		
+	public String home(HttpSession session) {
+		
+		session.getAttribute("cmpCode");
+		session.getAttribute("userCode");
+		
 		return "index";
 	}
 	

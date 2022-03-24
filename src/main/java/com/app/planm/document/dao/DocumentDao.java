@@ -9,13 +9,13 @@ public interface DocumentDao {
 
 	public List<DocumentVO> getDocumentList(DocumentDTO documentDTO) throws Exception;
 	
-	public List<DocumentVO> getDocumentInfo(DocumentDTO documentDTO) throws Exception;
-	
-	public List<DocumentVO> getSignDocumentInfo(DocumentDTO documentDTO) throws Exception;
-	
 	public List<DocumentVO> getDocumentSignList(DocumentDTO documentDTO) throws Exception;
 	
-	public List<DocumentVO> getDocumentAllList(DocumentDTO documentDTO) throws Exception;
+	public DocumentVO getMyDocumentInfo(DocumentDTO documentDTO) throws Exception;
+	
+	public DocumentVO getSignDocumentInfo(DocumentDTO documentDTO) throws Exception;
+	
+	public List<DocumentVO> getDocumentSign(DocumentDTO documentDTO) throws Exception;
 	
 	public DocumentVO getUserLeave(DocumentDTO documentDTO) throws Exception;
 	
