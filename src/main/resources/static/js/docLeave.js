@@ -14,7 +14,12 @@ const initLeave = function() {
 	
 	if (data.code == "ok") {				
 		const result = data.result;
-						
+				
+		if (commonIsNull(result)) {
+			alert("생성된 휴가가 없습니다. 인사과에 문의해주세요.");
+			return;
+		}
+		
 		$("#createDay").val(result.createDay);
 		$("#useDay").val(result.useDay);
 		$("#remainDay").val(result.remainDay);			   	
@@ -137,6 +142,11 @@ const isHoliday = function(yyyymmdd) {
 
 //임시저장
 const saveDoc = function() {
+	if (commonIsNull($("#createDay").val())) {
+		alert("생성된 휴가가 없습니다. 인사과에 문의해주세요.");
+		return;	
+	}
+	
 	const params = {
 		"docType"   : "0002",
 		"leaveType" : "A001",
@@ -158,6 +168,11 @@ const saveDoc = function() {
 
 //결재신청
 const requestDoc = function() {
+	if (commonIsNull($("#createDay").val())) {
+		alert("생성된 휴가가 없습니다. 인사과에 문의해주세요.");
+		return;	
+	}
+	
 	const params = {
 		"docType"   : $("#docType").val(),
 		"leaveType" : "A001",
