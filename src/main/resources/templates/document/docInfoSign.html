@@ -28,7 +28,7 @@
 					<div class="form-group row">
 						<label for="staticEmail" class="col-sm-1 col-form-label">문서번호</label>
 					    <div class="col-sm-10">
-					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.docNo}">
+					    	<input type="text" readonly class="form-control-plaintext" id="docNo" th:value="${docInfo.docNo}">
 					    </div>
 					</div>
 					
@@ -103,10 +103,17 @@
 	</div>	
 	
 	<div class="mt-2 pt-2 border-top">
-		<button type="button" class="btn btn-outline-secondary" onclick="">결재</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
 	</div>	
 	
-	<script>		
+	<script>
+		function signDoc() {
+			const params = {
+				"docNo" : $("#docNo").val()
+			};
+			
+		} 
+	
 		$(function() {			
 		
 		});
