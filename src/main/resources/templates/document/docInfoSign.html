@@ -5,24 +5,24 @@
       layout:decorate="~{index}">
 <head>
     <meta charset="UTF-8">
+    <style>
+    	.mySign { background-color: #ff6f61; }
+    </style>
 </head>
-<th:block layout:fragment="content-area">
-	<div th:if="${docType == '0001'}">	<!-- 제증명 -->
-		<div class="container-fluid">
-		
-		</div>		
-	</div>
-	
-	<div th:if="${docType == '0002'}">	<!-- 휴가신청서 -->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-12 border-bottom">
-					<div class="float-left">
-						<h4><strong>휴가신청서 / 신청자 : <span th:text="${docInfo.userName}"></span>(<span th:text="${docInfo.userCode}"></span>)</strong></h4>
-					</div>
+<th:block layout:fragment="content-area" th:with="id=${session.userCode}">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 border-bottom">
+				<div class="float-left">
+					<h4><strong>휴가신청서 / 신청자 : <span th:text="${docInfo.userName}"></span>(<span th:text="${docInfo.userCode}"></span>)</strong></h4>
 				</div>
 			</div>
-			
+		</div>
+		
+		<div th:if="${docType == '0001'}">	<!-- 제증명 -->
+		</div>
+		
+		<div th:if="${docType == '0002'}">	<!-- 휴가신청서 -->
 			<div class="row mt-2">								
 				<div class="col-12">
 					<div class="form-group row">
@@ -43,11 +43,7 @@
 					    	<div class="form-row">
     							<div class="col">					    	
 									<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveType}">
-								</div>
-								
-								<div class="col">   
-									<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.dayType}">
-								</div>
+								</div>							
 							</div>					    	
 					    </div>					    		    	   
 					</div>					
@@ -59,8 +55,14 @@
 					    </div>
 					    
 					    <label class="col-sm-1 col-form-label">총 사용일</label>
-					    <div class="col-sm-3">
-					    	<input type="text" readonly class="form-control-plaintext"th:value="${docInfo.leaveCnt}">
+					    <div class="col-sm-1">
+					    	<div class="form-inline">
+					    		<div class="form-row">
+					    			<div class="col">
+					    				<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveCnt}">
+					    			</div>
+						    	</div>	
+					    	</div>
 						</div>    					  												    	 
 					</div>
 					
@@ -71,26 +73,33 @@
 					    </div>					    	   
 					</div>
 				</div>
-			</div>					
+			</div>
 		</div>
-	</div>
-	
-	<div class="card border-theme">
-		<div class="card-header">
-			<div class="float-left">
-				<h5><strong>결재라인</strong></h5>
-			</div>					
-		</div>
-			    
-	    <div class="card-body text-secondary" style="overflow: auto">	        
-	        <div class="container-fluid">
-	        	<div class="row">
-	        		<div class="col-12">
-	        			<ul class="list-group list-group-flush"></ul>
-	        		</div>				         
+				
+		<div class="card border-theme" style="width: 350px;">
+			<div class="card-header">
+				<div class="float-left">
+					<h5><strong>결재라인</strong></h5>
+				</div>					
+			</div>
+				    
+		    <div class="card-body text-secondary" style="overflow: auto">	        
+		        <div class="container-fluid">
+		        	<div class="row">
+		        		<div class="col-12">
+		        			<ul class="list-group list-group-flush" th:each="sign : ${signList}">		        				
+		        				<li class="list-group-item d-flex justify-content-between align-items-center" th:classappend="${sign.signUser == id ? 'mySign' : ''}">
+		        					<img src="/images/down.png" class="w18-h18 mr-2">
+		        					<span th:text="${sign.signName}"></span>
+		        					(<span th:text="${sign.signUser}"></span>)
+		        					<span class="badge badge-primary badge-pill" th:text="${sign.docStatus}"></span>        	
+		        				</li>		        				
+		        			</ul>
+		        		</div>				         
+			        </div>
 		        </div>
-	        </div>
-	    </div>
+		    </div>
+		</div>					
 	</div>	
 	
 	<div class="mt-2 pt-2 border-top">

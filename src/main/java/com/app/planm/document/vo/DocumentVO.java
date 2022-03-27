@@ -15,7 +15,7 @@ public class DocumentVO extends UserVO {
 	private String docStatus;
 	private String docStatusNm;
 	private String requestYmd;
-	private String signYmd;
+	private String signYmd;	
 	private String returnCause;
 	
 	private String leaveType;
@@ -29,5 +29,8 @@ public class DocumentVO extends UserVO {
 	private int useDay;
 	private int RemainDay;
 	private int leaveCnt;
+	
+	private String signUser;
+	private String signName;	
 	
 }
