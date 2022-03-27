@@ -20,6 +20,7 @@ public class DocumentVO extends UserVO {
 	
 	private String leaveType;
 	private String dayType;
+	private String leaveDay;
 	private String startDay;
 	private String endDay;
 	private String remark;
@@ -27,6 +28,6 @@ public class DocumentVO extends UserVO {
 	private int createDay;
 	private int useDay;
 	private int RemainDay;
-	
+	private int leaveCnt;
 	
 }

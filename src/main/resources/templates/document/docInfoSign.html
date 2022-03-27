@@ -18,7 +18,7 @@
 			<div class="row">
 				<div class="col-12 border-bottom">
 					<div class="float-left">
-						<h4><strong>휴가신청서</strong></h4>
+						<h4><strong>휴가신청서 / 신청자 : <span th:text="${docInfo.userName}"></span>(<span th:text="${docInfo.userCode}"></span>)</strong></h4>
 					</div>
 				</div>
 			</div>
@@ -33,11 +33,43 @@
 					</div>
 					
 					<div class="form-group row">								
-						<label class="col-sm-1 col-form-label">구분</label>
+						<label class="col-sm-1 col-form-label">신청일</label>
 					    <div class="col-sm-3">
-					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveType}">
-					    </div>					    	   
+					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.requestYmd}">
+					    </div>			
+					    
+					    <label class="col-sm-1 col-form-label">구분</label>
+					    <div class="col-sm-3">
+					    	<div class="form-row">
+    							<div class="col">					    	
+									<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveType}">
+								</div>
+								
+								<div class="col">   
+									<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.dayType}">
+								</div>
+							</div>					    	
+					    </div>					    		    	   
 					</div>					
+					
+					<div class="form-group row">								
+						<label class="col-sm-1 col-form-label">휴가기간</label>
+					    <div class="col-sm-3">					    	
+					    	<input type="text" readonly class="form-control-plaintext" th:value="${docInfo.leaveDay}">
+					    </div>
+					    
+					    <label class="col-sm-1 col-form-label">총 사용일</label>
+					    <div class="col-sm-3">
+					    	<input type="text" readonly class="form-control-plaintext"th:value="${docInfo.leaveCnt}">
+						</div>    					  												    	 
+					</div>
+					
+					<div class="form-group row">								
+						<label class="col-sm-1 col-form-label">휴가사유</label>
+					    <div class="col-sm-3">					    	
+					    	<textarea readonly class="form-control-plaintext" rows="3" th:text="${docInfo.remark}"></textarea>					    	
+					    </div>					    	   
+					</div>
 				</div>
 			</div>					
 		</div>
@@ -54,7 +86,7 @@
 	        <div class="container-fluid">
 	        	<div class="row">
 	        		<div class="col-12">
-	        			<ul class="list-group list-group-flush"></ul>	
+	        			<ul class="list-group list-group-flush"></ul>
 	        		</div>				         
 		        </div>
 	        </div>
