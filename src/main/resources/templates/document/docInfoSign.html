@@ -107,7 +107,10 @@
 	</div>	
 	
 	<div class="mt-2 pt-2 border-top">
-		<button type="button" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
+		<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">반려</button>
+		<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
+		<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">반려</button>
+		<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">결재</button>
 	</div>	
 	
 	<script>
