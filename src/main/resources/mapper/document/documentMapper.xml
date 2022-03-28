@@ -97,7 +97,9 @@
 			 , PDS.DOC_NO
 			 , PDS.SIGN_SEQ
 			 , PDS.SIGN_USER			 
-             , (SELECT USER_NAME FROM PM_USER A WHERE CMP_CODE=PDS.CMP_CODE AND USER_CODE=PDS.SIGN_USER) SIGN_NAME
+             , (SELECT CONCAT(USER_NAME, '(', USER_CODE, ')') 
+             	  FROM PM_USER A 
+             	 WHERE CMP_CODE=PDS.CMP_CODE AND USER_CODE=PDS.SIGN_USER) SIGN_NAME
 			 , DATE_FORMAT(PDS.SIGN_YMD, '%Y.%m.%d. %H:%i')	SIGN_YMD	 
 			 , (SELECT CHILD_NAME FROM CODE_CHILD A WHERE PARENT_CODE='DOC002' AND CHILD_CODE=PDS.DOC_STATUS) DOC_STATUS			 
 		  FROM PM_DOCUMENT_SIGN PDS 
@@ -239,6 +241,16 @@
 		   AND PSU.DEPT_CODE = (SELECT DEPT_CODE FROM PM_USER WHERE CMP_CODE=#{cmpCode} AND USER_CODE=#{userCode})
    		   AND PSU.PART_CODE = (SELECT PART_CODE FROM PM_USER WHERE CMP_CODE=#{cmpCode} AND USER_CODE=#{userCode})
 		ORDER BY IF(MANAGER = true, 1, 0), PU.JOB_POS DESC
+	</select>
+	
+	<select id="callSpSignDocument" statementType="CALLABLE" parameterType="com.app.planm.document.vo.DocumentDTO">
+		{
+			CALL SP_SIGN_DOCUMENT (
+				  #{cmpCode , mode=IN, jdbcType=VARCHAR, javaType=String}
+				, #{docNo   , mode=IN, jdbcType=VARCHAR, javaType=String}
+				, #{userCode, mode=IN, jdbcType=VARCHAR, javaType=String}
+			)
+		}
 	</select>
 	
 </mapper>

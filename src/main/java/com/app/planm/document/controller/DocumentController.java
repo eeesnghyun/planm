@@ -178,4 +178,20 @@ public class DocumentController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value = "/updateDocSign", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> updateDocSign(
+			Model model, HttpSession session, @RequestBody DocumentDTO documentDTO) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		documentDTO.setCmpCode((String) session.getAttribute("cmpCode"));
+		documentDTO.setUserCode((String) session.getAttribute("userCode"));
+		
+		documentService.updateDocSign(documentDTO);
+		
+		resultMap.put("code", "ok");		
+		
+		return resultMap;
+	}
+	
+	
 }

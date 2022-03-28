@@ -99,6 +99,11 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.getSignUser(documentDTO);
 	}
 
+	@Override
+	public void updateDocSign(DocumentDTO documentDTO) throws Exception {
+		documentDao.callSpSignDocument(documentDTO);
+	}
+
 
 
 	

@@ -72,34 +72,38 @@
 					    	<textarea readonly class="form-control-plaintext" rows="3" th:text="${docInfo.remark}"></textarea>					    	
 					    </div>					    	   
 					</div>
+					
+					<div class="form-group row">
+						<div class="col-sm-4">		
+							<div class="card border-theme">
+								<div class="card-header">
+									<div class="float-left">
+										<h5><strong>결재라인</strong></h5>
+									</div>					
+								</div>
+									    
+							    <div class="card-body text-secondary" style="overflow: auto">	        
+							        <div class="container-fluid">
+							        	<div class="row">
+							        		<div class="col-12">
+							        			<ul class="list-group list-group-flush" th:each="sign : ${signList}">		        				
+							        				<li class="list-group-item d-flex justify-content-between align-items-center" th:classappend="${sign.signUser == id ? 'mySign' : ''}">
+							        					<img src="/images/down.png" class="w18-h18 mr-2">
+							        					<span class="col" th:text="${sign.signName}"></span>							        					
+							        					<span class="badge badge-primary badge-pill" th:text="${sign.docStatus}"></span>
+							        					<span class="col" th:text="${sign.signYmd}"></span>               	
+							        				</li>		        				
+							        			</ul>
+							        		</div>				         
+								        </div>
+							        </div>
+							    </div>
+							</div>
+						</div>	
+					</div>
 				</div>
 			</div>
-		</div>
-				
-		<div class="card border-theme" style="width: 350px;">
-			<div class="card-header">
-				<div class="float-left">
-					<h5><strong>결재라인</strong></h5>
-				</div>					
-			</div>
-				    
-		    <div class="card-body text-secondary" style="overflow: auto">	        
-		        <div class="container-fluid">
-		        	<div class="row">
-		        		<div class="col-12">
-		        			<ul class="list-group list-group-flush" th:each="sign : ${signList}">		        				
-		        				<li class="list-group-item d-flex justify-content-between align-items-center" th:classappend="${sign.signUser == id ? 'mySign' : ''}">
-		        					<img src="/images/down.png" class="w18-h18 mr-2">
-		        					<span th:text="${sign.signName}"></span>
-		        					(<span th:text="${sign.signUser}"></span>)
-		        					<span class="badge badge-primary badge-pill" th:text="${sign.docStatus}"></span>        	
-		        				</li>		        				
-		        			</ul>
-		        		</div>				         
-			        </div>
-		        </div>
-		    </div>
-		</div>					
+		</div>			
 	</div>	
 	
 	<div class="mt-2 pt-2 border-top">
@@ -112,6 +116,13 @@
 				"docNo" : $("#docNo").val()
 			};
 			
+			const data = commonCallAjax("/document/updateDocSign", params);
+			
+			if (data.code == "ok") {				
+				alert("결재가 완료되었습니다.");
+				
+				
+			}
 		} 
 	
 		$(function() {			
