@@ -173,6 +173,12 @@ const requestDoc = function() {
 		return;	
 	}
 	
+	let signUser = "";
+	
+	$("#signuserList li").each(function(index, item) { 
+	    signUser += $(item).data("code") + ",";
+	});
+	
 	const params = {
 		"docType"   : $("#docType").val(),
 		"leaveType" : "A001",
@@ -181,7 +187,7 @@ const requestDoc = function() {
 		"endDay"    : "2022-02-17",
 		"leaveCnt"  : "1",
 		"remark"    : "테스트",
-		"signUser"  : "001,002"									
+		"signUser"  : signUser.substr(0, signUser.length-1)
 	};
 	
 	const data = commonCallAjax("/document/requestDoc", params);
