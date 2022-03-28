@@ -16,31 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `PM_SIGN_USER`
+-- Table structure for table `ROLE_MANAGE`
 --
 
-DROP TABLE IF EXISTS `PM_SIGN_USER`;
+DROP TABLE IF EXISTS `ROLE_MANAGE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `PM_SIGN_USER` (
-  `CMP_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '회사코드',
-  `DOC_TYPE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '문서유형(DOC001)',
-  `DEPT_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '부서코드',
-  `PART_CODE` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '파트코드',
-  `USER_CODE` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '사번',
-  `CREATE_DATE` datetime DEFAULT NULL COMMENT '생성일',
-  PRIMARY KEY (`CMP_CODE`,`DOC_TYPE`,`DEPT_CODE`,`USER_CODE`,`PART_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='결재권한유저';
+CREATE TABLE `ROLE_MANAGE` (
+  `AUTH_CODE` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '권한코드',
+  `ROLE_NAME` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`AUTH_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `PM_SIGN_USER`
+-- Dumping data for table `ROLE_MANAGE`
 --
 
-LOCK TABLES `PM_SIGN_USER` WRITE;
-/*!40000 ALTER TABLE `PM_SIGN_USER` DISABLE KEYS */;
-INSERT INTO `PM_SIGN_USER` VALUES ('0000','0002','3000','3001','09043','2022-03-13 21:57:25'),('0000','0002','3000','3001','09721','2022-03-13 21:57:25'),('0000','0002','3000','3001','test1','2022-03-13 21:57:25');
-/*!40000 ALTER TABLE `PM_SIGN_USER` ENABLE KEYS */;
+LOCK TABLES `ROLE_MANAGE` WRITE;
+/*!40000 ALTER TABLE `ROLE_MANAGE` DISABLE KEYS */;
+INSERT INTO `ROLE_MANAGE` VALUES ('A','ROLE_ADMIN'),('M','ROLE_MANAGER'),('U','ROLE_USER');
+/*!40000 ALTER TABLE `ROLE_MANAGE` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-28 22:31:21
+-- Dump completed on 2022-03-28 22:31:20
