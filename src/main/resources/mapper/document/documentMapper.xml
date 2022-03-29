@@ -253,4 +253,18 @@
 		}
 	</select>
 	
+	<update id="updateDocReturn" parameterType="com.app.planm.document.vo.DocumentDTO">
+		UPDATE PM_DOCUMENT_SIGN
+		   SET DOC_STATUS = '0003'
+		 WHERE CMP_CODE  = #{cmpCode}
+		   AND DOC_NO    = #{docNo}
+		   AND SIGN_USER = #{userCode};
+		   
+		UPDATE PM_DOCUMENT
+		   SET DOC_STATUS   = '0003'
+		   	 , RETURN_CAUSE = #{returnCause}
+		 WHERE CMP_CODE = #{cmpCode}
+		   AND DOC_NO   = #{docNo};
+	</update>
+	
 </mapper>

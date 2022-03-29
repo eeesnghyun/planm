@@ -34,5 +34,7 @@ public interface DocumentDao {
 	public List<DocumentVO> getSignUser(DocumentDTO documentDTO) throws Exception;
 	
 	public void callSpSignDocument(DocumentDTO documentDTO) throws Exception;
+
+	public void updateDocReturn(DocumentDTO documentDTO) throws Exception;
 	
 }

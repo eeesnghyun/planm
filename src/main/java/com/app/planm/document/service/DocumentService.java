@@ -28,5 +28,7 @@ public interface DocumentService {
 	public List<DocumentVO> getSignUser(DocumentDTO documentDTO) throws Exception;
 	
 	public void updateDocSign(DocumentDTO documentDTO) throws Exception;
+
+	public void updateDocReturn(DocumentDTO documentDTO) throws Exception;
 	
 }

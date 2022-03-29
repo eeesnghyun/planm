@@ -104,6 +104,11 @@ public class DocumentServiceImpl implements DocumentService {
 		documentDao.callSpSignDocument(documentDTO);
 	}
 
+	@Override
+	public void updateDocReturn(DocumentDTO documentDTO) throws Exception {
+		documentDao.updateDocReturn(documentDTO);
+	}
+
 
 
 	

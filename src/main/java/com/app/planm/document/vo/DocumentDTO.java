@@ -21,4 +21,6 @@ public class DocumentDTO {
 	private String type;
 	private String remark;
 	private String yyyymmdd;
+	private String returnCause;
+	
 }
