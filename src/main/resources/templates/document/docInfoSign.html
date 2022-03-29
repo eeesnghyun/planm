@@ -30,7 +30,7 @@
 					    <div class="col-sm-10">
 					    	<input type="text" readonly class="form-control-plaintext" id="docNo" th:value="${docInfo.docNo}">
 					    </div>
-					</div>
+					</div>	<!-- End form-group -->
 					
 					<div class="form-group row">								
 						<label class="col-sm-1 col-form-label">신청일</label>
@@ -46,7 +46,7 @@
 								</div>							
 							</div>					    	
 					    </div>					    		    	   
-					</div>					
+					</div>	<!-- End form-group -->				
 					
 					<div class="form-group row">								
 						<label class="col-sm-1 col-form-label">휴가기간</label>
@@ -64,14 +64,14 @@
 						    	</div>	
 					    	</div>
 						</div>    					  												    	 
-					</div>
+					</div>	<!-- End form-group -->
 					
 					<div class="form-group row">								
 						<label class="col-sm-1 col-form-label">휴가사유</label>
 					    <div class="col-sm-3">					    	
 					    	<textarea readonly class="form-control-plaintext" rows="3" th:text="${docInfo.remark}"></textarea>					    	
 					    </div>					    	   
-					</div>
+					</div>	<!-- End form-group -->
 					
 					<div class="form-group row">
 						<div class="col-sm-4">		
@@ -95,22 +95,38 @@
 							        				</li>		        				
 							        			</ul>
 							        		</div>				         
-								        </div>
-							        </div>
+								        </div>	<!-- End row -->
+							        </div>		<!-- End container -->
 							    </div>
 							</div>
 						</div>	
-					</div>
+					</div>	<!-- End form-group -->
+				</div>
+			</div>	<!-- End row -->
+		</div>		
+	</div>			<!-- End container -->
+	
+	<div class="pt-2 border-top">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-6">
+					<div class="form-group">
+						<label for="returnCause">반려사유</label>
+						<textarea th:if="${docInfo.docStatus} == '0001'" class="form-control" id="returnCause" style="line-height: 3;"></textarea>
+						<textarea th:unless="${docInfo.docStatus} == '0001'" th:text="${docInfo.returnCause}" class="form-control" disabled="disabled" style="line-height: 3;"></textarea>
+					</div>			
 				</div>
 			</div>
-		</div>			
-	</div>	
-	
-	<div class="mt-2 pt-2 border-top">
-		<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">반려</button>
-		<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
-		<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">반려</button>
-		<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">결재</button>
+			
+			<div class="row">
+				<div class="col-12">
+					<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="returnDoc()">반려</button>
+					<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
+					<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">반려</button>
+					<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">결재</button>
+				</div>
+			</div>
+		</div>
 	</div>	
 	
 	<script>
@@ -119,12 +135,23 @@
 				"docNo" : $("#docNo").val()
 			};
 			
-			const data = commonCallAjax("/document/updateDocSign", params);
+			const data = commonCallAjax("/document/signDoc", params);
 			
 			if (data.code == "ok") {				
-				alert("결재가 완료되었습니다.");
-				
-				
+				alert("결재가 완료되었습니다.");								
+			}
+		} 
+		
+		function returnDoc() {
+			const params = {
+				"docNo" : $("#docNo").val(),
+				"returnCause" : $("#returnCause").val()
+			};
+			
+			const data = commonCallAjax("/document/returnDoc", params);
+			
+			if (data.code == "ok") {				
+				alert("문서가 반려되었습니다.");							
 			}
 		} 
 	
