@@ -117,7 +117,8 @@
 			const data = commonCallAjax("/document/signDoc", params);
 			
 			if (data.code == "ok") {				
-				alert("결재가 완료되었습니다.");								
+				alert("결재가 완료되었습니다.");
+				location.reload();
 			}
 		} 
 		
@@ -130,7 +131,8 @@
 			const data = commonCallAjax("/document/returnDoc", params);
 			
 			if (data.code == "ok") {				
-				alert("문서가 반려되었습니다.");							
+				alert("문서가 반려되었습니다.");
+				location.reload();
 			}
 		} 
 	
