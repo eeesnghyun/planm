@@ -84,12 +84,14 @@
 					, DATE_FORMAT(PDL.END_DAY, '%Y.%m.%d')) LEAVE_DAY
 		     , PDL.LEAVE_CNT
 		     , PDL.REMARK
+             , (SELECT SIGN_SEQ	     FROM PM_DOCUMENT_SIGN A WHERE CMP_CODE=PD.CMP_CODE AND DOC_NO=PD.DOC_NO AND SIGN_USER=#{userCode}) SIGN_SEQ
+             , (SELECT MAX(SIGN_SEQ) FROM PM_DOCUMENT_SIGN A WHERE CMP_CODE=PD.CMP_CODE AND DOC_NO=PD.DOC_NO) LAST_SEQ
 		  FROM PM_DOCUMENT PD
 		  	   LEFT OUTER JOIN PM_DOCUMENT_LEAVE PDL
          		 ON PD.CMP_CODE = PDL.CMP_CODE
-				AND PD.DOC_NO = PDL.DOC_NO
+				AND PD.DOC_NO   = PDL.DOC_NO
 		 WHERE PD.CMP_CODE = #{cmpCode}
-		   AND PD.DOC_NO = #{docNo}
+		   AND PD.DOC_NO   = #{docNo}
 	</select>
 	
 	<select id="getDocumentSign" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">

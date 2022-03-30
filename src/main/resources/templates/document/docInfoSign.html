@@ -85,7 +85,7 @@
 	
 	<div class="pt-2 border-top">
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row" th:if="${docInfo.signSeq} == ${docInfo.lastSeq}">
 				<div class="col-6">
 					<div class="form-group">
 						<label for="returnCause">반려사유</label>
@@ -97,9 +97,11 @@
 			
 			<div class="row">
 				<div class="col-12">
-					<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="returnDoc()">반려</button>
+					<th:block th:if="${docInfo.signSeq} == ${docInfo.lastSeq}">
+						<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="returnDoc()">반려</button>
+						<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">반려</button>					
+					</th:block>
 					<button type="button" th:if="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" onclick="signDoc()">결재</button>
-					<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">반려</button>
 					<button type="button" th:unless="${docInfo.docStatus} == '0001'" class="btn btn-outline-secondary" disabled="disabled">결재</button>
 				</div>
 			</div>

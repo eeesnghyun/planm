@@ -32,5 +32,7 @@ public class DocumentVO extends UserVO {
 	
 	private String signUser;
 	private String signName;	
+	private int signSeq;
+	private int lastSeq;
 	
 }
