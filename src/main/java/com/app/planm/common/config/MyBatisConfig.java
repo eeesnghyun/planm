@@ -52,8 +52,6 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setMapperLocations(arrResource);
         sqlSessionFactoryBean.setConfigLocation(myBatisConfig);
         
-        //sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-        
         return sqlSessionFactoryBean.getObject();
     }
     
