@@ -64,12 +64,26 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void updateDept(AdminDTO adminDTO) throws Exception {
+	public void updateDept(AdminDTO adminDTO) throws Exception {		
+		boolean isPartManager = adminDao.isPartManager(adminDTO);
+		
+		//파트장으로 등록되어 있는 경우
+		if (isPartManager) {
+			throw new Exception();
+		}
+		
 		adminDao.updateDept(adminDTO);
 	}
 
 	@Override
 	public void updatePart(AdminDTO adminDTO) throws Exception {
+		boolean isDeptManager = adminDao.isDeptManager(adminDTO);
+		
+		//부서장으로 등록되어 있는 경우
+		if (isDeptManager) {
+			throw new Exception();
+		}
+		
 		adminDao.updatePart(adminDTO);
 	}
 

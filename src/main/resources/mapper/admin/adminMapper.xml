@@ -132,6 +132,20 @@
 		]]>		 
 	</select>
 	
+	<select id="isPartManager" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="boolean">
+		SELECT IF(COUNT(PART_MANAGER) = 1, 1, 0)
+		  FROM PM_DEPT_PART
+		 WHERE CMP_CODE  	= #{cmpCode}
+		   AND PART_MANAGER = #{deptManager}
+	</select>
+	
+	<select id="isDeptManager" parameterType="com.app.planm.admin.vo.AdminDTO" resultType="boolean">
+		SELECT IF(COUNT(DEPT_MANAGER) = 1, 1, 0)
+		  FROM PM_DEPT
+		 WHERE CMP_CODE  	= #{cmpCode}		   
+		   AND DEPT_MANAGER = #{partManager}
+	</select>
+	
 	<update id="updateDept" parameterType="com.app.planm.admin.vo.AdminDTO">
 		UPDATE PM_DEPT
 		   SET DEPT_NAME    = #{deptName}

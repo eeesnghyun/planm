@@ -25,6 +25,10 @@ public interface AdminDao {
 	
 	public List<HashMap<String,Object>> getSignUserList(AdminDTO adminDTO) throws Exception;
 	
+	public boolean isPartManager(AdminDTO adminDTO) throws Exception;
+	
+	public boolean isDeptManager(AdminDTO adminDTO) throws Exception;
+	
 	public void updateDept(AdminDTO adminDTO) throws Exception;
 	
 	public void updatePart(AdminDTO adminDTO) throws Exception;
