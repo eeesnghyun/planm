@@ -245,6 +245,13 @@
 		ORDER BY IF(MANAGER = true, 1, 0), PU.JOB_POS DESC
 	</select>
 	
+	<select id="getAuthUser" parameterType="com.app.planm.document.vo.DocumentDTO" resultType="com.app.planm.document.vo.DocumentVO">
+		SELECT SIGN_USER 
+		  FROM PM_DOCUMENT_SIGN
+	     WHERE CMP_CODE = #{cmpCode}
+	       AND DOC_NO   = #{docNo}
+	</select>
+	
 	<select id="callSpSignDocument" statementType="CALLABLE" parameterType="com.app.planm.document.vo.DocumentDTO">
 		{
 			CALL SP_SIGN_DOCUMENT (

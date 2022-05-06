@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.planm.common.exception.CustomException;
 import com.app.planm.document.dao.DocumentDao;
 import com.app.planm.document.service.DocumentService;
 import com.app.planm.document.vo.DocumentDTO;
@@ -101,6 +102,19 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public void updateDocSign(DocumentDTO documentDTO) throws Exception {
+		//권한 체크
+		int cnt = 0;
+		List<DocumentVO> authUser = documentDao.getAuthUser(documentDTO);		
+		for (DocumentVO user : authUser) {
+			if (documentDTO.getUserCode().equals(user.getSignUser())) {
+				cnt++;
+			}
+		}
+		
+		if (cnt == 0) {
+			throw new CustomException("권한이 없습니다.");
+		}		
+		
 		documentDao.callSpSignDocument(documentDTO);
 	}
 
