@@ -78,23 +78,15 @@ public class DocumentController {
 		documentDTO.setUserCode((String) session.getAttribute("userCode"));
 		documentDTO.setDocNo(docNo);		
 		
-		if ("sign".equals(type)) {
-			DocumentVO docInfo = documentService.getSignDocumentInfo(documentDTO);
-			List<DocumentVO> signList = documentService.getDocumentSign(documentDTO);	
+		DocumentVO docInfo = documentService.getSignDocumentInfo(documentDTO);
+		List<DocumentVO> signList = documentService.getDocumentSign(documentDTO);	
 			
-			model.addAttribute("docType" , docInfo.getDocType());
-			model.addAttribute("docInfo" , docInfo);		
-			model.addAttribute("signList", signList);
-			
-			return "document/docInfoSign";	
-		} else {
-			//List<DocumentVO> resultList = documentService.getDocumentInfo(documentDTO);	
-			
-			//model.addAttribute("type", type);
-			//model.addAttribute("resultList", resultList);
-			
-			return "document/docInfo";
-		}				
+		model.addAttribute("type"    , type);
+		model.addAttribute("docType" , docInfo.getDocType());
+		model.addAttribute("docInfo" , docInfo);		
+		model.addAttribute("signList", signList);
+		
+		return "document/docInfo";
 	}
 	
 	@RequestMapping(value = "/getUserLeave", method = RequestMethod.POST)
