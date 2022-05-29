@@ -20,6 +20,8 @@
 
 #### 1.관리자
 
+![admin1](https://user-images.githubusercontent.com/47884586/170852035-ca43ea45-24d1-4ef3-af22-901017472776.png)
+
 * 사용권한별 메뉴 조회
 * 관리자 기능
   * 회사정보 입력 기능
@@ -32,9 +34,13 @@
 
 #### 2.인사카드
 
+![user1](https://user-images.githubusercontent.com/47884586/170852101-344fdf51-9cd9-4895-b261-db0a751a0bdd.png)
+
 * 사원 추가 기능
 
 #### 3.전자결재
+
+![document1](https://user-images.githubusercontent.com/47884586/170852090-fe45f6a4-f6c5-496d-8f5b-4572b3f1c469.png)
 
 * 문서 조회 기능(내문서, 결재문서)
 * 문서 작성 기능
